@@ -896,14 +896,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6989067429112495294, guid: fe9cdd11c31e1c54980ae8ed21a7eedf, type: 3}
-      propertyPath: m_SortingLayer
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6989067429112495294, guid: fe9cdd11c31e1c54980ae8ed21a7eedf, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1888679153
-      objectReference: {fileID: 0}
     - target: {fileID: 7983789336336453243, guid: fe9cdd11c31e1c54980ae8ed21a7eedf, type: 3}
       propertyPath: m_Name
       value: Background
@@ -1028,10 +1020,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 881206017507674310, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: f73f34947782acd4bb70d9010461cfac, type: 2}
     - target: {fileID: 1419295833205696876, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1073,24 +1061,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4239157801334430283, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
-      propertyPath: _jumpForce
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4239157801334430283, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
-      propertyPath: _wallJumpForce.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4239157801334430283, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
-      propertyPath: _wallJumpForce.y
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4239157801334430283, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
-      propertyPath: _wallMask.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 4239157801334430283, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
       propertyPath: _environmentMask.m_Bits
-      value: 0
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 8170612291948834632, guid: f5ae855606bfe41499493e0f53caa972, type: 3}
       propertyPath: m_Name

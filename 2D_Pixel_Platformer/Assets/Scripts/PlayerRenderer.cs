@@ -11,14 +11,12 @@ namespace PixelPlatformer.Player
     {
         // Pre-computed hash values for animator parameters to improve performance
         // Using hashes instead of strings avoids string comparisons in the animator
-        private static readonly int SpeedHash = Animator.StringToHash("speed");
-        private static readonly int JumpHash = Animator.StringToHash("jump");
-        private static readonly int DoubleJumpHash = Animator.StringToHash("doubleJump");
-        private static readonly int FallHash = Animator.StringToHash("fall");
-        private static readonly int WallSlideHash = Animator.StringToHash("wallSlide");
-
-        // Maximum speed value used for animation blending calculations
-        [SerializeField] private float _maxSpeed = 14f;
+        private static readonly int JumpHash = Animator.StringToHash("isJumping");
+        private static readonly int IdleHash = Animator.StringToHash("isIdle");
+        private static readonly int RunHash = Animator.StringToHash("isRunning");
+        private static readonly int DoubleJumpHash = Animator.StringToHash("isDoubleJumping");
+        private static readonly int FallHash = Animator.StringToHash("isFalling");
+        private static readonly int WallSlideHash = Animator.StringToHash("isWallSliding");
 
         // Component references cached for performance
         private Animator _animator;
@@ -82,7 +80,7 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void SubscribeToEvents()
         {
-            _player.JumpPerformedEvent += OnJump;
+            _player.JumpEvent += OnJump;
             _player.FallStartedEvent += OnFallStart;
             _player.FallEndEvent += OnFallEnd;
             _player.OnGroundContactEvent += HandleContactWithGround;
@@ -93,7 +91,7 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void UnsubscribeFromEvents()
         {
-            _player.JumpPerformedEvent -= OnJump;
+            _player.JumpEvent -= OnJump;
             _player.FallStartedEvent -= OnFallStart;
             _player.FallEndEvent -= OnFallEnd;
             _player.OnGroundContactEvent -= HandleContactWithGround;
@@ -156,14 +154,12 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void HandleMovementBlendAnim()
         {
-            // Get the absolute value of horizontal input (0 to 1 range)
-            float inputStrength = Mathf.Abs(_player.HorizontalMoveInput);
-            
-            // Lerp between minimum speed (1) and maximum speed based on input strength
-            // This creates a smooth animation blend from idle to full running speed
-            _animator.SetFloat(SpeedHash, Mathf.Lerp(1, _maxSpeed, inputStrength));
-        }
+            // Determine if player is actively providing movement input
+            bool isRunning = Mathf.Abs(_player.HorizontalMoveInput) > 0;
 
+            // Set the running state directly as a boolean
+            _animator.SetBool(RunHash, isRunning);
+        }
         /// <summary>
         /// Event handler called when the player performs a jump.
         /// Triggers the appropriate jump animation based on whether it's a single or double jump.

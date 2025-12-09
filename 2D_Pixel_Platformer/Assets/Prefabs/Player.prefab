@@ -99,7 +99,7 @@ Animator:
   m_GameObject: {fileID: 2377789303000742533}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 08a191aadb208c94bb8c5f034086293b, type: 2}
+  m_Controller: {fileID: 9100000, guid: f73f34947782acd4bb70d9010461cfac, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -236,9 +236,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxJumps: 2
-  _groundMask:
+  _environmentMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   _snapInput: 1
   _horizontalDeadZoneThreshold: 0.1
   _moveSpeed: 6
@@ -247,7 +247,11 @@ MonoBehaviour:
   _airborneDeceleration: 30
   _groundedVelocity: -0.02
   _groundCheckDistance: 0.05
-  _jumpForce: 30
+  _jumpForce: 25
   _maxFallSpeed: 40
   _fallAcceleration: 110
   _jumpBuffer: 0.2
+  _wallCheckDistance: 0.1
+  _wallSlideSpeed: 5
+  _wallJumpForce: {x: 10, y: 25}
+  _wallJumpInputLockTime: 0.15

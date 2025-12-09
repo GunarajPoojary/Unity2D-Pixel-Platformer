@@ -5,31 +5,34 @@ namespace PixelPlatformer.Player
 {
     /// <summary>
     /// Manages player movement mechanics including ground movement, jumping, wall sliding, and wall jumping.
-    /// Requires Rigidbody2D for physics-based movement and CapsuleCollider2D for collision detection.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
         #region Jump Configuration
-        [SerializeField] private int _maxJumps = 2;
+        private readonly int _maxJumps = 2; // Double Jump
         private int _remainingJumps;
         #endregion
 
-        #region Movement Configuration
-        [SerializeField] private LayerMask _environmentMask;
+        [Header("Movement Configuration")]
         [SerializeField] private bool _snapInput = true;
+        [SerializeField] private LayerMask _environmentMask;
         [SerializeField] private float _horizontalDeadZoneThreshold = 0.1f;
         [SerializeField] private float _moveSpeed = 14f;
         [SerializeField] private float _acceleration = 120f;
-        [SerializeField] private float _groundDeceleration = 60f;
+
         [SerializeField] private float _airborneDeceleration = 30f;
+
+        [Header("Ground Configuration")]
+        [SerializeField] private float _groundDeceleration = 60f;
         [SerializeField] private float _groundedVelocity = -0.02f;
         [SerializeField] private float _groundCheckDistance = 0.05f;
-        [SerializeField] private float _jumpForce = 30f;
+
+        [SerializeField] private float _jumpForce = 25f;
+        [SerializeField] private float _jumpBuffer = 0.2f;
+
         [SerializeField] private float _maxFallSpeed = 40f;
         [SerializeField] private float _fallAcceleration = 110f;
-        [SerializeField] private float _jumpBuffer = 0.2f;
-        #endregion
 
         #region Wall Interaction Configuration
         [Header("Wall Interaction")]
@@ -52,7 +55,6 @@ namespace PixelPlatformer.Player
         #endregion
 
         #region Input State
-        private bool _jumpPressed;
         private float _horizontalMoveInput;
         public float HorizontalMoveInput => _horizontalMoveInput;
         #endregion
@@ -76,9 +78,8 @@ namespace PixelPlatformer.Player
         #endregion
 
         #region Interface Events
-        // Events that notify other systems of player state changes
         public event Action OnGroundContactEvent;
-        public event Action<int> JumpPerformedEvent;
+        public event Action<int> JumpEvent; // 0 for jump canceled, 1 for jump and 2 for double jump
         public event Action FallStartedEvent;
         public event Action FallEndEvent;
         #endregion
@@ -151,9 +152,9 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void HandleJumpInput()
         {
-            _jumpPressed = Input.GetButtonDown("Jump");
+            bool jumpPressed = Input.GetButtonDown("Jump");
 
-            if (_jumpPressed)
+            if (jumpPressed)
             {
                 // Mark that a jump needs to be consumed in the next FixedUpdate
                 _jumpToConsume = true;
@@ -284,7 +285,7 @@ namespace PixelPlatformer.Player
             _wallJumpLockTimer = _wallJumpInputLockTime;
 
             // Notify listeners that a jump occurred (wall jumps report as jump 0)
-            JumpPerformedEvent?.Invoke(0);
+            JumpEvent?.Invoke(0);
         }
 
         /// <summary>
@@ -303,7 +304,7 @@ namespace PixelPlatformer.Player
             _remainingJumps--;
             // Calculate which jump number this is (1 for first jump, 2 for second jump, etc.)
             int jumpNumber = _maxJumps - _remainingJumps;
-            JumpPerformedEvent?.Invoke(jumpNumber);
+            JumpEvent?.Invoke(jumpNumber);
         }
 
         /// <summary>
@@ -406,7 +407,7 @@ namespace PixelPlatformer.Player
     /// </summary>
     public interface IPlayerMovement
     {
-        event Action<int> JumpPerformedEvent;
+        event Action<int> JumpEvent;
         event Action FallStartedEvent;
         event Action FallEndEvent;
         event Action OnGroundContactEvent;
