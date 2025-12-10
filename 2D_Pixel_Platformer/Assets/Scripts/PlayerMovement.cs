@@ -55,7 +55,7 @@ namespace PixelPlatformer.Player
         private bool _jumpToConsume; // Indicates a jump input was received and needs to be processed
         private bool _bufferedJumpUsable; // Allows buffered jumps to be used (reset on ground contact)
         private float _timeJumpWasPressed; // Timestamp when jump was last pressed
-        private bool HasBufferedJump => _bufferedJumpUsable && _time < _timeJumpWasPressed + _jumpBuffer;
+        private bool HasBufferedJump => _bufferedJumpUsable && _jumpToConsume && _time < _timeJumpWasPressed + _jumpBuffer;
 
         // Ground State
         private bool _isGrounded;
