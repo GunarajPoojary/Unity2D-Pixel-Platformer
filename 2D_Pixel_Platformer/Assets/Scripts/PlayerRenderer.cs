@@ -12,7 +12,6 @@ namespace PixelPlatformer.Player
         // Pre-computed hash values for animator parameters to improve performance
         // Using hashes instead of strings avoids string comparisons in the animator
         private static readonly int JumpHash = Animator.StringToHash("isJumping");
-        private static readonly int IdleHash = Animator.StringToHash("isIdle");
         private static readonly int RunHash = Animator.StringToHash("isRunning");
         private static readonly int DoubleJumpHash = Animator.StringToHash("isDoubleJumping");
         private static readonly int FallHash = Animator.StringToHash("isFalling");
@@ -80,10 +79,10 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void SubscribeToEvents()
         {
-            _player.JumpEvent += OnJump;
-            _player.FallStartedEvent += OnFallStart;
-            _player.FallEndEvent += OnFallEnd;
-            _player.OnGroundContactEvent += HandleContactWithGround;
+            _player.OnJump += OnJump;
+            _player.OnFallStarted += OnFallStart;
+            _player.OnFallEnd += OnFallEnd;
+            _player.OnContactGround += HandleContactWithGround;
         }
 
         /// <summary>
@@ -91,10 +90,10 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void UnsubscribeFromEvents()
         {
-            _player.JumpEvent -= OnJump;
-            _player.FallStartedEvent -= OnFallStart;
-            _player.FallEndEvent -= OnFallEnd;
-            _player.OnGroundContactEvent -= HandleContactWithGround;
+            _player.OnJump -= OnJump;
+            _player.OnFallStarted -= OnFallStart;
+            _player.OnFallEnd -= OnFallEnd;
+            _player.OnContactGround -= HandleContactWithGround;
         }
 
         /// <summary>

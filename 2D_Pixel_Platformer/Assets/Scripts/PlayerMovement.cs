@@ -9,112 +9,95 @@ namespace PixelPlatformer.Player
     [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
-        #region Jump Configuration
-        private readonly int _maxJumps = 2; // Double Jump
-        private int _remainingJumps;
-        #endregion
+        [Header("Input Configuration")]
+        [SerializeField] private bool _snapInput = true;
+        [SerializeField] private float _horizontalDeadZoneThreshold = 0.1f;
+
+        [SerializeField] private LayerMask _environmentMask;
 
         [Header("Movement Configuration")]
-        [SerializeField] private bool _snapInput = true;
-        [SerializeField] private LayerMask _environmentMask;
-        [SerializeField] private float _horizontalDeadZoneThreshold = 0.1f;
         [SerializeField] private float _moveSpeed = 14f;
         [SerializeField] private float _acceleration = 120f;
-
-        [SerializeField] private float _airborneDeceleration = 30f;
 
         [Header("Ground Configuration")]
         [SerializeField] private float _groundDeceleration = 60f;
         [SerializeField] private float _groundedVelocity = -0.02f;
         [SerializeField] private float _groundCheckDistance = 0.05f;
 
+        [Header("Airborne Configuration")]
+        [SerializeField] private float _airborneDeceleration = 30f;
         [SerializeField] private float _jumpForce = 25f;
         [SerializeField] private float _jumpBuffer = 0.2f;
 
         [SerializeField] private float _maxFallSpeed = 40f;
         [SerializeField] private float _fallAcceleration = 110f;
 
-        #region Wall Interaction Configuration
         [Header("Wall Interaction")]
         [SerializeField] private float _wallCheckDistance = 0.1f;
         [SerializeField] private float _wallSlideSpeed = 5f;
-        [SerializeField] private Vector2 _wallJumpForce = new Vector2(20f, 30f);
+        [SerializeField] private Vector2 _wallJumpForce = new Vector2(5f, 25f);
         [SerializeField] private float _wallJumpInputLockTime = 0.15f;
-        #endregion
 
-        #region Wall State
+        private readonly int _maxJumps = 2; // Double Jump
+        private int _remainingJumps;
+
+        // Wall State
         private bool _isOnWall;
-        private int _wallDirection; // -1 for left wall, +1 for right wall, 0 for no wall
         private float _wallJumpLockTimer; // Timer to prevent immediate direction change after wall jump
-        #endregion
 
-        #region Core Components
+        // Core Components
         private Rigidbody2D _rb;
         private CapsuleCollider2D _col;
         private Vector2 _targetVelocity; // The desired velocity that will be applied to the rigidbody
-        #endregion
 
-        #region Input State
-        private float _horizontalMoveInput;
-        public float HorizontalMoveInput => _horizontalMoveInput;
-        #endregion
-
-        #region Jump Buffer State
+        // Jump Buffer State
         // Jump buffering allows the player to press jump slightly before landing and still execute the jump
         private bool _jumpToConsume; // Indicates a jump input was received and needs to be processed
         private bool _bufferedJumpUsable; // Allows buffered jumps to be used (reset on ground contact)
         private float _timeJumpWasPressed; // Timestamp when jump was last pressed
         private bool HasBufferedJump => _bufferedJumpUsable && _time < _timeJumpWasPressed + _jumpBuffer;
-        #endregion
 
-        #region Ground State
+        // Ground State
         private bool _isGrounded;
-        #endregion
 
-        #region Public Properties
+        // Public Properties
         // Returns true when the player is sliding down a wall
         public bool IsWallSliding => _isOnWall && !_isGrounded && _targetVelocity.y < 0f;
-        public int WallDirection => _wallDirection;
-        #endregion
+        public int WallDirection { get; private set; }// -1 for left wall, +1 for right wall, 0 for no wall
 
-        #region Interface Events
-        public event Action OnGroundContactEvent;
-        public event Action<int> JumpEvent; // 0 for jump canceled, 1 for jump and 2 for double jump
-        public event Action FallStartedEvent;
-        public event Action FallEndEvent;
-        #endregion
+        // Input State
+        public float HorizontalMoveInput { get; private set; }
 
-        #region Time Tracking
+        // Interface Events
+        public event Action OnContactGround;
+        public event Action<int> OnJump; // 0 for jump canceled, 1 for jump and 2 for double jump
+        public event Action OnFallStarted;
+        public event Action OnFallEnd;
+
+        // Time Tracking
         private float _time; // Internal time tracker for jump buffering
-        #endregion
 
-        #region Unity Lifecycle Methods
-        private void Awake()
-        {
-            SetupReference();
-        }
+        // Unity Lifecycle Methods
+        private void Awake() => SetupReference();
 
         private void Update()
         {
-            // Update runs once per frame and handles input polling and time tracking
             UpdateTime();
             HandleInput();
         }
 
         private void FixedUpdate()
         {
-            // FixedUpdate runs at a fixed timestep and handles all physics-based logic
-            CheckCollisions();
+            HandleCollisions();
 
-            HandleJump();
             HandleDirection();
             HandleGravity();
+            HandleJump();
+            HandleFall();
 
             ApplyMovement();
         }
-        #endregion
 
-        #region Initialization
         /// <summary>
         /// Caches references to required components.
         /// </summary>
@@ -123,26 +106,18 @@ namespace PixelPlatformer.Player
             _rb = GetComponent<Rigidbody2D>();
             _col = GetComponent<CapsuleCollider2D>();
         }
-        #endregion
 
-        #region Time Management
         /// <summary>
         /// Updates internal time tracker used for jump buffering calculations.
         /// </summary>
-        private void UpdateTime()
-        {
-            _time += Time.deltaTime;
-        }
-        #endregion
+        private void UpdateTime() => _time += Time.deltaTime;
 
-        #region Input Handling
         /// <summary>
         /// Processes all player input including movement and jumping.
         /// </summary>
         private void HandleInput()
         {
             HandleMoveInput();
-            HandleFall();
             HandleJumpInput();
         }
 
@@ -168,7 +143,7 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void HandleMoveInput()
         {
-            _horizontalMoveInput = Input.GetAxisRaw("Horizontal");
+            HorizontalMoveInput = Input.GetAxisRaw("Horizontal");
             SnapInput();
         }
 
@@ -181,18 +156,16 @@ namespace PixelPlatformer.Player
             if (_snapInput)
             {
                 // If input magnitude is below threshold, treat as zero; otherwise use direction only
-                _horizontalMoveInput = Mathf.Abs(_horizontalMoveInput)
-                                       < _horizontalDeadZoneThreshold ? 0 : Mathf.Sign(_horizontalMoveInput);
+                HorizontalMoveInput = Mathf.Abs(HorizontalMoveInput)
+                                       < _horizontalDeadZoneThreshold ? 0 : Mathf.Sign(HorizontalMoveInput);
             }
         }
-        #endregion
 
-        #region Collisions
         /// <summary>
         /// Performs collision detection for ground, ceiling, and walls using capsule casts.
         /// Updates grounded state and wall contact state based on detection results.
         /// </summary>
-        private void CheckCollisions()
+        private void HandleCollisions()
         {
             // Cast downward from the collider to detect ground contact
             bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down, _groundCheckDistance, _environmentMask);
@@ -201,7 +174,7 @@ namespace PixelPlatformer.Player
             bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up, _groundCheckDistance, _environmentMask);
 
             // If the player hits a ceiling while moving upward, cap the velocity at zero
-            // This prevents the player from "sticking" to the ceiling
+            // This prevents the player from "sticking" to the ceiling and unnatural upward movement
             if (ceilingHit) _targetVelocity.y = Mathf.Min(0, _targetVelocity.y);
 
             // Transition from airborne to grounded state
@@ -211,17 +184,16 @@ namespace PixelPlatformer.Player
                 // Enable jump buffering when landing
                 _bufferedJumpUsable = true;
 
-                // Reset available jumps to maximum when landing
+                // Reset available jumps to maximum i.e double jump when landing
                 _remainingJumps = _maxJumps;
 
-                // Notify listeners that ground contact occurred
-                OnGroundContactEvent?.Invoke();
+                OnContactGround?.Invoke();
             }
             // Transition from grounded to airborne state
             else if (_isGrounded && !groundHit)
             {
                 _isGrounded = false;
-                OnGroundContactEvent?.Invoke();
+                OnContactGround?.Invoke();
             }
 
             // Cast to the left to detect left wall contact
@@ -237,11 +209,9 @@ namespace PixelPlatformer.Player
             // Player is only considered on a wall if airborne and touching a wall
             _isOnWall = !_isGrounded && (wallLeft || wallRight);
             // Determine which direction the wall is in (-1 for left, +1 for right, 0 for none)
-            _wallDirection = wallLeft ? -1 : wallRight ? 1 : 0;
+            WallDirection = wallLeft ? -1 : wallRight ? 1 : 0;
         }
-        #endregion
 
-        #region Jumping
         /// <summary>
         /// Processes jump execution based on player state and available jumps.
         /// Handles both normal jumps and wall jumps with appropriate priority.
@@ -278,14 +248,14 @@ namespace PixelPlatformer.Player
 
             // Apply force away from the wall (negative wall direction) and upward
             _targetVelocity = new Vector2(
-                -_wallDirection * _wallJumpForce.x,
+                -WallDirection * _wallJumpForce.x,
                 _wallJumpForce.y);
 
             // Lock horizontal input briefly to prevent immediate return to the wall
             _wallJumpLockTimer = _wallJumpInputLockTime;
 
             // Notify listeners that a jump occurred (wall jumps report as jump 0)
-            JumpEvent?.Invoke(0);
+            OnJump?.Invoke(0);
         }
 
         /// <summary>
@@ -304,7 +274,7 @@ namespace PixelPlatformer.Player
             _remainingJumps--;
             // Calculate which jump number this is (1 for first jump, 2 for second jump, etc.)
             int jumpNumber = _maxJumps - _remainingJumps;
-            JumpEvent?.Invoke(jumpNumber);
+            OnJump?.Invoke(jumpNumber);
         }
 
         /// <summary>
@@ -318,18 +288,16 @@ namespace PixelPlatformer.Player
                 // Trigger fall event only when velocity is downward
                 if (_rb.linearVelocityY < 0f)
                 {
-                    FallStartedEvent?.Invoke();
+                    OnFallStarted?.Invoke();
                 }
                 else
                 {
                     // Trigger end of fall when velocity is upward or zero
-                    FallEndEvent?.Invoke();
+                    OnFallEnd?.Invoke();
                 }
             }
         }
-        #endregion
 
-        #region Movement Direction
         /// <summary>
         /// Handles horizontal movement by accelerating toward target speed or decelerating when no input.
         /// Respects wall jump input lock to prevent immediate direction change after wall jumps.
@@ -344,7 +312,7 @@ namespace PixelPlatformer.Player
             }
 
             // When no input, decelerate toward zero
-            if (_horizontalMoveInput == 0)
+            if (HorizontalMoveInput == 0)
             {
                 // Use faster deceleration on ground for more responsive stopping
                 float deceleration = _isGrounded ? _groundDeceleration : _airborneDeceleration;
@@ -353,12 +321,10 @@ namespace PixelPlatformer.Player
             else
             {
                 // Accelerate toward the target movement speed in the input direction
-                _targetVelocity.x = Mathf.MoveTowards(_targetVelocity.x, _horizontalMoveInput * _moveSpeed, _acceleration * Time.fixedDeltaTime);
+                _targetVelocity.x = Mathf.MoveTowards(_targetVelocity.x, HorizontalMoveInput * _moveSpeed, _acceleration * Time.fixedDeltaTime);
             }
         }
-        #endregion
 
-        #region Gravity
         /// <summary>
         /// Applies gravity and manages special falling behaviors like wall sliding.
         /// Handles three cases: grounded, wall sliding, and normal falling.
@@ -390,15 +356,12 @@ namespace PixelPlatformer.Player
                 }
             }
         }
-        #endregion
 
-        #region Physics Application
         /// <summary>
         /// Applies the calculated target velocity to the rigidbody to execute movement.
         /// This is the final step that translates all calculations into actual physics movement.
         /// </summary>
         private void ApplyMovement() => _rb.linearVelocity = _targetVelocity;
-        #endregion
     }
 
     /// <summary>
@@ -407,13 +370,14 @@ namespace PixelPlatformer.Player
     /// </summary>
     public interface IPlayerMovement
     {
-        event Action<int> JumpEvent;
-        event Action FallStartedEvent;
-        event Action FallEndEvent;
-        event Action OnGroundContactEvent;
+        event Action<int> OnJump;
+        event Action OnFallStarted;
+        event Action OnFallEnd;
+        event Action OnContactGround;
+
         float HorizontalMoveInput { get; }
 
         bool IsWallSliding { get; }
-        int WallDirection { get; } // -1 = left wall, +1 = right wall
+        int WallDirection { get; } // -1 for left wall, +1 for right wall
     }
 }
