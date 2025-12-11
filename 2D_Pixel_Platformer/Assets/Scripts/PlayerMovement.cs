@@ -9,10 +9,6 @@ namespace PixelPlatformer.Player
     [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
-        [Header("Input Configuration")]
-        [SerializeField] private bool _snapInput = true;
-        [SerializeField] private float _horizontalDeadZoneThreshold = 0.1f;
-
         [SerializeField] private LayerMask _environmentMask;
 
         [Header("Movement Configuration")]
@@ -127,9 +123,7 @@ namespace PixelPlatformer.Player
         /// </summary>
         private void HandleJumpInput()
         {
-            bool jumpPressed = Input.GetButtonDown("Jump");
-
-            if (jumpPressed)
+            if (Input.GetButtonDown("Jump"))
             {
                 // Mark that a jump needs to be consumed in the next FixedUpdate
                 _jumpToConsume = true;
@@ -144,21 +138,6 @@ namespace PixelPlatformer.Player
         private void HandleMoveInput()
         {
             HorizontalMoveInput = Input.GetAxisRaw("Horizontal");
-            SnapInput();
-        }
-
-        /// <summary>
-        /// Converts analog input to digital (snapped) input if enabled.
-        /// This creates more precise platformer controls by eliminating small input values.
-        /// </summary>
-        private void SnapInput()
-        {
-            if (_snapInput)
-            {
-                // If input magnitude is below threshold, treat as zero; otherwise use direction only
-                HorizontalMoveInput = Mathf.Abs(HorizontalMoveInput)
-                                       < _horizontalDeadZoneThreshold ? 0 : Mathf.Sign(HorizontalMoveInput);
-            }
         }
 
         /// <summary>
@@ -193,7 +172,6 @@ namespace PixelPlatformer.Player
             else if (_isGrounded && !groundHit)
             {
                 _isGrounded = false;
-                OnContactGround?.Invoke();
             }
 
             // Cast to the left to detect left wall contact
