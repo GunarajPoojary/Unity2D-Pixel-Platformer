@@ -22,18 +22,18 @@ namespace PixelPlatform
         [SerializeField] private float _ceilingCheckDistance;
 
 #if UNITY_EDITOR
-    [Header("Debugging")]
-    [SerializeField] private bool _toggleGizmos;
-    [SerializeField] private TMP_Text _gravityLabel;
-    [SerializeField] private TMP_Text _initialJumpVelLabel;
-    [SerializeField] private TMP_Text _verticalVelLabel;
-    [SerializeField] private TMP_Text _horizontalVelLabel;
-    [SerializeField] private float _lineThickness = 5f;
-    [SerializeField] private Color _verticalArrowColor = Color.green;
-    [SerializeField] private Color _horizontalArrowColor = Color.yellow;
-    [SerializeField] private float _arrowWidth = 10f;
-    [SerializeField] private float _arrowHeight = 10f;
-    [SerializeField] private Vector3 _offset = Vector2.down;
+        [Header("Debugging")]
+        [SerializeField] private bool _toggleGizmos;
+        [SerializeField] private TMP_Text _gravityLabel;
+        [SerializeField] private TMP_Text _initialJumpVelLabel;
+        [SerializeField] private TMP_Text _verticalVelLabel;
+        [SerializeField] private TMP_Text _horizontalVelLabel;
+        [SerializeField] private float _lineThickness = 5f;
+        [SerializeField] private Color _verticalArrowColor = Color.green;
+        [SerializeField] private Color _horizontalArrowColor = Color.yellow;
+        [SerializeField] private float _arrowWidth = 10f;
+        [SerializeField] private float _arrowHeight = 10f;
+        [SerializeField] private Vector3 _offset = Vector2.down;
 #endif
 
         private Rigidbody2D _rb;
@@ -46,6 +46,7 @@ namespace PixelPlatform
         private float _coyoteTimer;
         private bool _wasGrounded; // ground flag fors previous frame
         private bool _wasFacingRight;
+        private bool _wasJumping;
 
         public bool IsRunning
         {
@@ -56,6 +57,8 @@ namespace PixelPlatform
         }
 
         public event Action<bool> OnTurn; // true means facing right
+        public event Action OnFall;
+
         public event Action OnLand;
         public event Action OnJump;
 
@@ -104,13 +107,13 @@ namespace PixelPlatform
         }
 
 #if UNITY_EDITOR
-    private void Update()
-    {
-        _gravityLabel.text = "Gravity: " + _gravity.ToString();
-        _initialJumpVelLabel.text = "Initial Jump Velocity: " + _initialJumpVelocity.ToString();
-        _verticalVelLabel.text = "Vertical Velocity: " + _verticalVelocity.ToString();
-        _horizontalVelLabel.text = "Horizontal Velocity: " + _horizontalVelocity.ToString();
-    }
+        private void Update()
+        {
+            _gravityLabel.text = "Gravity: " + _gravity.ToString();
+            _initialJumpVelLabel.text = "Initial Jump Velocity: " + _initialJumpVelocity.ToString();
+            _verticalVelLabel.text = "Vertical Velocity: " + _verticalVelocity.ToString();
+            _horizontalVelLabel.text = "Horizontal Velocity: " + _horizontalVelocity.ToString();
+        }
 #endif
 
         private void FixedUpdate()
@@ -267,6 +270,22 @@ namespace PixelPlatform
                 _verticalVelocity = 0;
 
             _verticalVelocity += _gravity * Time.fixedDeltaTime;
+
+            // check if previously going up and now coming down then isFalling
+            if (_wasJumping && IsFalling())
+                OnFall?.Invoke();
+
+            _wasJumping = IsJumping();
+        }
+
+        private bool IsJumping()
+        {
+            return !IsGrounded() && _verticalVelocity > 0f;
+        }
+
+        private bool IsFalling()
+        {
+            return !IsGrounded() && _verticalVelocity <= 0f;
         }
 
         private void ApplyMovement()
@@ -275,42 +294,42 @@ namespace PixelPlatform
         }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        if (!_toggleGizmos) return;
+        private void OnDrawGizmosSelected()
+        {
+            if (!_toggleGizmos) return;
 
-        var velocity = Vector3.up * _verticalVelocity;
+            var velocity = Vector3.up * _verticalVelocity;
 
-        GizmosUtils.DrawWireArrow(
-            transform.position,
-            _offset,
-            velocity,
-            _arrowWidth,
-            _arrowHeight,
-            _lineThickness,
-            _verticalArrowColor);
+            GizmosUtils.DrawWireArrow(
+                transform.position,
+                _offset,
+                velocity,
+                _arrowWidth,
+                _arrowHeight,
+                _lineThickness,
+                _verticalArrowColor);
 
-        GizmosUtils.DrawWireArrow(
-            transform.position,
-            _offset,
-            Vector3.right * _horizontalVelocity,
-            _arrowWidth,
-            _arrowHeight,
-            _lineThickness,
-            _horizontalArrowColor);
+            GizmosUtils.DrawWireArrow(
+                transform.position,
+                _offset,
+                Vector3.right * _horizontalVelocity,
+                _arrowWidth,
+                _arrowHeight,
+                _lineThickness,
+                _horizontalArrowColor);
 
-        if (_groundCheckPoint == null) return;
+            if (_groundCheckPoint == null) return;
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(
-            _groundCheckPoint.position,
-            _groundCheckSize);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(
+                _groundCheckPoint.position,
+                _groundCheckSize);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(
-            _ceilingCheckPoint.position,
-            _ceilingCheckSize);
-    }
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(
+                _ceilingCheckPoint.position,
+                _ceilingCheckSize);
+        }
 #endif
     }
 }

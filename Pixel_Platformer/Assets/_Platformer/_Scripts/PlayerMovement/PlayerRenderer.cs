@@ -6,79 +6,65 @@ namespace PixelPlatform
     [RequireComponent(typeof(PlayerMovement))]
     public class PlayerRenderer : MonoBehaviour
     {
-        [SerializeField] private Transform _playerGFX;
-        [SerializeField] private ParticleSystem _landFX;
-        [SerializeField] private ParticleSystem _jumpFX;
-        [SerializeField] private ParticleSystem _runFX;
+        private static readonly int JumpID = Animator.StringToHash("isJumping");
+        private static readonly int RunID = Animator.StringToHash("isRunning");
+        private static readonly int FallID = Animator.StringToHash("isFalling");
 
-        private PlayerMovement _playerMovement;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private SpriteRenderer _renderer;
 
+        private PlayerMovement _player;
 
         private void Awake()
         {
-            _playerMovement = GetComponent<PlayerMovement>();
+            _player = GetComponentInParent<PlayerMovement>();
+        }
+
+        private void Update()
+        {
+            HandleMovement();
         }
 
         private void OnEnable()
         {
-            _playerMovement.OnTurn += HandleTurn;
-            _playerMovement.OnLand += HandleLand;
-            _playerMovement.OnJump += HandleJump;
+            _player.OnJump += HandleJump;
+            _player.OnFall += HandleFall;
+            _player.OnLand += HandleLand;
+            _player.OnTurn += HandleTurn;
         }
 
         private void OnDisable()
         {
-            _playerMovement.OnTurn -= HandleTurn;
-            _playerMovement.OnLand -= HandleLand;
-            _playerMovement.OnJump -= HandleJump;
-        }
-
-
-        private void Update()
-        {
-            HandleRun();
+            _player.OnJump -= HandleJump;
+            _player.OnFall -= HandleFall;
+            _player.OnLand -= HandleLand;
+            _player.OnTurn -= HandleTurn;
         }
 
         private void HandleLand()
         {
-            PlayParticle(_landFX);
+            _animator.SetBool(FallID, false);
+        }
+
+        private void HandleFall()
+        {
+            _animator.SetBool(FallID, true);
+            _animator.SetBool(JumpID, false);
         }
 
         private void HandleJump()
         {
-            PlayParticle(_jumpFX);
+            _animator.SetBool(JumpID, true);
         }
 
-        private void HandleRun()
+        private void HandleTurn(bool isRight)
         {
-            if (_playerMovement.IsRunning)
-            {
-                if (!_runFX.isPlaying)
-                    _runFX.Play();
-            }
-            else
-            {
-                if (_runFX.isPlaying)
-                    _runFX.Stop();
-            }
+            _renderer.flipX = !isRight;
         }
 
-        private void HandleTurn(bool turnRight)
+        private void HandleMovement()
         {
-            _playerGFX.localScale = turnRight
-                ? Vector3.one
-                : new Vector3(-1, 1, 1);
-        }
-
-
-
-        private void PlayParticle(ParticleSystem particle)
-        {
-            if (particle == null)
-                return;
-
-            particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            particle.Play();
+            _animator.SetBool(RunID, _player.IsRunning);
         }
     }
 }

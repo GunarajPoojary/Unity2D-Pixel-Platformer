@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa5fc7ca1089b41b219fa2986da910, type: 3}
   m_Name: PlayerMovementStats
   m_EditorClassIdentifier: 
-  <MaxSpeed>k__BackingField: 10
-  <GravityMuliplier>k__BackingField: 1.2
-  <TurnSpeed>k__BackingField: 43.2
-  <GroundAcceleration>k__BackingField: 52
-  <GroundDecceleration>k__BackingField: 52
+  <MaxSpeed>k__BackingField: 6.5
+  <GravityMuliplier>k__BackingField: 2.05
+  <TurnSpeed>k__BackingField: 100
+  <GroundAcceleration>k__BackingField: 97.8
+  <GroundDecceleration>k__BackingField: 53.9
   AirAcceleration: 53.3
   AirDeceleration: 53.3
-  <JumpHeight>k__BackingField: 4
+  <JumpHeight>k__BackingField: 1.5
   <TimeTillJumpApex>k__BackingField: 0.4
-  <JumpCutMultiplier>k__BackingField: 0.5
+  <JumpCutMultiplier>k__BackingField: 0.502
   <JumpBufferTime>k__BackingField: 0.164
   <GroundedVerticalVelocity>k__BackingField: 0.1
-  <CoyoteTime>k__BackingField: 0.2
+  <CoyoteTime>k__BackingField: 0.169
