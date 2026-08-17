@@ -14,6 +14,11 @@ namespace PixelPlatform
         [SerializeField] private Animator _animator;
         [SerializeField] private SpriteRenderer _renderer;
 
+
+        [SerializeField] private ParticleSystem _landFX;
+        [SerializeField] private ParticleSystem _jumpFX;
+        [SerializeField] private ParticleSystem _runFX;
+
         private PlayerMovement _player;
 
         private void Awake()
@@ -53,6 +58,7 @@ namespace PixelPlatform
         {
             _animator.SetBool(FallID, false);
             _animator.SetBool(JumpID, false);
+            PlayParticle(_landFX);
         }
 
         private void HandleFall()
@@ -64,6 +70,7 @@ namespace PixelPlatform
         private void HandleJump()
         {
             _animator.SetBool(JumpID, true);
+            PlayParticle(_jumpFX);
         }
 
         private void HandleTurn(bool isRight)
@@ -74,6 +81,27 @@ namespace PixelPlatform
         private void HandleMovement()
         {
             _animator.SetBool(RunID, _player.IsRunning);
+
+            if (_player.IsRunning)
+            {
+                if (!_runFX.isPlaying)
+                    _runFX.Play();
+            }
+            else
+            {
+                if (_runFX.isPlaying)
+                    _runFX.Stop();
+            }
+        }
+
+
+        private void PlayParticle(ParticleSystem particle)
+        {
+            if (particle == null)
+                return;
+
+            particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particle.Play();
         }
     }
 }
