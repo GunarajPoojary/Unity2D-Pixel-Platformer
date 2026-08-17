@@ -25,3 +25,7 @@ MonoBehaviour:
   <JumpBufferTime>k__BackingField: 0.164
   <GroundedVerticalVelocity>k__BackingField: 0.1
   <CoyoteTime>k__BackingField: 0.169
+  <WallSlideSpeed>k__BackingField: 2
+  <WallJumpHorizontalForce>k__BackingField: 12
+  <WallJumpVerticalVelocity>k__BackingField: 10
+  <WallJumpLockTime>k__BackingField: 0.15

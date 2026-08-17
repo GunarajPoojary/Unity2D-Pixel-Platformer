@@ -21,6 +21,13 @@ namespace PixelPlatform
         [SerializeField] private Vector2 _ceilingCheckSize = new Vector2(0.5f, 0.1f);
         [SerializeField] private float _ceilingCheckDistance;
 
+        [Header("Wall Slide")]
+        [SerializeField] private Transform _wallCheckPoint;
+        [SerializeField] private Vector2 _wallCheckSize = new Vector2(0.5f, 0.1f);
+        [SerializeField] private float _wallCheckDistance;
+        [SerializeField] private LayerMask _wallLayer;
+
+
 #if UNITY_EDITOR
         [Header("Debugging")]
         [SerializeField] private bool _toggleGizmos;
@@ -48,6 +55,8 @@ namespace PixelPlatform
         private bool _wasFacingRight;
         private bool _wasJumping;
 
+        private bool _isWallSliding;
+
         public bool IsRunning
         {
             get
@@ -61,6 +70,7 @@ namespace PixelPlatform
 
         public event Action OnLand;
         public event Action OnJump;
+        public event Action<bool> OnWallSlide;
 
         private void Awake()
         {
@@ -118,6 +128,7 @@ namespace PixelPlatform
 
         private void FixedUpdate()
         {
+            HandleWallSlide();
             HandleJump();
             ApplyGravity();
 
@@ -142,7 +153,7 @@ namespace PixelPlatform
             }
             else
             {
-                speedChange = IsGrounded() ? _movementStats.GroundDecceleration : _movementStats.AirDeceleration;
+                speedChange = IsGrounded() ? _movementStats.GroundDecceleration : _movementStats.AirDecceleration;
             }
 
             // Mathf.MoveTowards uses constant speedchange
@@ -201,6 +212,8 @@ namespace PixelPlatform
 
         private void HandleJump()
         {
+            bool isJumpPressed = _jumpBufferTimer > 0;
+
             // previous frame was airborne, current frame is grounded
             if (!_wasGrounded && IsGrounded())
             {
@@ -212,9 +225,16 @@ namespace PixelPlatform
             {
                 _jumpBufferTimer -= Time.fixedDeltaTime;
             }
-            else if (_jumpBufferTimer > 0)
+            else if (isJumpPressed)
             {
                 ExecuteJump();
+                return;
+            }
+
+            // Wall Jump — jump pressed while sliding, before coyote time applies
+            if (_isWallSliding && isJumpPressed)
+            {
+                ExecuteWallJump();
                 return;
             }
 
@@ -233,14 +253,31 @@ namespace PixelPlatform
             {
                 _coyoteTimer -= Time.fixedDeltaTime;
 
-                if (_coyoteTimer > 0 && _jumpBufferTimer > 0) // _jumpBufferTimer > 0 means jump pressed 
-                                                              // or use _jumpPressed flag
+                if (_coyoteTimer > 0 && isJumpPressed) // _jumpBufferTimer > 0 means jump pressed 
+                                                       // or use _jumpPressed flag
                 {
                     ExecuteJump();
                 }
             }
 
             _wasGrounded = IsGrounded();
+        }
+
+        private void ExecuteWallJump()
+        {
+            Debug.Log("Execute Wall Jump");
+
+            float wallDirection = Mathf.Sign(_input.MoveInput.x);
+
+            _horizontalVelocity = -wallDirection * _movementStats.WallJumpHorizontalForce;
+            _verticalVelocity = _movementStats.WallJumpVerticalVelocity;
+
+            _isWallSliding = false;
+            OnWallSlide?.Invoke(false);
+
+            ResetJumpBuffer();
+
+            OnJump?.Invoke();
         }
 
         private void ResetJumpBuffer()
@@ -271,6 +308,11 @@ namespace PixelPlatform
 
             _verticalVelocity += _gravity * Time.fixedDeltaTime;
 
+            if (_isWallSliding)
+            {
+                _verticalVelocity = Mathf.Max(_verticalVelocity, -_movementStats.WallSlideSpeed);
+            }
+
             // check if previously going up and now coming down then isFalling
             if (_wasJumping && IsFalling())
                 OnFall?.Invoke();
@@ -292,6 +334,36 @@ namespace PixelPlatform
         {
             _rb.linearVelocity = new Vector2(_horizontalVelocity, _verticalVelocity);
         }
+
+        #region Wall Slide
+
+        private void HandleWallSlide()
+        {
+            bool wasWallSliding = _isWallSliding;
+
+            bool hasInput = Mathf.Abs(_input.MoveInput.x) > MOVEMENT_THRESHOLD;
+            bool isFalling = !IsGrounded() && _verticalVelocity <= 0f;
+
+            // must be airborne, falling, and pressing movement causing contact with wall
+            _isWallSliding = hasInput && isFalling && IsWallSliding();
+
+            if (_isWallSliding != wasWallSliding)
+            {
+                OnWallSlide?.Invoke(_isWallSliding);
+            }
+        }
+
+        private bool IsWallSliding()
+        {
+            return Physics2D.BoxCast(
+                _wallCheckPoint.position,
+                _wallCheckSize,
+                0f,
+                Vector2.right * Mathf.Sign(_input.MoveInput.x),
+                _wallCheckDistance,
+                _wallLayer);
+        }
+        #endregion
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
@@ -329,6 +401,11 @@ namespace PixelPlatform
             Gizmos.DrawWireCube(
                 _ceilingCheckPoint.position,
                 _ceilingCheckSize);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(
+                _wallCheckPoint.position,
+                _wallCheckSize);
         }
 #endif
     }

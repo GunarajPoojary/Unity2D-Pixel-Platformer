@@ -9,6 +9,7 @@ namespace PixelPlatform
         private static readonly int JumpID = Animator.StringToHash("isJumping");
         private static readonly int RunID = Animator.StringToHash("isRunning");
         private static readonly int FallID = Animator.StringToHash("isFalling");
+        private static readonly int WallSlideID = Animator.StringToHash("isWallSliding");
 
         [SerializeField] private Animator _animator;
         [SerializeField] private SpriteRenderer _renderer;
@@ -31,6 +32,7 @@ namespace PixelPlatform
             _player.OnFall += HandleFall;
             _player.OnLand += HandleLand;
             _player.OnTurn += HandleTurn;
+            _player.OnWallSlide += HandleWallSlide;
         }
 
         private void OnDisable()
@@ -39,11 +41,18 @@ namespace PixelPlatform
             _player.OnFall -= HandleFall;
             _player.OnLand -= HandleLand;
             _player.OnTurn -= HandleTurn;
+            _player.OnWallSlide -= HandleWallSlide;
+        }
+
+        private void HandleWallSlide(bool isSliding)
+        {
+            _animator.SetBool(WallSlideID, isSliding);
         }
 
         private void HandleLand()
         {
             _animator.SetBool(FallID, false);
+            _animator.SetBool(JumpID, false);
         }
 
         private void HandleFall()
