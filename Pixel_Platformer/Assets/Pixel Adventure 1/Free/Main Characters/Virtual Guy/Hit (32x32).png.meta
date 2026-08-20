@@ -173,12 +173,12 @@ TextureImporter:
       name: Hit (32x32)_0
       rect:
         serializedVersion: 2
-        x: 6
+        x: 7
         y: 0
-        width: 21
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 19
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,12 +195,12 @@ TextureImporter:
       name: Hit (32x32)_1
       rect:
         serializedVersion: 2
-        x: 38
+        x: 39
         y: 0
-        width: 21
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 19
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -217,12 +217,12 @@ TextureImporter:
       name: Hit (32x32)_2
       rect:
         serializedVersion: 2
-        x: 69
-        y: 0
-        width: 23
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 70
+        y: 1
+        width: 21
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -239,12 +239,12 @@ TextureImporter:
       name: Hit (32x32)_3
       rect:
         serializedVersion: 2
-        x: 99
-        y: 2
-        width: 27
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 100
+        y: 3
+        width: 25
+        height: 22
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -261,12 +261,12 @@ TextureImporter:
       name: Hit (32x32)_4
       rect:
         serializedVersion: 2
-        x: 130
-        y: 3
-        width: 29
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 131
+        y: 4
+        width: 27
+        height: 20
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -283,12 +283,12 @@ TextureImporter:
       name: Hit (32x32)_5
       rect:
         serializedVersion: 2
-        x: 163
-        y: 2
-        width: 27
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 164
+        y: 3
+        width: 25
+        height: 22
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -305,12 +305,12 @@ TextureImporter:
       name: Hit (32x32)_6
       rect:
         serializedVersion: 2
-        x: 196
-        y: 1
-        width: 25
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 197
+        y: 2
+        width: 23
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -327,7 +327,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 21cd4190783ed3249a99bba726f7a051
     internalID: 0
     vertices: []
     indices: 

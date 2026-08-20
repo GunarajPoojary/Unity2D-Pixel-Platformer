@@ -167,12 +167,12 @@ TextureImporter:
       name: Wall Jump (32x32)_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1
-        width: 24
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 4
+        y: 2
+        width: 22
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -189,12 +189,12 @@ TextureImporter:
       name: Wall Jump (32x32)_1
       rect:
         serializedVersion: 2
-        x: 35
-        y: 1
-        width: 24
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 36
+        y: 2
+        width: 22
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -211,12 +211,12 @@ TextureImporter:
       name: Wall Jump (32x32)_2
       rect:
         serializedVersion: 2
-        x: 67
-        y: 1
-        width: 24
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 68
+        y: 2
+        width: 22
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -233,12 +233,12 @@ TextureImporter:
       name: Wall Jump (32x32)_3
       rect:
         serializedVersion: 2
-        x: 99
-        y: 1
-        width: 24
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 100
+        y: 2
+        width: 22
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -255,12 +255,12 @@ TextureImporter:
       name: Wall Jump (32x32)_4
       rect:
         serializedVersion: 2
-        x: 131
-        y: 1
-        width: 24
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 132
+        y: 2
+        width: 22
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -277,7 +277,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e9418f2fdd2287745bcb7702fb8c3544
     internalID: 0
     vertices: []
     indices: 
