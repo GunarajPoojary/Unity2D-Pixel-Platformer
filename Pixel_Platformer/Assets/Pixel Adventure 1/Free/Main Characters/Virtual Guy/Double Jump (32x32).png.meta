@@ -170,12 +170,12 @@ TextureImporter:
       name: Double Jump (32x32)_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 4
-        width: 26
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 5
+        y: 5
+        width: 24
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -192,12 +192,12 @@ TextureImporter:
       name: Double Jump (32x32)_1
       rect:
         serializedVersion: 2
-        x: 36
-        y: 4
-        width: 26
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 37
+        y: 5
+        width: 24
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -214,12 +214,12 @@ TextureImporter:
       name: Double Jump (32x32)_2
       rect:
         serializedVersion: 2
-        x: 68
-        y: 2
-        width: 25
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 69
+        y: 3
+        width: 23
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -236,12 +236,12 @@ TextureImporter:
       name: Double Jump (32x32)_3
       rect:
         serializedVersion: 2
-        x: 100
-        y: 2
-        width: 25
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 101
+        y: 3
+        width: 23
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -258,12 +258,12 @@ TextureImporter:
       name: Double Jump (32x32)_4
       rect:
         serializedVersion: 2
-        x: 130
-        y: 3
-        width: 26
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 131
+        y: 4
+        width: 24
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -280,12 +280,12 @@ TextureImporter:
       name: Double Jump (32x32)_5
       rect:
         serializedVersion: 2
-        x: 162
-        y: 3
-        width: 26
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 163
+        y: 4
+        width: 24
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -302,7 +302,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d6594f7f329dbdc4fa2c9f4d63305ded
     internalID: 0
     vertices: []
     indices: 

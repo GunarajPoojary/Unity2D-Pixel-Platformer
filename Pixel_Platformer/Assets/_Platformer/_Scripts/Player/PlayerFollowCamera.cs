@@ -1,23 +1,38 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
-public class PlayerFollowCamera : MonoBehaviour
+namespace PixelPlatform
 {
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Transform _followTarget;
-    [SerializeField] private float _smoothTime = 0.1f;
-    private Vector3 _velocity;
-
-    private void LateUpdate()
+    [RequireComponent(typeof(Camera))]
+    public class PlayerFollowCamera : MonoBehaviour
     {
-        // _camera.transform.position = new Vector3(_followTarget.position.x, _followTarget.position.y, _camera.transform.position.z);
+        [SerializeField] private Camera _camera;
+        [SerializeField] private Transform _followTarget;
+        [SerializeField] private float _smoothTime = 0.1f;
+        [SerializeField] private PlayerRenderer _renderer;
 
-        Vector3 desiredPos = _followTarget.position;
-        desiredPos.z = _camera.transform.position.z;
+        [SerializeField] private float _lookAheadOffset = 4f;
+        [SerializeField] private float _lookAheadSmoothTime = 0.2f;
 
-        Vector3 smoothedPos = Vector3.SmoothDamp(
-            transform.position, desiredPos, ref _velocity, _smoothTime);
+        private Vector3 _velocity;
+        private float _currentLookAhead;
+        private float _lookAheadVelocity;
 
-        transform.position = smoothedPos;
+        private void LateUpdate()
+        {
+            float targetLookAhead = _lookAheadOffset * _renderer.LookDirection;
+            _currentLookAhead = Mathf.SmoothDamp(_currentLookAhead, targetLookAhead, ref _lookAheadVelocity, _lookAheadSmoothTime);
+
+
+            Vector3 desiredPos = _followTarget.position;
+            desiredPos.x += _currentLookAhead;
+            desiredPos.z = _camera.transform.position.z;
+
+            Vector3 smoothedPos = Vector3.SmoothDamp(transform.position,
+                                                     desiredPos,
+                                                     ref _velocity,
+                                                     _smoothTime);
+
+            transform.position = smoothedPos;
+        }
     }
 }

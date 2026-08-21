@@ -15,6 +15,14 @@ namespace PixelPlatform
             }
         }
 
+        public float LookDirection
+        {
+            get
+            {
+                return Mathf.Sign(_moveInput.x);
+            }
+        }
+
         public event Action OnJumpPerformed;
         public event Action OnJumpCanceled;
 

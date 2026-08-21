@@ -21,6 +21,14 @@ namespace PixelPlatform
 
         private PlayerMovement _player;
 
+        public int LookDirection
+        {
+            get
+            {
+                return _renderer.flipX ? -1 : 1;
+            }
+        }
+
         private void Awake()
         {
             _player = GetComponentInParent<PlayerMovement>();
