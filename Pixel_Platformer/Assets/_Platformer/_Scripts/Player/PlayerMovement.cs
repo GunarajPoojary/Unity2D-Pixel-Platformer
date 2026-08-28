@@ -56,6 +56,7 @@ namespace PixelPlatform
         private bool _wasJumping;
 
         private bool _isWallSliding;
+        private float _wallJumpLockTimer;
 
         public bool IsRunning
         {
@@ -139,6 +140,12 @@ namespace PixelPlatform
 
         private void HandleMovement()
         {
+            if (_wallJumpLockTimer > 0f)
+            {
+                _wallJumpLockTimer -= Time.fixedDeltaTime;
+                return;
+            }
+
             // The target speed will be max speed when we press input otherwise it will be zero
             float targetSpeed = _input.MoveInput.x * _movementStats.MaxSpeed;
             float speedChange;
@@ -271,6 +278,9 @@ namespace PixelPlatform
 
             _horizontalVelocity = -wallDirection * _movementStats.WallJumpHorizontalForce;
             _verticalVelocity = _movementStats.WallJumpVerticalVelocity;
+
+            // set the wall jump lock time to desired lock time
+            _wallJumpLockTimer = _movementStats.WallJumpLockTime;
 
             _isWallSliding = false;
             OnWallSlide?.Invoke(false);

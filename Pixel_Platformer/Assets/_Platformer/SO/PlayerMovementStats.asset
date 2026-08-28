@@ -17,8 +17,8 @@ MonoBehaviour:
   <TurnSpeed>k__BackingField: 100
   <GroundAcceleration>k__BackingField: 97.8
   <GroundDecceleration>k__BackingField: 53.9
-  AirAcceleration: 53.3
-  AirDeceleration: 53.3
+  <AirAcceleration>k__BackingField: 52
+  <AirDecceleration>k__BackingField: 52
   <JumpHeight>k__BackingField: 1.5
   <TimeTillJumpApex>k__BackingField: 0.4
   <JumpCutMultiplier>k__BackingField: 0.502
@@ -26,6 +26,6 @@ MonoBehaviour:
   <GroundedVerticalVelocity>k__BackingField: 0.1
   <CoyoteTime>k__BackingField: 0.169
   <WallSlideSpeed>k__BackingField: 2
-  <WallJumpHorizontalForce>k__BackingField: 12
-  <WallJumpVerticalVelocity>k__BackingField: 10
-  <WallJumpLockTime>k__BackingField: 0.15
+  <WallJumpHorizontalForce>k__BackingField: 7
+  <WallJumpVerticalVelocity>k__BackingField: 18
+  <WallJumpLockTime>k__BackingField: 0.19
