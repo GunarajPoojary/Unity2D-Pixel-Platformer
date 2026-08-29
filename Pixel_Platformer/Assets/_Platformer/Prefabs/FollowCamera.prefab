@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1192802606743820790}
   - component: {fileID: 3554757646697525975}
   - component: {fileID: 1661547537956226064}
+  - component: {fileID: 212730354805899556}
   m_Layer: 0
-  m_Name: PlayerFollowCamera
+  m_Name: FollowCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,3 +112,15 @@ MonoBehaviour:
   _renderer: {fileID: 0}
   _lookAheadOffset: 3
   _lookAheadSmoothTime: 0.6
+--- !u!114 &212730354805899556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2525525486040811382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86d004ad32dc4e54fac9f151479ccdba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

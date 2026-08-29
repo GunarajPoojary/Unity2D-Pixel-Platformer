@@ -40,7 +40,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,10 +51,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -158,12 +158,12 @@ TextureImporter:
       name: Start (Idle)_0
       rect:
         serializedVersion: 2
-        x: 5
+        x: 0
         y: 0
-        width: 21
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -176,33 +176,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Start (Idle)_1
-      rect:
-        serializedVersion: 2
-        x: 25
-        y: 0
-        width: 36
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 73becc31c90a044d0800000000000000
-      internalID: -3152343146951808201
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 649e7c7f04fce36468ff531cffc2749e
     internalID: 0
     vertices: []
     indices: 
@@ -213,7 +191,6 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Start (Idle)_0: 3760162084414497370
-      Start (Idle)_1: -3152343146951808201
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

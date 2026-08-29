@@ -15,6 +15,8 @@ namespace PixelPlatform
         [SerializeField] private Vector2 _groundCheckSize = new Vector2(0.5f, 0.1f);
         [SerializeField] private float _groundCheckDistance;
         [SerializeField] private LayerMask _groundLayer;
+        [SerializeField] private LayerMask _oneWayPlatformLayer;
+        [SerializeField] private LayerMask _playerLayer;
 
         [Header("Ceiling")]
         [SerializeField] private Transform _ceilingCheckPoint;
@@ -120,10 +122,17 @@ namespace PixelPlatform
 #if UNITY_EDITOR
         private void Update()
         {
-            _gravityLabel.text = "Gravity: " + _gravity.ToString();
-            _initialJumpVelLabel.text = "Initial Jump Velocity: " + _initialJumpVelocity.ToString();
-            _verticalVelLabel.text = "Vertical Velocity: " + _verticalVelocity.ToString();
-            _horizontalVelLabel.text = "Horizontal Velocity: " + _horizontalVelocity.ToString();
+            if (_gravityLabel != null)
+                _gravityLabel.text = "Gravity: " + _gravity.ToString();
+
+            if (_initialJumpVelLabel != null)
+                _initialJumpVelLabel.text = "Initial Jump Velocity: " + _initialJumpVelocity.ToString();
+
+            if (_verticalVelLabel != null)
+                _verticalVelLabel.text = "Vertical Velocity: " + _verticalVelocity.ToString();
+
+            if (_horizontalVelLabel != null)
+                _horizontalVelLabel.text = "Horizontal Velocity: " + _horizontalVelocity.ToString();
         }
 #endif
 
@@ -134,7 +143,7 @@ namespace PixelPlatform
             ApplyGravity();
 
             HandleMovement();
-
+            HandleOneWayPlatform();
             ApplyMovement();
         }
 
@@ -200,6 +209,19 @@ namespace PixelPlatform
                 _groundLayer);
         }
 
+        private void HandleOneWayPlatform()
+        {
+            bool hitOneWayPlatform = Physics2D.BoxCast(
+                _ceilingCheckPoint.position,
+                _ceilingCheckSize,
+                0f,
+                Vector2.up,
+                _ceilingCheckDistance,
+                _oneWayPlatformLayer);
+
+            if (hitOneWayPlatform)
+                Physics2D.IgnoreLayerCollision(_oneWayPlatformLayer, _playerLayer);
+        }
 
         #region Jump
         private void HandleJumpPerformed()
@@ -249,11 +271,14 @@ namespace PixelPlatform
             // check for player walking off edge
             if (_wasGrounded && !IsGrounded())
             {
-                Debug.Log("Walked Off edge or airborne");
+                // Debug.Log("Walked Off edge or airborne");
 
                 // restart timer
                 _coyoteTimer = _movementStats.CoyoteTime;
             }
+
+            if (_wasGrounded && IsFalling() && !_wasJumping)
+                OnFall?.Invoke();
 
             // countdown timer
             if (!IsGrounded())
