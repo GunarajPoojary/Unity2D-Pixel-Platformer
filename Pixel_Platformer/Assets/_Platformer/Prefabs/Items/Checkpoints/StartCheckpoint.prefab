@@ -4905,7 +4905,7 @@ GameObject:
   - component: {fileID: 8536255229370122224}
   - component: {fileID: 8239078657011233543}
   m_Layer: 6
-  m_Name: StartPlatform
+  m_Name: StartCheckpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace PixelPlatform
+namespace PixelPlatformer
 {
     [RequireComponent(typeof(PlayerMovement))]
     public class PlayerRenderer : MonoBehaviour

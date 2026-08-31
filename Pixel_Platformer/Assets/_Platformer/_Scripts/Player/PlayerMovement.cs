@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace PixelPlatform
+namespace PixelPlatformer
 {
     [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour

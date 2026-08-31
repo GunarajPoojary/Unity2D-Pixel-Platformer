@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace PixelPlatform
+namespace PixelPlatformer
 {
     public class PlayerInput : MonoBehaviour
     {

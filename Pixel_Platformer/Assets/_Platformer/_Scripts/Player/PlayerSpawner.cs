@@ -5,17 +5,11 @@ namespace PixelPlatformer
     [RequireComponent(typeof(Animator))]
     public class PlayerSpawner : MonoBehaviour
     {
-        [SerializeField] private GameObject _player;
-        private Animator _animator;
+        [SerializeField] private PlayerController _player;
 
-        private void Awake()
+        public PlayerController Spawn()
         {
-            _animator = GetComponent<Animator>();
-        }
-
-        public void Spawn()
-        {
-            Instantiate(_player, transform.position, Quaternion.identity);
+            return Instantiate(_player, transform.position, Quaternion.identity);
         }
 
         public void OnComplete()

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace PixelPlatform
+namespace PixelPlatformer
 {
     [CreateAssetMenu(fileName = "PlayerMovementData", menuName = "Player Movement Data")]
     public class PlayerMovementDataSO : ScriptableObject

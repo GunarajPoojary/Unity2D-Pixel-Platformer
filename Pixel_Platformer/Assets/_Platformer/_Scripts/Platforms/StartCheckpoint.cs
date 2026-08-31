@@ -3,7 +3,7 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(Animator))]
-    public class StartPlatform : MonoBehaviour
+    public class StartCheckpoint : MonoBehaviour
     {
         private static readonly int ContactTriggerID = Animator.StringToHash("onContact");
 

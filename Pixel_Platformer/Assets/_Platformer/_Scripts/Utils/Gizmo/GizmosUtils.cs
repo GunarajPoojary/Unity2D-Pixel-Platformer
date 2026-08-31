@@ -56,4 +56,9 @@ public static class GizmosUtils
         Handles.color = color;
         Handles.DrawAAPolyLine(lineThickness, points);
     }
+
+    // public static void DrawCircle()
+    // {
+        
+    // }
 }
