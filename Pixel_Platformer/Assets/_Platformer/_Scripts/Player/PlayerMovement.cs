@@ -4,10 +4,15 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
+    public interface IImpactable
+    {
+        void ApplyImpact(float verticalVelocity);
+    }
     [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D))]
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, IImpactable
     {
         private const float MOVEMENT_THRESHOLD = 0.01f;
+
         [SerializeField] private PlayerMovementDataSO _movementStats;
 
         [Header("Ground Check")]
@@ -33,10 +38,7 @@ namespace PixelPlatformer
 #if UNITY_EDITOR
         [Header("Debugging")]
         [SerializeField] private bool _toggleGizmos;
-        [SerializeField] private TMP_Text _gravityLabel;
-        [SerializeField] private TMP_Text _initialJumpVelLabel;
-        [SerializeField] private TMP_Text _verticalVelLabel;
-        [SerializeField] private TMP_Text _horizontalVelLabel;
+        [SerializeField] private bool _showDebugLabels;
         [SerializeField] private float _lineThickness = 5f;
         [SerializeField] private Color _verticalArrowColor = Color.green;
         [SerializeField] private Color _horizontalArrowColor = Color.yellow;
@@ -119,29 +121,11 @@ namespace PixelPlatformer
             OnTurn?.Invoke(_wasFacingRight);
         }
 
-#if UNITY_EDITOR
-        private void Update()
-        {
-            if (_gravityLabel != null)
-                _gravityLabel.text = "Gravity: " + _gravity.ToString();
-
-            if (_initialJumpVelLabel != null)
-                _initialJumpVelLabel.text = "Initial Jump Velocity: " + _initialJumpVelocity.ToString();
-
-            if (_verticalVelLabel != null)
-                _verticalVelLabel.text = "Vertical Velocity: " + _verticalVelocity.ToString();
-
-            if (_horizontalVelLabel != null)
-                _horizontalVelLabel.text = "Horizontal Velocity: " + _horizontalVelocity.ToString();
-        }
-#endif
-
         private void FixedUpdate()
         {
             HandleWallSlide();
             HandleJump();
             ApplyGravity();
-
             HandleMovement();
             HandleOneWayPlatform();
             ApplyMovement();
@@ -256,7 +240,7 @@ namespace PixelPlatformer
             }
             else if (isJumpPressed)
             {
-                ExecuteJump();
+                ExecuteJump(_initialJumpVelocity);
                 return;
             }
 
@@ -288,7 +272,7 @@ namespace PixelPlatformer
                 if (_coyoteTimer > 0 && isJumpPressed) // _jumpBufferTimer > 0 means jump pressed 
                                                        // or use _jumpPressed flag
                 {
-                    ExecuteJump();
+                    ExecuteJump(_initialJumpVelocity);
                 }
             }
 
@@ -320,9 +304,9 @@ namespace PixelPlatformer
             _jumpBufferTimer = 0; // Set the value to zero not max buffer time otherwise player will keep jumping
         }
 
-        private void ExecuteJump()
+        private void ExecuteJump(float initialJumpVelocity)
         {
-            _verticalVelocity = _initialJumpVelocity;
+            _verticalVelocity = initialJumpVelocity;
 
             ResetJumpBuffer();
 
@@ -442,6 +426,39 @@ namespace PixelPlatformer
                 _wallCheckPoint.position,
                 _wallCheckSize);
         }
+
+        private void OnGUI()
+        {
+            GUIStyle style = new GUIStyle
+            {
+                fontSize = 30
+            };
+            style.normal.textColor = Color.white;
+
+            var pivotX = 20f;
+            var height = 50f;
+            var width = 600f;
+
+            GUI.Label(new Rect(pivotX, 20, width, height),
+                "Gravity: " + _gravity, style);
+
+            GUI.Label(new Rect(pivotX, 60, width, height),
+                "Initial Jump Velocity: " + _initialJumpVelocity, style);
+
+            GUI.Label(new Rect(pivotX, 100, width, height),
+                "Vertical Velocity: " + _verticalVelocity, style);
+
+            GUI.Label(new Rect(pivotX, 140, width, height),
+                "Horizontal Velocity: " + _horizontalVelocity, style);
+
+            GUI.Label(new Rect(pivotX, 180, width, height),
+                "Rigidbody Linear Velocity: " + _rb.linearVelocity, style);
+        }
 #endif
+
+        public void ApplyImpact(float verticalVelocity)
+        {
+            ExecuteJump(verticalVelocity);
+        }
     }
 }

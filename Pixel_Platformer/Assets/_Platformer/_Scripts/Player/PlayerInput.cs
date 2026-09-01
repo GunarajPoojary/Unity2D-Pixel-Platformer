@@ -32,6 +32,7 @@ namespace PixelPlatformer
 
             if (Input.GetButtonDown("Jump"))
             {
+                // Debug.Break();
                 OnJumpPerformed?.Invoke();
             }
 

@@ -9914,9 +9914,7 @@ GameObject:
   - component: {fileID: 4928018341784496437}
   - component: {fileID: 3012578002158466891}
   - component: {fileID: 7398987933303538124}
-  - component: {fileID: 29552920323426691}
   - component: {fileID: 3483247151116930674}
-  - component: {fileID: 8959316689719818325}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -10023,7 +10021,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _ceilingCheckPoint: {fileID: 7756905589218903982}
-  _ceilingCheckSize: {x: 0.61, y: 0.12}
+  _ceilingCheckSize: {x: 0.8, y: 0.12}
   _ceilingCheckDistance: 0.01
   _wallCheckPoint: {fileID: 4952127624065969243}
   _wallCheckSize: {x: 1.32, y: 0.16}
@@ -10032,18 +10030,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _toggleGizmos: 1
-  _gravityLabel: {fileID: 0}
-  _initialJumpVelLabel: {fileID: 0}
-  _verticalVelLabel: {fileID: 0}
-  _horizontalVelLabel: {fileID: 0}
+  _showDebugLabels: 1
   _lineThickness: 5
   _verticalArrowColor: {r: 0, g: 1, b: 0, a: 1}
   _horizontalArrowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _arrowWidth: 1
   _arrowHeight: 1
   _offset: {x: 0, y: -1, z: 0}
-  _cornerCorrectionDistance: 0.2
-  _maxCornerCorrectionSpeed: 5
 --- !u!114 &3012578002158466891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10073,24 +10066,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56466142cb239e4fbd7d32bb94ae2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &29552920323426691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3910124005606433036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d468693a4f966443ad9638e81c2d5b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyMask:
-    serializedVersion: 2
-    m_Bits: 512
-  _groundCheckPoint: {fileID: 8385853521407442829}
-  _groundCheckSize: {x: 0.45, y: 0.06}
-  _groundCheckDistance: 0.01
 --- !u!60 &3483247151116930674
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -10137,7 +10112,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.40992, y: 0.6844614}
+    - - {x: 0.38, y: 0.6844614}
       - {x: 0.6000466, y: 0.44731313}
       - {x: 0.6447991, y: 0.02642423}
       - {x: 0.653246, y: -0.394005}
@@ -10151,54 +10126,8 @@ PolygonCollider2D:
       - {x: -0.653246, y: -0.394005}
       - {x: -0.6447991, y: 0.02642423}
       - {x: -0.60004663, y: 0.44731313}
-      - {x: -0.40992, y: 0.6844614}
+      - {x: -0.38, y: 0.6844614}
   m_UseDelaunayMesh: 0
---- !u!61 &8959316689719818325
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3910124005606433036}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.76}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.19, y: 1.51}
-  m_EdgeRadius: 0
 --- !u!1 &4154271297976666831
 GameObject:
   m_ObjectHideFlags: 0
@@ -10224,7 +10153,7 @@ Transform:
   m_GameObject: {fileID: 4154271297976666831}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 1.48, z: 0}
+  m_LocalPosition: {x: 0, y: 1.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

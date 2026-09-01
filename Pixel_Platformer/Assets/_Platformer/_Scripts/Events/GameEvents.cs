@@ -5,8 +5,10 @@ namespace PixelPlatformer
 {
     public readonly struct LevelStartEvent
     {
-        
+
     }
+    public readonly struct CameraShakeEventData { }
+    
     public static class GameEvents
     {
         private static readonly Dictionary<Type, List<Delegate>> _subscribers = new();
@@ -23,7 +25,7 @@ namespace PixelPlatformer
 
         public static void Publish<T>(T eventData)
         {
-            
+
         }
 
         public static void Clear()
