@@ -5,8 +5,9 @@ namespace PixelPlatformer
 {
     public interface IFollowTargetProvider
     {
-        Transform CameraFollowTarget{get;}
-        int LookDirection{get;}
+        Transform CameraFollowTarget { get; }
+        int LookDirection { get; }
+        event Action OnDied;
     }
     public class FollowCamera : MonoBehaviour
     {
@@ -28,6 +29,14 @@ namespace PixelPlatformer
             _followTarget = this.targetProvider.CameraFollowTarget;
             transform.position = new Vector3(_followTarget.position.x, _followTarget.position.y, transform.position.z);
             _canFollowTarget = true;
+
+            targetProvider.OnDied += StopFollowing;
+        }
+
+        private void StopFollowing()
+        {
+            _canFollowTarget = false;
+            targetProvider.OnDied -= StopFollowing;
         }
 
         private void LateUpdate()

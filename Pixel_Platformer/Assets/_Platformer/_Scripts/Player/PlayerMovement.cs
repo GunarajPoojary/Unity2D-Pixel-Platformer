@@ -55,7 +55,7 @@ namespace PixelPlatformer
         private float _horizontalVelocity;
         private float _jumpBufferTimer;
         private float _coyoteTimer;
-        private bool _wasGrounded; // ground flag fors previous frame
+        private bool _wasGrounded; // ground flag for previous frame
         private bool _wasFacingRight;
         private bool _wasJumping;
 
@@ -69,6 +69,8 @@ namespace PixelPlatformer
                 return IsGrounded() && Mathf.Abs(_horizontalVelocity) > MOVEMENT_THRESHOLD;
             }
         }
+
+        public bool Simulate { get; set; } = true;
 
         public event Action<bool> OnTurn; // true means facing right
         public event Action OnFall;
@@ -123,11 +125,17 @@ namespace PixelPlatformer
 
         private void FixedUpdate()
         {
+            if (!Simulate)
+            {
+                _verticalVelocity += _gravity * Time.fixedDeltaTime;
+                _rb.linearVelocity = new Vector2(_horizontalVelocity, _verticalVelocity);
+                return;
+            }
+            
             HandleWallSlide();
             HandleJump();
-            ApplyGravity();
             HandleMovement();
-            HandleOneWayPlatform();
+            ApplyGravity();
             ApplyMovement();
         }
 
@@ -191,20 +199,6 @@ namespace PixelPlatformer
                 Vector2.up,
                 _ceilingCheckDistance,
                 _groundLayer);
-        }
-
-        private void HandleOneWayPlatform()
-        {
-            bool hitOneWayPlatform = Physics2D.BoxCast(
-                _ceilingCheckPoint.position,
-                _ceilingCheckSize,
-                0f,
-                Vector2.up,
-                _ceilingCheckDistance,
-                _oneWayPlatformLayer);
-
-            if (hitOneWayPlatform)
-                Physics2D.IgnoreLayerCollision(_oneWayPlatformLayer, _playerLayer);
         }
 
         #region Jump

@@ -27,6 +27,7 @@ namespace PixelPlatformer
         private Vector2 _leftWallContactPoint;
         private Vector2 _rightWallContactPoint;
         private bool _isChase;
+        private bool _canDetect = true;
 
         [Header("Jump tween")]
         [SerializeField] private float _jumpDistance = 2.5f;
@@ -36,6 +37,23 @@ namespace PixelPlatformer
         private Vector2 _direction;
         // private Vector2 _chaseDirection;
         private bool _isFacingRight;
+
+        private bool _isDamageable = true;
+
+        public bool IsDamageable
+        {
+            get
+            {
+                return _isDamageable;
+            }
+        }
+
+        public event Action OnRunStart;
+        public event Action OnRunStop;
+        public event Action OnJumpStart;
+        public event Action OnJumpEnd;
+        public event Action OnDie;
+
         private void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();
@@ -76,7 +94,9 @@ namespace PixelPlatformer
 
         private void Update()
         {
-            HandleLOS();
+            if (_canDetect)
+                HandleLOS();
+
             HandleChase();
         }
 
@@ -95,7 +115,9 @@ namespace PixelPlatformer
             {
                 Debug.Log("Start chasing");
                 // _chaseDirection = direction;
+                _canDetect = false;
                 _isChase = true;
+                OnRunStart?.Invoke();
                 return;
             }
 
@@ -108,8 +130,10 @@ namespace PixelPlatformer
             {
                 Debug.Log("Start chasing");
                 // _chaseDirection = -_direction;
+                _canDetect = false;
                 Turn();
                 _isChase = true;
+                OnRunStart?.Invoke();
             }
         }
         private void Turn()
@@ -130,6 +154,8 @@ namespace PixelPlatformer
             if ((_enemyMask.value & (1 << col.gameObject.layer)) != 0
                 && col.collider.TryGetComponent<IDamageable>(out var damageable))
             {
+                if (damageable == null || !damageable.IsDamageable) return;
+
                 var contactPoint = col.contacts[0].point;
 
                 Vector2 currentPos = transform.position;
@@ -139,6 +165,7 @@ namespace PixelPlatformer
                 if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                 {
                     damageable.TakeDamage(_pushForce);
+                    _canDetect = false;
                 }
             }
         }
@@ -152,9 +179,11 @@ namespace PixelPlatformer
 
             ApplyMovement((_isFacingRight ? Vector2.right : Vector2.left) * moveAmount);
 
+            var frontX = transform.position.x + ((_isFacingRight ? 1 : -1) * _frontOffset);
+
             if (!_renderer.flipX)
             {
-                if (_front.x - _leftWallContactPoint.x < _wallStopDistance)
+                if (frontX - _leftWallContactPoint.x < _wallStopDistance)
                 {
                     Debug.Log("Hit wall");
 
@@ -163,7 +192,7 @@ namespace PixelPlatformer
             }
             else
             {
-                if (_rightWallContactPoint.x - _front.x < _wallStopDistance)
+                if (_rightWallContactPoint.x - frontX < _wallStopDistance)
                 {
                     Debug.Log("Hit wall");
 
@@ -175,6 +204,7 @@ namespace PixelPlatformer
         private void HandleHitWall()
         {
             _isChase = false;
+            OnRunStop?.Invoke();
 
             GameEvents.Publish(new CameraShakeEventData());
             _currentVelocity = 0;
@@ -187,12 +217,16 @@ namespace PixelPlatformer
 
             var jump = (Vector2)transform.position;
             jump.x = _renderer.flipX ? jump.x - _jumpDistance : jump.x + _jumpDistance;
-
+            OnJumpStart?.Invoke();
 
             // var debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             // debugObj.transform.position = jump;
             transform.DOKill();
-            transform.DOJump(jump, _jumpPower, 1, _jumpDuration);
+            transform.DOJump(jump, _jumpPower, 1, _jumpDuration).OnComplete(() =>
+    {
+        _canDetect = true;
+        OnJumpEnd?.Invoke();
+    });
         }
 
         private void ApplyMovement(Vector2 movement)

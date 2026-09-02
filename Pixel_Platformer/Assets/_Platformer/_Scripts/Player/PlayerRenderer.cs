@@ -10,6 +10,7 @@ namespace PixelPlatformer
         private static readonly int RunID = Animator.StringToHash("isRunning");
         private static readonly int FallID = Animator.StringToHash("isFalling");
         private static readonly int WallSlideID = Animator.StringToHash("isWallSliding");
+        private static readonly int DieID = Animator.StringToHash("die");
 
         [SerializeField] private Animator _animator;
         [SerializeField] private SpriteRenderer _renderer;
@@ -110,6 +111,11 @@ namespace PixelPlatformer
 
             particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particle.Play();
+        }
+
+        public void Die()
+        {
+            _animator.SetTrigger(DieID);
         }
     }
 }

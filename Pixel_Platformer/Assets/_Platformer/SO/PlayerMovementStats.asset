@@ -24,7 +24,7 @@ MonoBehaviour:
   <JumpCutMultiplier>k__BackingField: 0.502
   <JumpBufferTime>k__BackingField: 0.164
   <GroundedVerticalVelocity>k__BackingField: 0.1
-  <CoyoteTime>k__BackingField: 0.169
+  <CoyoteTime>k__BackingField: 0.18
   <WallSlideSpeed>k__BackingField: 2
   <WallJumpHorizontalForce>k__BackingField: 7
   <WallJumpVerticalVelocity>k__BackingField: 18

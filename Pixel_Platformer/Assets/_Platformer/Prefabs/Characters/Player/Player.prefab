@@ -5026,7 +5026,7 @@ Transform:
   m_GameObject: {fileID: 1690908322923411066}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.02, z: 0}
+  m_LocalPosition: {x: 0, y: 0.035, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9997,7 +9997,14 @@ MonoBehaviour:
   _renderer: {fileID: 3012578002158466891}
   _movement: {fileID: 4928018341784496437}
   _input: {fileID: 8315275832378156492}
+  _playerFollowCamera: {fileID: 0}
   _damageForce: 15
+  _walkableMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _playerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &4928018341784496437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10012,7 +10019,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementStats: {fileID: 11400000, guid: 3f15569da722f75498a66dbd1e627823, type: 2}
   _groundCheckPoint: {fileID: 8385853521407442829}
-  _groundCheckSize: {x: 0.0175, y: 0.06}
+  _groundCheckSize: {x: 0.35, y: 0.06}
   _groundCheckDistance: 0.01
   _groundLayer:
     serializedVersion: 2
@@ -10103,7 +10110,7 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.82}
+  m_Offset: {x: 0, y: 0.84}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
