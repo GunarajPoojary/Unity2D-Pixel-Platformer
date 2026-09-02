@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingOrder: 2
   m_Sprite: {fileID: -1075854790282143660, guid: 194d8ffd986bf8c40acd4bde6c394044, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 3.25, y: 2.125}
@@ -122,7 +122,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9f55f6c5fa46ded4bbab3e4ced0aef22, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -161,8 +161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7a84078f51f6b4db3a5debe195348b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chaseSpeed: 5
-  _acceleration: 5
+  _chaseSpeed: 15
+  _acceleration: 30
   _enemyMask:
     serializedVersion: 2
     m_Bits: 128
@@ -171,8 +171,11 @@ MonoBehaviour:
     m_Bits: 64
   _height: 0.5
   _fallbackCastDistance: 50
-  _pushForce: 20
+  _pushForce: 15
   _wallStopDistance: 0.001
-  _frontLOSRadius: 0.1
+  _lOSRadius: 0.1
   _frontOffset: 1.74
-  _backOffset: 0.1
+  _backOffset: 1.74
+  _jumpDistance: 2.5
+  _jumpPower: 3
+  _jumpDuration: 0.5

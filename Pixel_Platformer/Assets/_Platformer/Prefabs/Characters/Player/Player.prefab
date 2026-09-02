@@ -9995,6 +9995,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraFollowTarget: {fileID: 6357554064544108575}
   _renderer: {fileID: 3012578002158466891}
+  _movement: {fileID: 4928018341784496437}
+  _input: {fileID: 8315275832378156492}
+  _damageForce: 15
 --- !u!114 &4928018341784496437
 MonoBehaviour:
   m_ObjectHideFlags: 0

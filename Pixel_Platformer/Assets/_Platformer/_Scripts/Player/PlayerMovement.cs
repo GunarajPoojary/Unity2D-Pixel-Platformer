@@ -304,7 +304,7 @@ namespace PixelPlatformer
             _jumpBufferTimer = 0; // Set the value to zero not max buffer time otherwise player will keep jumping
         }
 
-        private void ExecuteJump(float initialJumpVelocity)
+        public void ExecuteJump(float initialJumpVelocity)
         {
             _verticalVelocity = initialJumpVelocity;
 

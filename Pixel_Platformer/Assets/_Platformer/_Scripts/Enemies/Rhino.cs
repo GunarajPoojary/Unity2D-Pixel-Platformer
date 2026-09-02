@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -14,7 +15,7 @@ namespace PixelPlatformer
         [SerializeField] private float _fallbackCastDistance = 50f;
         [SerializeField] private float _pushForce = 20f;
         [SerializeField] private float _wallStopDistance = 0.01f;
-        [SerializeField] private float _frontLOSRadius = 0.1f;
+        [SerializeField] private float _lOSRadius = 0.1f;
 
 
         [SerializeField] private float _frontOffset = 0.1f;
@@ -23,9 +24,18 @@ namespace PixelPlatformer
         private SpriteRenderer _renderer;
         private float _currentVelocity;
         private Vector2 _front;
-        private Vector2 _wallContactPoint;
+        private Vector2 _leftWallContactPoint;
+        private Vector2 _rightWallContactPoint;
         private bool _isChase;
 
+        [Header("Jump tween")]
+        [SerializeField] private float _jumpDistance = 2.5f;
+        [SerializeField] private float _jumpPower = 03f;
+        [SerializeField] private float _jumpDuration = 0.5f;
+        private Vector2 _back;
+        private Vector2 _direction;
+        // private Vector2 _chaseDirection;
+        private bool _isFacingRight;
         private void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();
@@ -33,7 +43,8 @@ namespace PixelPlatformer
 
         private void Start()
         {
-            InitLineOfSight();
+            InitWallContactPoints();
+            _isFacingRight = _renderer.flipX;
         }
 
         // initialize line of sight values
@@ -42,12 +53,18 @@ namespace PixelPlatformer
         // recaclulate line of sight values
         // repeat  
 
-        private void InitLineOfSight()
+        private void InitWallContactPoints()
         {
-            _front = (Vector2)transform.position + ((_renderer.flipX ? Vector2.right : Vector2.left) * _frontOffset);
+            _direction = _isFacingRight ? Vector2.right : Vector2.left; // if true then facing screen right(+x)
+
+            _front = (Vector2)transform.position + (_direction * _frontOffset);
             _front.y += _height;
 
-            _wallContactPoint = GetWallContactPoint(_front, Vector2.left);
+            _back = (Vector2)transform.position + (-_direction * _backOffset);
+            _back.y += _height;
+
+            _leftWallContactPoint = GetWallContactPoint(_front, _direction);
+            _rightWallContactPoint = GetWallContactPoint(_back, -_direction);
         }
 
         private Vector2 GetWallContactPoint(Vector2 origin, Vector2 direction)
@@ -59,47 +76,99 @@ namespace PixelPlatformer
 
         private void Update()
         {
+            HandleLOS();
+            HandleChase();
+        }
+
+        private void HandleLOS()
+        {
+            // var direction = _isFacingRight ? Vector2.right : Vector2.left;
+            // var wallContactPoint = Vector2.zero;
+
             // line cast start point which is face
-            Vector2 front = (Vector2)transform.position + ((_renderer.flipX ? Vector2.right : Vector2.left) * _frontOffset);
-            front.y += _height;
+            _front = (Vector2)transform.position + ((_isFacingRight ? Vector2.right : Vector2.left) * _frontOffset);
+            _front.y += _height;
 
-            var isEnemyOnLeft = Physics2D.Linecast(front, _wallContactPoint, _enemyMask).collider != null;
+            var isEnemyFront = Physics2D.Linecast(_front, _isFacingRight ? _rightWallContactPoint : _leftWallContactPoint, _enemyMask).collider != null;
 
-            if (isEnemyOnLeft)
+            if (isEnemyFront)
             {
-                Debug.Log("Start attacking");
+                Debug.Log("Start chasing");
+                // _chaseDirection = direction;
                 _isChase = true;
+                return;
             }
 
-            if (_isChase)
-                Chase(Vector2.left);
+            _back = (Vector2)transform.position + ((_isFacingRight ? Vector2.left : Vector2.right) * _backOffset);
+            _back.y += _height;
+
+            var isEnemyBehind = Physics2D.Linecast(_back, _isFacingRight ? _leftWallContactPoint : _rightWallContactPoint, _enemyMask).collider != null;
+
+            if (isEnemyBehind)
+            {
+                Debug.Log("Start chasing");
+                // _chaseDirection = -_direction;
+                Turn();
+                _isChase = true;
+            }
+        }
+        private void Turn()
+        {
+            _renderer.flipX = !_renderer.flipX;
+            _isFacingRight = _renderer.flipX;
         }
 
         private void OnCollisionEnter2D(Collision2D col)
         {
             if (col.collider == null) return;
 
+            // if ((_enemyMask.value & (1 << col.gameObject.layer)) != 0
+            //     && col.collider.TryGetComponent<IImpactable>(out var crusher))
+            // {
+            //     crusher.ApplyImpact(_pushForce);
+            // }
             if ((_enemyMask.value & (1 << col.gameObject.layer)) != 0
-                && col.collider.TryGetComponent<IImpactable>(out var crusher))
+                && col.collider.TryGetComponent<IDamageable>(out var damageable))
             {
-                crusher.ApplyImpact(_pushForce);
+                var contactPoint = col.contacts[0].point;
+
+                Vector2 currentPos = transform.position;
+
+                Vector2 direction = contactPoint - currentPos;
+
+                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+                {
+                    damageable.TakeDamage(_pushForce);
+                }
             }
         }
 
-        private void Chase(Vector2 direction)
+        private void HandleChase()
         {
+            if (!_isChase) return;
+
             _currentVelocity = Mathf.MoveTowards(_currentVelocity, _chaseSpeed, _acceleration * Time.deltaTime);
             float moveAmount = _currentVelocity * Time.deltaTime;
 
-            ApplyMovement(direction * moveAmount);
+            ApplyMovement((_isFacingRight ? Vector2.right : Vector2.left) * moveAmount);
 
-            Vector2 front = (Vector2)transform.position + ((_renderer.flipX ? Vector2.right : Vector2.left) * _frontOffset);
-
-            if (front.x - _wallContactPoint.x < _wallStopDistance)
+            if (!_renderer.flipX)
             {
-                Debug.Log("Hit wall");
+                if (_front.x - _leftWallContactPoint.x < _wallStopDistance)
+                {
+                    Debug.Log("Hit wall");
 
-                HandleHitWall();
+                    HandleHitWall();
+                }
+            }
+            else
+            {
+                if (_rightWallContactPoint.x - _front.x < _wallStopDistance)
+                {
+                    Debug.Log("Hit wall");
+
+                    HandleHitWall();
+                }
             }
         }
 
@@ -110,6 +179,20 @@ namespace PixelPlatformer
             GameEvents.Publish(new CameraShakeEventData());
             _currentVelocity = 0;
             ApplyMovement(Vector2.zero);
+
+            // var jump = (_renderer.flipX ? Vector2.left : Vector2.right) * _jumpDistance;
+            // jump.y = transform.position.y;
+            // jump.x = _renderer.flipX ? jump.x - transform.position.x : jump.x + transform.position.x;
+
+
+            var jump = (Vector2)transform.position;
+            jump.x = _renderer.flipX ? jump.x - _jumpDistance : jump.x + _jumpDistance;
+
+
+            // var debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            // debugObj.transform.position = jump;
+            transform.DOKill();
+            transform.DOJump(jump, _jumpPower, 1, _jumpDuration);
         }
 
         private void ApplyMovement(Vector2 movement)
@@ -119,22 +202,19 @@ namespace PixelPlatformer
 
         private void OnDrawGizmos()
         {
-            DrawCastGizmo();
-        }
-
-        private void DrawCastGizmo()
-        {
             if (!Application.isPlaying) return;
 
             Gizmos.color = Color.red;
 
-            var front = (Vector2)transform.position + ((_renderer.flipX ? Vector2.right : Vector2.left) * _frontOffset);
-            front.y += _height;
-            Gizmos.DrawWireSphere(front, _frontLOSRadius);
+            Gizmos.DrawWireSphere(_front, _lOSRadius);
 
-            Gizmos.DrawWireSphere(_wallContactPoint, _frontLOSRadius);
+            Gizmos.DrawWireSphere(_isFacingRight ? _rightWallContactPoint : _leftWallContactPoint, _lOSRadius);
+            Gizmos.DrawLine(_front, _isFacingRight ? _rightWallContactPoint : _leftWallContactPoint);
 
-            Gizmos.DrawLine(front, _wallContactPoint);
+            Gizmos.DrawWireSphere(_back, _lOSRadius);
+
+            Gizmos.DrawWireSphere(_isFacingRight ? _leftWallContactPoint : _rightWallContactPoint, _lOSRadius);
+            Gizmos.DrawLine(_back, _isFacingRight ? _leftWallContactPoint : _rightWallContactPoint);
         }
 
         public void TakeDamage(float damage)

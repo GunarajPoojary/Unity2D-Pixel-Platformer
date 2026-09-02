@@ -5,7 +5,7 @@ namespace PixelPlatformer
     public class PlayerManager : Singleton<PlayerManager>
     {
         [SerializeField] private PlayerSpawner _playerSpawner;
-        [SerializeField] private PlayerFollowCamera _playerFollowCamera;
+        [SerializeField] private FollowCamera _playerFollowCamera;
 
         public void Init()
         {

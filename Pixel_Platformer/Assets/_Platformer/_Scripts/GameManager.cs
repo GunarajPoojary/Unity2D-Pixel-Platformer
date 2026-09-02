@@ -14,5 +14,10 @@ namespace PixelPlatformer
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        private void OnDestroy()
+        {
+            GameEvents.Clear();
+        }
     }
 }
