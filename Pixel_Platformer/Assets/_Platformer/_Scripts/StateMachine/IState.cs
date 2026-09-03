@@ -1,6 +1,8 @@
+using UnityEngine;
+
 namespace PixelPlatformer
 {
-    public interface IState 
+    public interface IState
     {
         void Enter();
         void UpdateState();

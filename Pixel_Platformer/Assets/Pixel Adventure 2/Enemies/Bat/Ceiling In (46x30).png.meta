@@ -173,12 +173,12 @@ TextureImporter:
       name: Ceiling In (46x30)_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 2
-        width: 29
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 46
+        height: 30
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,12 +195,12 @@ TextureImporter:
       name: Ceiling In (46x30)_1
       rect:
         serializedVersion: 2
-        x: 58
-        y: 3
-        width: 21
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 46
+        y: 0
+        width: 46
+        height: 30
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -217,12 +217,12 @@ TextureImporter:
       name: Ceiling In (46x30)_2
       rect:
         serializedVersion: 2
-        x: 106
-        y: 5
-        width: 19
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 92
+        y: 0
+        width: 46
+        height: 30
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -239,12 +239,12 @@ TextureImporter:
       name: Ceiling In (46x30)_3
       rect:
         serializedVersion: 2
-        x: 151
-        y: 7
-        width: 21
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 138
+        y: 0
+        width: 46
+        height: 30
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -261,12 +261,12 @@ TextureImporter:
       name: Ceiling In (46x30)_4
       rect:
         serializedVersion: 2
-        x: 197
-        y: 7
-        width: 21
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 184
+        y: 0
+        width: 46
+        height: 30
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -283,12 +283,12 @@ TextureImporter:
       name: Ceiling In (46x30)_5
       rect:
         serializedVersion: 2
-        x: 244
-        y: 5
-        width: 19
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 230
+        y: 0
+        width: 46
+        height: 30
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -305,12 +305,12 @@ TextureImporter:
       name: Ceiling In (46x30)_6
       rect:
         serializedVersion: 2
-        x: 290
-        y: 4
-        width: 19
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 276
+        y: 0
+        width: 46
+        height: 30
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -327,7 +327,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 78eb8549cbb3bdc43b154bf5c6ffb724
     internalID: 0
     vertices: []
     indices: 

@@ -167,7 +167,7 @@ TextureImporter:
         x: 44
         y: 0
         width: 44
-        height: 20
+        height: 30
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,7 +189,7 @@ TextureImporter:
         x: 88
         y: 0
         width: 44
-        height: 23
+        height: 30
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,10 +208,10 @@ TextureImporter:
       name: Hit (44x30)_3
       rect:
         serializedVersion: 2
-        x: 133
+        x: 132
         y: 0
-        width: 42
-        height: 25
+        width: 44
+        height: 30
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -230,10 +230,10 @@ TextureImporter:
       name: Hit (44x30)_4
       rect:
         serializedVersion: 2
-        x: 178
+        x: 176
         y: 0
-        width: 40
-        height: 27
+        width: 44
+        height: 30
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -255,7 +255,7 @@ TextureImporter:
         x: 0
         y: 0
         width: 44
-        height: 20
+        height: 30
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

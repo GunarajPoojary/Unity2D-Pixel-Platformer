@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
-    public class Rhino : MonoBehaviour, IDamageable
+    public class RhinoController : MonoBehaviour, IDamageable
     {
         [SerializeField] private float _chaseSpeed = 5f;
         [SerializeField] private float _acceleration = 5f;
@@ -146,6 +146,10 @@ namespace PixelPlatformer
         {
             if (col.collider == null) return;
 
+            if ((_wallMask.value & (1 << col.gameObject.layer)) != 0)
+            {
+                Debug.Log("Contact with wall");
+            }
             // if ((_enemyMask.value & (1 << col.gameObject.layer)) != 0
             //     && col.collider.TryGetComponent<IImpactable>(out var crusher))
             // {

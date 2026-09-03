@@ -167,12 +167,12 @@ TextureImporter:
       name: Hit (38x24)_0
       rect:
         serializedVersion: 2
-        x: 3
+        x: 0
         y: 0
-        width: 36
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 38
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -189,12 +189,12 @@ TextureImporter:
       name: Hit (38x24)_1
       rect:
         serializedVersion: 2
-        x: 41
+        x: 38
         y: 0
-        width: 36
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 38
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -211,12 +211,12 @@ TextureImporter:
       name: Hit (38x24)_2
       rect:
         serializedVersion: 2
-        x: 79
+        x: 76
         y: 0
-        width: 36
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 38
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -233,12 +233,12 @@ TextureImporter:
       name: Hit (38x24)_3
       rect:
         serializedVersion: 2
-        x: 118
+        x: 114
         y: 0
-        width: 34
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 38
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -255,12 +255,12 @@ TextureImporter:
       name: Hit (38x24)_4
       rect:
         serializedVersion: 2
-        x: 156
+        x: 152
         y: 0
-        width: 34
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 38
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -277,7 +277,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0d363b1bc68207f41a23477875570dda
     internalID: 0
     vertices: []
     indices: 

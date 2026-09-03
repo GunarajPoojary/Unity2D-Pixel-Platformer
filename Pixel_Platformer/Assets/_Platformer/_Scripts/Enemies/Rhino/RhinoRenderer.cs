@@ -14,7 +14,7 @@ namespace PixelPlatformer
 
         [SerializeField] private ParticleSystem _runFX;
 
-        private Rhino _rhino;
+        private RhinoController _rhino;
 
         public int LookDirection
         {
@@ -26,7 +26,7 @@ namespace PixelPlatformer
 
         private void Awake()
         {
-            _rhino = GetComponent<Rhino>();
+            _rhino = GetComponent<RhinoController>();
         }
 
         private void OnEnable()

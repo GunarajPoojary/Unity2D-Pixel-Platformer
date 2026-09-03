@@ -131,7 +131,7 @@ namespace PixelPlatformer
                 _rb.linearVelocity = new Vector2(_horizontalVelocity, _verticalVelocity);
                 return;
             }
-            
+
             HandleWallSlide();
             HandleJump();
             HandleMovement();
@@ -181,24 +181,31 @@ namespace PixelPlatformer
 
         private bool IsGrounded()
         {
-            return Physics2D.BoxCast(
+            var hit = Physics2D.BoxCast(
                 _groundCheckPoint.position,
                 _groundCheckSize,
                 0f,
                 Vector2.down,
                 _groundCheckDistance,
                 _groundLayer);
+
+            if (!hit)
+                return false;
+
+            return hit.point.y <= _groundCheckPoint.position.y;
         }
 
         private bool HitCeiling()
         {
+            int mask = _groundLayer & ~(1 << LayerMask.NameToLayer("OneWayPlatform")); // ignore One Way Platform which is not ceiling
+
             return Physics2D.BoxCast(
                 _ceilingCheckPoint.position,
                 _ceilingCheckSize,
                 0f,
                 Vector2.up,
                 _ceilingCheckDistance,
-                _groundLayer);
+                mask);
         }
 
         #region Jump

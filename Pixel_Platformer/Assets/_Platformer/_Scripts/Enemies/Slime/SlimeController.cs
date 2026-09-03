@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    public class Enemy : MonoBehaviour
+    public class SlimeController : MonoBehaviour
     {
         
     }

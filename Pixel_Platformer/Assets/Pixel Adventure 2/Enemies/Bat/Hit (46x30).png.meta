@@ -167,12 +167,12 @@ TextureImporter:
       name: Hit (46x30)_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 3
-        width: 33
-        height: 23
+        x: 0
+        y: 0
+        width: 46
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -189,12 +189,12 @@ TextureImporter:
       name: Hit (46x30)_1
       rect:
         serializedVersion: 2
-        x: 52
-        y: 3
-        width: 33
-        height: 23
+        x: 46
+        y: 0
+        width: 46
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -211,12 +211,12 @@ TextureImporter:
       name: Hit (46x30)_2
       rect:
         serializedVersion: 2
-        x: 99
-        y: 2
-        width: 31
-        height: 25
+        x: 92
+        y: 0
+        width: 46
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -233,12 +233,12 @@ TextureImporter:
       name: Hit (46x30)_3
       rect:
         serializedVersion: 2
-        x: 146
-        y: 1
-        width: 29
-        height: 27
+        x: 138
+        y: 0
+        width: 46
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -255,12 +255,12 @@ TextureImporter:
       name: Hit (46x30)_4
       rect:
         serializedVersion: 2
-        x: 192
+        x: 184
         y: 0
-        width: 29
-        height: 29
+        width: 46
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -277,7 +277,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 78077837ca352854b837812fe26f4db3
     internalID: 0
     vertices: []
     indices: 

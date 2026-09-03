@@ -168,11 +168,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 3
-        width: 37
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 0
+        width: 36
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -189,12 +189,12 @@ TextureImporter:
       name: Hit (36x34)_1
       rect:
         serializedVersion: 2
-        x: 35
-        y: 3
-        width: 38
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 36
+        y: 0
+        width: 36
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -211,12 +211,12 @@ TextureImporter:
       name: Hit (36x34)_2
       rect:
         serializedVersion: 2
-        x: 71
-        y: 2
-        width: 38
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 72
+        y: 0
+        width: 36
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -234,11 +234,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 108
-        y: 1
+        y: 0
         width: 36
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -255,12 +255,12 @@ TextureImporter:
       name: Hit (36x34)_4
       rect:
         serializedVersion: 2
-        x: 145
+        x: 144
         y: 0
-        width: 34
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 36
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -277,7 +277,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 890d0d9d328e3d546ad0acfbdfdaacb4
     internalID: 0
     vertices: []
     indices: 
