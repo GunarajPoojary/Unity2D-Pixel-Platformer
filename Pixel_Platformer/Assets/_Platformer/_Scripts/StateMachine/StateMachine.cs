@@ -13,8 +13,14 @@ namespace PixelPlatformer
             _currentState.Enter();
         }
 
-        public void UpdateState() => _currentState?.UpdateState();
+        public void UpdateState()
+        {
+            _currentState?.UpdateState();
+        }
 
-        public void PhysicsUpdate() => _currentState?.PhysicsUpdate();
+        public void PhysicsUpdate()
+        {
+            _currentState?.PhysicsUpdate();
+        }
     }
 }
