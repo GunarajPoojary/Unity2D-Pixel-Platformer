@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2279923710316245649}
   - component: {fileID: 435330748635705108}
   - component: {fileID: 7515169882939830227}
-  - component: {fileID: 5897452926742853585}
   - component: {fileID: 6448512288116012160}
   m_Layer: 0
   m_Name: Apple
@@ -126,28 +125,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!95 &5897452926742853585
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1241996187326444667}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 41326b61d61ac074591ced742ddd356e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6448512288116012160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,3 +137,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01688bc8b74b76e4797393fb6c26db48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _idleClipAnimator:
+    monoBehaviour: {fileID: 6448512288116012160}
+    _renderer: {fileID: 435330748635705108}
+    _sprites:
+    - {fileID: 7293598183456022363, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 3211865404380153573, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 4808522734667448011, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: -8577097333041121892, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 1419576285154770477, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: -7706788487438311687, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 8638710384840876012, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: -4689406079702324653, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: -4804661220611782958, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 542562350195365616, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 1535906679059638393, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: -6207369124864647917, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 7209791866757004406, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: -1462588236305530756, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 4023135878370671054, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: -337911150936919937, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    - {fileID: 9139289913481491577, guid: e2f49dbcef1063145a37ec0fb18ac7d6, type: 3}
+    _loop: 1
+    _frameRate: 12
+  _collectedClipAnimator:
+    monoBehaviour: {fileID: 6448512288116012160}
+    _renderer: {fileID: 435330748635705108}
+    _sprites:
+    - {fileID: -4801923697170587870, guid: 35317dd9665faa546a59526cd256be53, type: 3}
+    - {fileID: -8008818501793099674, guid: 35317dd9665faa546a59526cd256be53, type: 3}
+    - {fileID: -5647853031727683852, guid: 35317dd9665faa546a59526cd256be53, type: 3}
+    - {fileID: 6868876828740441722, guid: 35317dd9665faa546a59526cd256be53, type: 3}
+    - {fileID: 492115627, guid: 35317dd9665faa546a59526cd256be53, type: 3}
+    - {fileID: -3443555461527096104, guid: 35317dd9665faa546a59526cd256be53, type: 3}
+    _loop: 0
+    _frameRate: 12

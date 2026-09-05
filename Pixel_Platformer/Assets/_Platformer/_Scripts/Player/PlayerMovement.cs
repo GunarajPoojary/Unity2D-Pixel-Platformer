@@ -146,6 +146,17 @@ namespace PixelPlatformer
             }
         }
 
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            // set the vertical velocity to zero when not grounded, falling, 
+            // but making contact with the ground which avoids setting vertical velocity to -ve value 
+            // when collider edge makes contact with ground
+            if (col.gameObject.layer == LayerMask.NameToLayer("Walkable") && !IsGrounded() && IsFalling())
+            {
+                _verticalVelocity = 0;
+            }
+        }
+
         private void HandleMovement()
         {
             if (_wallJumpLockTimer > 0f)

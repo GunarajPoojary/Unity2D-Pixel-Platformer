@@ -203,10 +203,10 @@ TextureImporter:
       name: Pineapple_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 6
-        width: 14
-        height: 19
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,10 +225,10 @@ TextureImporter:
       name: Pineapple_1
       rect:
         serializedVersion: 2
-        x: 41
-        y: 6
-        width: 14
-        height: 19
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,10 +247,10 @@ TextureImporter:
       name: Pineapple_2
       rect:
         serializedVersion: 2
-        x: 73
-        y: 6
-        width: 14
-        height: 19
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -269,10 +269,10 @@ TextureImporter:
       name: Pineapple_3
       rect:
         serializedVersion: 2
-        x: 105
-        y: 6
-        width: 14
-        height: 19
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -291,10 +291,10 @@ TextureImporter:
       name: Pineapple_4
       rect:
         serializedVersion: 2
-        x: 137
-        y: 6
-        width: 14
-        height: 19
+        x: 128
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -313,10 +313,10 @@ TextureImporter:
       name: Pineapple_5
       rect:
         serializedVersion: 2
-        x: 169
-        y: 5
-        width: 14
-        height: 21
+        x: 160
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -335,10 +335,10 @@ TextureImporter:
       name: Pineapple_6
       rect:
         serializedVersion: 2
-        x: 202
-        y: 4
-        width: 12
-        height: 23
+        x: 192
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -357,10 +357,10 @@ TextureImporter:
       name: Pineapple_7
       rect:
         serializedVersion: 2
-        x: 234
-        y: 4
-        width: 12
-        height: 23
+        x: 224
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -379,10 +379,10 @@ TextureImporter:
       name: Pineapple_8
       rect:
         serializedVersion: 2
-        x: 266
-        y: 4
-        width: 12
-        height: 23
+        x: 256
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -401,10 +401,10 @@ TextureImporter:
       name: Pineapple_9
       rect:
         serializedVersion: 2
-        x: 297
-        y: 5
-        width: 14
-        height: 20
+        x: 288
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -423,10 +423,10 @@ TextureImporter:
       name: Pineapple_10
       rect:
         serializedVersion: 2
-        x: 329
-        y: 5
-        width: 14
-        height: 20
+        x: 320
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -445,10 +445,10 @@ TextureImporter:
       name: Pineapple_11
       rect:
         serializedVersion: 2
-        x: 361
-        y: 7
-        width: 14
-        height: 17
+        x: 352
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -467,10 +467,10 @@ TextureImporter:
       name: Pineapple_12
       rect:
         serializedVersion: 2
-        x: 392
-        y: 8
-        width: 16
-        height: 15
+        x: 384
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -489,10 +489,10 @@ TextureImporter:
       name: Pineapple_13
       rect:
         serializedVersion: 2
-        x: 424
-        y: 8
-        width: 16
-        height: 15
+        x: 416
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -511,10 +511,10 @@ TextureImporter:
       name: Pineapple_14
       rect:
         serializedVersion: 2
-        x: 456
-        y: 8
-        width: 16
-        height: 15
+        x: 448
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -533,10 +533,10 @@ TextureImporter:
       name: Pineapple_15
       rect:
         serializedVersion: 2
-        x: 489
-        y: 7
-        width: 14
-        height: 17
+        x: 480
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -555,10 +555,10 @@ TextureImporter:
       name: Pineapple_16
       rect:
         serializedVersion: 2
-        x: 521
-        y: 7
-        width: 14
-        height: 17
+        x: 512
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -577,7 +577,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 90d98be8c8066264cbbb5d393218ffc9
     internalID: 0
     vertices: []
     indices: 

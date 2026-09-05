@@ -1,0 +1,17 @@
+ghost
+rocks
+turtle
+fatird
+skull
+bat
+bunny
+
+
+TODOs:
+- Implement horizontal follow logic for background
+- Implement breakable fruit box
+- Implement bungie platform
+- Implement breakable platform box
+- Implement blower platform
+- Implement scene transition fx
+- traps
