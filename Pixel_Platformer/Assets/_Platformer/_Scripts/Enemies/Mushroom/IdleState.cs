@@ -29,7 +29,7 @@ namespace PixelPlatformer
 
             if (_idleTimer > _idleData.idleTime)
             {
-                _controller.StateMachine.SwitchState(_controller.StateMachine.RunState);
+                // _controller.StateMachine.SwitchState(_controller.StateMachine.RunState);
             }
         }
     }

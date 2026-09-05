@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6807828881900581200}
   - component: {fileID: 6773328924695115592}
   - component: {fileID: 4287653114595161435}
+  - component: {fileID: 4041724035866200045}
   m_Layer: 9
   m_Name: Mushrrom
   m_TagString: Untagged
@@ -162,11 +163,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de090f67296bd74785c2615172053a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkData:
-    walkSpeed: 3
+  _runData:
+    runSpeed: 3
+  _enemyMask:
+    serializedVersion: 2
+    m_Bits: 512
   _idleData:
     idleTime: 1
   _runFX: {fileID: 6195286429718922901}
+  _offset: {x: 0.91, y: 0.55}
+  _frontCastSize: {x: 0.05, y: 0.12}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _castDistance: 0.06
+  _renderer: {fileID: 1744589263937877869}
+  _edgeCastSize: {x: 0.1, y: 0.08}
+  _edgeCastYOffset: 0.5
+--- !u!114 &4041724035866200045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900663292518196487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581d90542a5e2114b94701323101c0a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _turnAngle: 15
+  _jumpHeight: 0.8
+  _jumpDuration: 0.6
+  _turnSpeed: 0.2
+  _fallAcceleration: 1.5
+  _fallSpeed: 0.5
 --- !u!1 &8104561908516727774
 GameObject:
   m_ObjectHideFlags: 0

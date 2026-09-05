@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
-    public class MushroomController : MonoBehaviour
+    [RequireComponent(typeof(Animator), typeof(SpriteRenderer), typeof(Killable))]
+    public class MushroomController : MonoBehaviour//, IKillable
     {
+        private static readonly int IsRunHash = Animator.StringToHash("isRun");
+
         [SerializeField] private RunData _runData;
+        [SerializeField] private LayerMask _playerMask;
         [SerializeField] private IdleData _idleData;
         [SerializeField] private ParticleSystem _runFX;
         [SerializeField] private Vector2 _offset;
@@ -20,8 +24,8 @@ namespace PixelPlatformer
         [SerializeField] private float _edgeCastYOffset = 0.5f;
 
         private Animator _animator;
-        private MushroomStateMachine _stateMachine;
-
+        private Killable _killable;
+        // private MushroomStateMachine _stateMachine;
 
 
 
@@ -58,26 +62,43 @@ namespace PixelPlatformer
             get { return !_renderer.flipX; }
         }
 
-        public MushroomStateMachine StateMachine
-        {
-            get { return _stateMachine; }
-        }
+        // public MushroomStateMachine StateMachine
+        // {
+        //     get { return _stateMachine; }
+        // }
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
             _renderer = GetComponent<SpriteRenderer>();
+            _killable = GetComponent<Killable>();
+
+            _animator.SetBool(IsRunHash, true);
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            _stateMachine = new MushroomStateMachine(this);
-            _stateMachine.SwitchState(_stateMachine.IdleState);
+            _killable.OnKill += HandleKill;
         }
+        private void OnDisable()
+        {
+            _killable.OnKill -= HandleKill;
+        }
+
+        private void HandleKill()
+        {
+            enabled = false;
+        }
+
+        // private void Start()
+        // {
+        //     _stateMachine = new MushroomStateMachine(this);
+        //     _stateMachine.SwitchState(_stateMachine.IdleState);
+        // }
 
         private void Update()
         {
-            _stateMachine?.UpdateState();
+            // _stateMachine?.UpdateState();
 
             if (_isIdling)
             {
@@ -92,6 +113,7 @@ namespace PixelPlatformer
             }
 
             Run();
+
         }
 
         private void Run()
@@ -104,6 +126,8 @@ namespace PixelPlatformer
         {
             _isIdling = true;
             _idleTimer = _idleData.idleTime;
+
+            _animator.SetBool(IsRunHash, false);
         }
 
         private bool IsWallDetected()
@@ -126,6 +150,26 @@ namespace PixelPlatformer
                                         _groundLayer);
 
             return hit.collider != null;
+        }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if ((_playerMask.value & (1 << col.gameObject.layer)) != 0
+                        && col.collider.TryGetComponent<IKillable>(out var damageable))
+            {
+                if (damageable == null || !damageable.IsKillable) return;
+
+                var contactPoint = col.contacts[0].point;
+
+                Vector2 currentPos = transform.position;
+
+                Vector2 direction = contactPoint - currentPos;
+
+                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+                {
+                    damageable?.Kill();
+                }
+            }
         }
 
         private bool HasReachedEdge()
@@ -151,6 +195,8 @@ namespace PixelPlatformer
 
             Turn();
             _isIdling = false;
+
+            _animator.SetBool(IsRunHash, true);
         }
 
         private void Turn()

@@ -4,15 +4,11 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    public interface IImpactable
-    {
-        void ApplyImpact(float verticalVelocity);
-    }
     [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D))]
-    public class PlayerMovement : MonoBehaviour, IImpactable
+    public class PlayerMovement : MonoBehaviour
     {
         private const float MOVEMENT_THRESHOLD = 0.01f;
-
+        [SerializeField] private float _smoothTime = 0.2f;
         [SerializeField] private PlayerMovementDataSO _movementStats;
 
         [Header("Ground Check")]
@@ -71,6 +67,7 @@ namespace PixelPlatformer
         }
 
         public bool Simulate { get; set; } = true;
+        public bool CanRotate { get; set; } = false;
 
         public event Action<bool> OnTurn; // true means facing right
         public event Action OnFall;
@@ -137,6 +134,16 @@ namespace PixelPlatformer
             HandleMovement();
             ApplyGravity();
             ApplyMovement();
+
+            if (CanRotate)
+            {
+                float angle = Mathf.SmoothDampAngle(_rb.rotation,
+                                                    _targetAngle,
+                                                    ref _rotationVelocity,
+                                                    _smoothTime);
+
+                _rb.MoveRotation(angle);
+            }
         }
 
         private void HandleMovement()
@@ -181,13 +188,12 @@ namespace PixelPlatformer
 
         private bool IsGrounded()
         {
-            var hit = Physics2D.BoxCast(
-                _groundCheckPoint.position,
-                _groundCheckSize,
-                0f,
-                Vector2.down,
-                _groundCheckDistance,
-                _groundLayer);
+            var hit = Physics2D.BoxCast(_groundCheckPoint.position,
+                                        _groundCheckSize,
+                                        0f,
+                                        Vector2.down,
+                                        _groundCheckDistance,
+                                        _groundLayer);
 
             if (!hit)
                 return false;
@@ -199,13 +205,12 @@ namespace PixelPlatformer
         {
             int mask = _groundLayer & ~(1 << LayerMask.NameToLayer("OneWayPlatform")); // ignore One Way Platform which is not ceiling
 
-            return Physics2D.BoxCast(
-                _ceilingCheckPoint.position,
-                _ceilingCheckSize,
-                0f,
-                Vector2.up,
-                _ceilingCheckDistance,
-                mask);
+            return Physics2D.BoxCast(_ceilingCheckPoint.position,
+                                     _ceilingCheckSize,
+                                     0f,
+                                     Vector2.up,
+                                     _ceilingCheckDistance,
+                                     mask);
         }
 
         #region Jump
@@ -375,13 +380,12 @@ namespace PixelPlatformer
 
         private bool IsWallSliding()
         {
-            return Physics2D.BoxCast(
-                _wallCheckPoint.position,
-                _wallCheckSize,
-                0f,
-                Vector2.right * Mathf.Sign(_input.MoveInput.x),
-                _wallCheckDistance,
-                _wallLayer);
+            return Physics2D.BoxCast(_wallCheckPoint.position,
+                                     _wallCheckSize,
+                                     0f,
+                                     Vector2.right * Mathf.Sign(_input.MoveInput.x),
+                                     _wallCheckDistance,
+                                     _wallLayer);
         }
         #endregion
 
@@ -392,40 +396,32 @@ namespace PixelPlatformer
 
             var velocity = Vector3.up * _verticalVelocity;
 
-            GizmosUtils.DrawWireArrow(
-                transform.position,
-                _offset,
-                velocity,
-                _arrowWidth,
-                _arrowHeight,
-                _lineThickness,
-                _verticalArrowColor);
+            GizmosUtils.DrawWireArrow(transform.position,
+                                      _offset,
+                                      velocity,
+                                      _arrowWidth,
+                                      _arrowHeight,
+                                      _lineThickness,
+                                      _verticalArrowColor);
 
-            GizmosUtils.DrawWireArrow(
-                transform.position,
-                _offset,
-                Vector3.right * _horizontalVelocity,
-                _arrowWidth,
-                _arrowHeight,
-                _lineThickness,
-                _horizontalArrowColor);
+            GizmosUtils.DrawWireArrow(transform.position,
+                                      _offset,
+                                      Vector3.right * _horizontalVelocity,
+                                      _arrowWidth,
+                                      _arrowHeight,
+                                      _lineThickness,
+                                      _horizontalArrowColor);
 
             if (_groundCheckPoint == null) return;
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(
-                _groundCheckPoint.position,
-                _groundCheckSize);
+            Gizmos.DrawWireCube(_groundCheckPoint.position, _groundCheckSize);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(
-                _ceilingCheckPoint.position,
-                _ceilingCheckSize);
+            Gizmos.DrawWireCube(_ceilingCheckPoint.position, _ceilingCheckSize);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(
-                _wallCheckPoint.position,
-                _wallCheckSize);
+            Gizmos.DrawWireCube(_wallCheckPoint.position, _wallCheckSize);
         }
 
         private void OnGUI()
@@ -440,26 +436,20 @@ namespace PixelPlatformer
             var height = 50f;
             var width = 600f;
 
-            GUI.Label(new Rect(pivotX, 20, width, height),
-                "Gravity: " + _gravity, style);
-
-            GUI.Label(new Rect(pivotX, 60, width, height),
-                "Initial Jump Velocity: " + _initialJumpVelocity, style);
-
-            GUI.Label(new Rect(pivotX, 100, width, height),
-                "Vertical Velocity: " + _verticalVelocity, style);
-
-            GUI.Label(new Rect(pivotX, 140, width, height),
-                "Horizontal Velocity: " + _horizontalVelocity, style);
-
-            GUI.Label(new Rect(pivotX, 180, width, height),
-                "Rigidbody Linear Velocity: " + _rb.linearVelocity, style);
+            GUI.Label(new Rect(pivotX, 20, width, height), "Gravity: " + _gravity, style);
+            GUI.Label(new Rect(pivotX, 60, width, height), "Initial Jump Velocity: " + _initialJumpVelocity, style);
+            GUI.Label(new Rect(pivotX, 100, width, height), "Vertical Velocity: " + _verticalVelocity, style);
+            GUI.Label(new Rect(pivotX, 140, width, height), "Horizontal Velocity: " + _horizontalVelocity, style);
+            GUI.Label(new Rect(pivotX, 180, width, height), "Rigidbody Linear Velocity: " + _rb.linearVelocity, style);
         }
 #endif
 
-        public void ApplyImpact(float verticalVelocity)
+        private float _rotationVelocity;
+        private float _targetAngle;
+
+        public void ApplyRotation(float targetAngle)
         {
-            ExecuteJump(verticalVelocity);
+            _targetAngle = targetAngle;
         }
     }
 }

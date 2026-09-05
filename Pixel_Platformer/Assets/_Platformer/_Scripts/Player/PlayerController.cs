@@ -3,21 +3,27 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    public interface IDamageable
+    public interface IKillable
     {
-        bool IsDamageable { get; }
-        void TakeDamage(float damage);
+        bool IsKillable { get; }
+        void Kill();
     }
-    public class PlayerController : MonoBehaviour, IDamageable, IFollowTargetProvider
+    public interface IImpactable
+    {
+        void ApplyImpact();
+    }
+    public class PlayerController : MonoBehaviour, IKillable, IFollowTargetProvider, IImpactable
     {
         [SerializeField] private Transform _cameraFollowTarget;
         [SerializeField] private PlayerRenderer _renderer;
         [SerializeField] private PlayerMovement _movement;
         [SerializeField] private PlayerInput _input;
-        [SerializeField] private FollowCamera _playerFollowCamera;
         [SerializeField] private float _damageForce = 15f;
+        [SerializeField] private float _crushImpact = 10f;
         [SerializeField] private LayerMask _walkableMask;
         [SerializeField] private LayerMask _playerMask;
+        [SerializeField] private float _targetAngle = 15f;
+        private Crusher _crusher;
 
         public event Action OnDied;
 
@@ -37,28 +43,38 @@ namespace PixelPlatformer
             }
         }
 
-        private bool _isDamageable = true;
-        
-        public bool IsDamageable
+        private bool _isKillable = true;
+
+        public bool IsKillable
         {
             get
             {
-                return _isDamageable;
+                return _isKillable;
             }
         }
-
-        public void TakeDamage(float damage)
+        private void Awake()
         {
-            Debug.Log($"Took {damage} damage");
-            _isDamageable = false;
+            _crusher = GetComponent<Crusher>();
+        }
+        public void Kill()
+        {
+            _crusher.enabled = false;
+            _isKillable = false;
             _input.enabled = false;
             GetComponent<Rigidbody2D>().freezeRotation = false;
             _movement.ExecuteJump(_damageForce);
+            _movement.ApplyRotation(_targetAngle);
+            _movement.CanRotate = true;
             _movement.Simulate = false;
             GetComponent<Collider2D>().isTrigger = true;
             _renderer.Die();
             OnDied?.Invoke();
             GameEvents.Publish(new CameraShakeEventData());
+        }
+
+        public void ApplyImpact()
+        {
+            _movement.ExecuteJump(_crushImpact);
         }
     }
 }

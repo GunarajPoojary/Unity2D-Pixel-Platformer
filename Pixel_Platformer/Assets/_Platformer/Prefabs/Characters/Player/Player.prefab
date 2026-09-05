@@ -9914,6 +9914,7 @@ GameObject:
   - component: {fileID: 4928018341784496437}
   - component: {fileID: 3012578002158466891}
   - component: {fileID: 7398987933303538124}
+  - component: {fileID: 2197369895570624279}
   - component: {fileID: 3483247151116930674}
   m_Layer: 7
   m_Name: Player
@@ -9997,14 +9998,15 @@ MonoBehaviour:
   _renderer: {fileID: 3012578002158466891}
   _movement: {fileID: 4928018341784496437}
   _input: {fileID: 8315275832378156492}
-  _playerFollowCamera: {fileID: 0}
   _damageForce: 15
+  _crushImpact: 25
   _walkableMask:
     serializedVersion: 2
     m_Bits: 64
   _playerMask:
     serializedVersion: 2
     m_Bits: 128
+  _targetAngle: 50
 --- !u!114 &4928018341784496437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10017,6 +10019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a46e5a71c8bf745ad5d3bbaf842d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _smoothTime: 0.1
   _movementStats: {fileID: 11400000, guid: 3f15569da722f75498a66dbd1e627823, type: 2}
   _groundCheckPoint: {fileID: 8385853521407442829}
   _groundCheckSize: {x: 0.25, y: 0.06}
@@ -10076,6 +10079,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56466142cb239e4fbd7d32bb94ae2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2197369895570624279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3910124005606433036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a5ff6b4ac79344dbe98b3279955205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyMask:
+    serializedVersion: 2
+    m_Bits: 512
+  _groundCheckPoint: {fileID: 8385853521407442829}
+  _groundCheckSize: {x: 0.2, y: 0.1}
+  _groundCheckDistance: 0.26
 --- !u!60 &3483247151116930674
 PolygonCollider2D:
   m_ObjectHideFlags: 0
