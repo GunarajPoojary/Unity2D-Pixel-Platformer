@@ -8,7 +8,7 @@ bunny
 
 
 TODOs:
-- Implement horizontal follow logic for background
+// - Implement horizontal follow logic for background
 - Implement breakable fruit box
 - Implement bungie platform
 - Implement breakable platform box

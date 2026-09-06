@@ -13,6 +13,7 @@ namespace PixelPlatformer
 
         private TilemapRenderer _renderer;
         private Vector3 _targetPos;
+        private Transform _mainCam;
 
         private void Awake()
         {
@@ -24,17 +25,38 @@ namespace PixelPlatformer
             SwapTiles(_targetTile);
         }
 
-        private void Update()
+        // [ContextMenu("Extent")]
+        // private void PrintExtents()
+        // {
+        //     Debug.Log(_map.layoutGrid.cellSize);
+        // }
+
+        private void Start()
         {
-            ScrollDown();
+            _mainCam = Camera.main.transform;
         }
 
-        private void ScrollDown()
+        private void Update()
         {
-            _targetPos += _speed * Time.deltaTime * Vector3.down;
-            _targetPos.y = Mathf.Repeat(_targetPos.y, _renderer.bounds.extents.y / 2f);
+            Move();
+        }
 
-            transform.position = _targetPos;
+        private void Move()
+        {
+            Vector2 camPos = _mainCam.position;
+            Vector2 bgPos = transform.position;
+
+            _targetPos += _speed * Time.deltaTime * Vector3.down;
+            _targetPos.y = Mathf.Repeat(_targetPos.y, _renderer.bounds.extents.y * 0.5f);
+
+            Vector2Int desiredBGPos = new Vector2Int((int)camPos.x / ((int)transform.localScale.x * (int)_map.layoutGrid.cellSize.x), (int)camPos.y / ((int)transform.localScale.y * (int)_map.layoutGrid.cellSize.y));
+            // int targetXPos = (int)camPos.x / ((int)transform.localScale.x * (int)_map.layoutGrid.cellSize.x);
+            // int targetYPos = (int)camPos.y / ((int)transform.localScale.y * (int)_map.layoutGrid.cellSize.y);
+
+            bgPos.x = desiredBGPos.x * transform.localScale.x * _map.layoutGrid.cellSize.x;
+            bgPos.y = _targetPos.y + (desiredBGPos.y * transform.localScale.y * _map.layoutGrid.cellSize.y);
+
+            transform.position = bgPos;
         }
 
         public void SwapTiles(TileBase newtile)
@@ -43,7 +65,7 @@ namespace PixelPlatformer
             {
                 if (_map.HasTile(position))
                 {
-                    _map.SetTile(position,newtile);
+                    _map.SetTile(position, newtile);
                 }
             }
         }
