@@ -12,6 +12,7 @@ namespace PixelPlatformer
     {
         void ApplyImpact();
     }
+    [RequireComponent(typeof(Crusher))]
     public class PlayerController : MonoBehaviour, IKillable, IFollowTargetProvider, IImpactable
     {
         [SerializeField] private Transform _cameraFollowTarget;
@@ -23,6 +24,7 @@ namespace PixelPlatformer
         [SerializeField] private LayerMask _walkableMask;
         [SerializeField] private LayerMask _playerMask;
         [SerializeField] private float _targetAngle = 15f;
+        [SerializeField] private LayerMask _hittableMask;
         private Crusher _crusher;
 
         public event Action OnDied;
@@ -56,6 +58,19 @@ namespace PixelPlatformer
         {
             _crusher = GetComponent<Crusher>();
         }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if ((_hittableMask & (1 << col.gameObject.layer)) != 0)
+            {
+                if (col.gameObject.TryGetComponent<IHittable>(out var hittable))
+                {
+                    if (hittable != null && hittable.IsHittable)
+                        hittable.TakeHit();
+                }
+            }
+        }
+
         public void Kill()
         {
             _crusher.enabled = false;

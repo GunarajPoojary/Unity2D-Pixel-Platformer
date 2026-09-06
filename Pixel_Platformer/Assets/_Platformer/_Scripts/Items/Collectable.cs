@@ -5,8 +5,8 @@ namespace PixelPlatformer
 {
     public class Collectable : MonoBehaviour, ICollectable
     {
-        [SerializeField] SingleClipAnimator _idleClipAnimator;
-        [SerializeField] SingleClipAnimator _collectedClipAnimator;
+        [SerializeField] protected SingleClipAnimator _idleClipAnimator;
+        [SerializeField] protected SingleClipAnimator _collectedClipAnimator;
         private bool _canCollect = true;
 
         public bool CanCollect

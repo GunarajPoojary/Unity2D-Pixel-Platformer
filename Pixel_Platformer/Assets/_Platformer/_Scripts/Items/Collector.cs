@@ -4,9 +4,11 @@ namespace PixelPlatformer
 {
     public class Collector : MonoBehaviour
     {
+        [SerializeField] private LayerMask _collectableMask;
+
         private void OnTriggerEnter2D(Collider2D col)
         {
-            if (col.TryGetComponent<ICollectable>(out var collectable))
+            if ((_collectableMask & (1 << col.gameObject.layer)) != 0 && col.gameObject.TryGetComponent<ICollectable>(out var collectable))
                 collectable?.Collect();
         }
     }

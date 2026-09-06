@@ -19,12 +19,16 @@ namespace PixelPlatformer
 
         public void PlayClip()
         {
+            if (_coroutine != null)
+                StopClip();
+
             _coroutine = monoBehaviour.StartCoroutine(PlayClipRoutine());
         }
 
         public void StopClip()
         {
             monoBehaviour.StopCoroutine(_coroutine);
+            _coroutine = null;
         }
 
         private IEnumerator PlayClipRoutine()
