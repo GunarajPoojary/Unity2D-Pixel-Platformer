@@ -10007,6 +10007,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _targetAngle: 50
+  _hittableMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &4928018341784496437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10079,6 +10082,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56466142cb239e4fbd7d32bb94ae2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collectableMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!114 &2197369895570624279
 MonoBehaviour:
   m_ObjectHideFlags: 0

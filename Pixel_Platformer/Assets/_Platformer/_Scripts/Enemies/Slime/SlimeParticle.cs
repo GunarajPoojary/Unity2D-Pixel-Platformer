@@ -5,27 +5,23 @@ namespace PixelPlatformer
 {
     public class SlimeParticle : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer _renderer;
-        [SerializeField] private Sprite[] _sprites;
-        [SerializeField] private int _frameRate = 12;
-        private int _frame;
+        [SerializeField] private LayerMask _playerMask;
+        [SerializeField] private SingleClipAnimator _animator;
 
-        [ContextMenu("Vanish")]
-        private void Dissolve()
+        private void OnCollisionEnter2D(Collision2D col)
         {
-            StartCoroutine(DissolveRoutine());
+            if ((_playerMask & (1 << col.gameObject.layer)) != 0)
+            {
+                if (col.gameObject.TryGetComponent<IKillable>(out var killable))
+                {
+                    killable?.Kill();
+                }
+            }
         }
 
-        private IEnumerator DissolveRoutine()
+        public void PlayClip()
         {
-            _frame = 0;
-            while (_frame < _sprites.Length)
-            {
-                yield return new WaitForSeconds(1f/_frameRate);
-
-                _renderer.sprite = _sprites[_frame];
-                _frame++;
-            }
+            _animator.PlayClip();
         }
     }
 }

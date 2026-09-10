@@ -17,10 +17,5 @@ namespace PixelPlatformer
         {
             _currentState?.UpdateState();
         }
-
-        public void PhysicsUpdate()
-        {
-            _currentState?.PhysicsUpdate();
-        }
     }
 }

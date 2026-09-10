@@ -195,7 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 1027344589951699700}
   _renderer: {fileID: 6255748669961349464}
-  _runFX: {fileID: 0}
+  _runFX: {fileID: 4689088762714751771}
 --- !u!1 &6134821106717016920
 GameObject:
   m_ObjectHideFlags: 0
