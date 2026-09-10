@@ -100,13 +100,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd9d9699b84a55a499a2d8acded6cd13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 5404569039999088282}
-  _sprites:
-  - {fileID: 6500827390898742241, guid: 0adfd1acf5fbe454ca3d9a852656cebe, type: 3}
-  - {fileID: -1130512271, guid: 0adfd1acf5fbe454ca3d9a852656cebe, type: 3}
-  - {fileID: 638019709, guid: 0adfd1acf5fbe454ca3d9a852656cebe, type: 3}
-  - {fileID: -810701950, guid: 0adfd1acf5fbe454ca3d9a852656cebe, type: 3}
-  _frameRate: 12
+  _playerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _animator:
+    monoBehaviour: {fileID: 0}
+    _renderer: {fileID: 0}
+    _sprites: []
+    _loop: 0
+    _frameRate: 12
 --- !u!1 &8669415387341669653
 GameObject:
   m_ObjectHideFlags: 0

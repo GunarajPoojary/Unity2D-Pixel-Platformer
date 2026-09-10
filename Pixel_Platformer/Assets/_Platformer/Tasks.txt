@@ -7,9 +7,20 @@ bat
 bunny
 
 
+
 TODOs:
+- Player Corner Correction
+- Implement FSM for Player
+
+
+
+
+
+
 // - Implement horizontal follow logic for background
 // - Implement breakable fruit box
+- State(RUn, Jump, Land), Hit audios
+- particle fx
 - Implement bungie platform
 - Implement breakable platform box
 - Implement blower platform

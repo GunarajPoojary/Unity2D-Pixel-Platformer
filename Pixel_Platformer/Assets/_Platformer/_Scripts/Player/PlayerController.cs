@@ -26,34 +26,13 @@ namespace PixelPlatformer
         [SerializeField] private float _targetAngle = 15f;
         [SerializeField] private LayerMask _hittableMask;
         private Crusher _crusher;
+        private bool _isKillable = true;
 
         public event Action OnDied;
 
-        public Transform CameraFollowTarget
-        {
-            get
-            {
-                return _cameraFollowTarget;
-            }
-        }
-
-        public int LookDirection
-        {
-            get
-            {
-                return _renderer.LookDirection;
-            }
-        }
-
-        private bool _isKillable = true;
-
-        public bool IsKillable
-        {
-            get
-            {
-                return _isKillable;
-            }
-        }
+        public Transform CameraFollowTarget { get { return _cameraFollowTarget; } }
+        public int LookDirection { get { return _renderer.LookDirection; } }
+        public bool IsKillable { get { return _isKillable; } }
         private void Awake()
         {
             _crusher = GetComponent<Crusher>();
