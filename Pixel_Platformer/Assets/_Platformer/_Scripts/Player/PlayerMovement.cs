@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -57,6 +58,10 @@ namespace PixelPlatformer
 
         private bool _isWallSliding;
         private float _wallJumpLockTimer;
+
+        private float _rotationVelocity;
+        private float _targetAngle;
+        private StringBuilder _snapshotLog = new StringBuilder();
 
         public bool IsRunning
         {
@@ -143,6 +148,17 @@ namespace PixelPlatformer
                                                     _smoothTime);
 
                 _rb.MoveRotation(angle);
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            // set the vertical velocity to zero when not grounded, falling, 
+            // but making contact with the ground which avoids setting vertical velocity to -ve value 
+            // when collider edge makes contact with ground
+            if (col.gameObject.layer == LayerMask.NameToLayer("Walkable") && !IsGrounded() && IsFalling())
+            {
+                _verticalVelocity = _rb.linearVelocityY;
             }
         }
 
@@ -390,6 +406,16 @@ namespace PixelPlatformer
         #endregion
 
 #if UNITY_EDITOR
+        // [ContextMenu("Print snapshot")]
+        // private void PrintSnapshot()
+        // {
+        //     _snapshotLog.Append($"Vertical velocity is {_verticalVelocity}\n");
+        //     _snapshotLog.Append($"Horizontal velocity is {_horizontalVelocity}\n");
+        //     _snapshotLog.Append($"Is grounded {IsGrounded()}\n");
+        //     _snapshotLog.Append($"Is grounded {IsGrounded()}\n");
+        //     Debug.Log(_snapshotLog.ToString());
+        // }
+
         private void OnDrawGizmosSelected()
         {
             if (!_toggleGizmos) return;
@@ -443,9 +469,6 @@ namespace PixelPlatformer
             GUI.Label(new Rect(pivotX, 180, width, height), "Rigidbody Linear Velocity: " + _rb.linearVelocity, style);
         }
 #endif
-
-        private float _rotationVelocity;
-        private float _targetAngle;
 
         public void ApplyRotation(float targetAngle)
         {
