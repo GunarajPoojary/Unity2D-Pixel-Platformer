@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [RequireComponent(typeof(Animator), typeof(SpriteRenderer), typeof(Killable))]
+    [RequireComponent(typeof(Animator), typeof(SpriteRenderer), typeof(Hittable))]
     public class MushroomController : MonoBehaviour//, IKillable
     {
         private static readonly int IsRunHash = Animator.StringToHash("isRun");
 
-        [SerializeField] private RunData _runData;
+        [SerializeField] private float _runSpeed = 3f;
         [SerializeField] private LayerMask _playerMask;
-        [SerializeField] private IdleData _idleData;
+        [SerializeField] private float _idleTime = 1f;
         [SerializeField] private ParticleSystem _runFX;
         [SerializeField] private Vector2 _offset;
 
@@ -24,30 +24,17 @@ namespace PixelPlatformer
         [SerializeField] private float _edgeCastYOffset = 0.5f;
 
         private Animator _animator;
-        private Killable _killable;
-        // private MushroomStateMachine _stateMachine;
-
-
-
+        private Hittable _killable;
+       
         private bool _hasReachedEdge;
 
 
-        private bool _isIdling;
+        private bool _shouldIdle;
         private float _idleTimer;
 
         public Animator Animator
         {
             get { return _animator; }
-        }
-
-        public RunData RunData
-        {
-            get { return _runData; }
-        }
-
-        public IdleData IdleData
-        {
-            get { return _idleData; }
         }
 
         public ParticleSystem RunFX
@@ -56,33 +43,29 @@ namespace PixelPlatformer
         }
 
         // flipX = false -> facing left
-        // flipX = true  -> facing right
+        // flipX = true -> facing right
         public bool IsFacingLeft
         {
             get { return !_renderer.flipX; }
         }
 
-        // public MushroomStateMachine StateMachine
-        // {
-        //     get { return _stateMachine; }
-        // }
-
         private void Awake()
         {
             _animator = GetComponent<Animator>();
             _renderer = GetComponent<SpriteRenderer>();
-            _killable = GetComponent<Killable>();
+            _killable = GetComponent<Hittable>();
 
             _animator.SetBool(IsRunHash, true);
         }
 
         private void OnEnable()
         {
-            _killable.OnKill += HandleKill;
+            _killable.OnHit += HandleKill;
         }
+
         private void OnDisable()
         {
-            _killable.OnKill -= HandleKill;
+            _killable.OnHit -= HandleKill;
         }
 
         private void HandleKill()
@@ -90,17 +73,9 @@ namespace PixelPlatformer
             enabled = false;
         }
 
-        // private void Start()
-        // {
-        //     _stateMachine = new MushroomStateMachine(this);
-        //     _stateMachine.SwitchState(_stateMachine.IdleState);
-        // }
-
         private void Update()
         {
-            // _stateMachine?.UpdateState();
-
-            if (_isIdling)
+            if (_shouldIdle)
             {
                 HandleIdling();
                 return;
@@ -113,19 +88,18 @@ namespace PixelPlatformer
             }
 
             Run();
-
         }
 
         private void Run()
         {
             Vector3 direction = IsFacingLeft ? Vector3.left : Vector3.right;
-            transform.position += _runData.runSpeed * Time.deltaTime * direction;
+            transform.position += _runSpeed * Time.deltaTime * direction;
         }
 
         private void StartIdling()
         {
-            _isIdling = true;
-            _idleTimer = _idleData.idleTime;
+            _shouldIdle = true;
+            _idleTimer = _idleTime;
 
             _animator.SetBool(IsRunHash, false);
         }
@@ -155,9 +129,9 @@ namespace PixelPlatformer
         private void OnCollisionEnter2D(Collision2D col)
         {
             if ((_playerMask.value & (1 << col.gameObject.layer)) != 0
-                        && col.collider.TryGetComponent<IKillable>(out var damageable))
+                        && col.collider.TryGetComponent<IHittable>(out var hittable))
             {
-                if (damageable == null || !damageable.IsKillable) return;
+                if (hittable == null || !hittable.IsHittable) return;
 
                 var contactPoint = col.contacts[0].point;
 
@@ -167,7 +141,7 @@ namespace PixelPlatformer
 
                 if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                 {
-                    damageable?.Kill();
+                    hittable?.TakeHit();
                 }
             }
         }
@@ -194,7 +168,7 @@ namespace PixelPlatformer
             if (_idleTimer > 0f) return;
 
             Turn();
-            _isIdling = false;
+            _shouldIdle = false;
 
             _animator.SetBool(IsRunHash, true);
         }
@@ -222,9 +196,6 @@ namespace PixelPlatformer
             Gizmos.DrawWireCube(origin, _frontCastSize);
             Gizmos.DrawWireCube(target, _frontCastSize);
             Gizmos.DrawLine(origin, target);
-
-
-
 
             Vector2 edgeOrigin = origin;
             edgeOrigin.y -= _edgeCastYOffset;

@@ -3,11 +3,18 @@ using System.Collections.Generic;
 
 namespace PixelPlatformer
 {
-    public readonly struct LevelStartEvent
+    public readonly struct ItemCollectedEvent
     {
+        public readonly Collectible collectible;
 
+        public ItemCollectedEvent(Collectible collectible)
+        {
+            this.collectible = collectible;
+        }
     }
+    public readonly struct LevelStartEventData { }
     public readonly struct CameraShakeEventData { }
+    public readonly struct HitEventData { }
 
     public static class GameEvents
     {

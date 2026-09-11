@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    public class Collectable : MonoBehaviour, ICollectable
+    public class Collectible : MonoBehaviour, ICollectible
     {
         [SerializeField] protected SingleClipAnimator _idleClipAnimator;
         [SerializeField] protected SingleClipAnimator _collectedClipAnimator;

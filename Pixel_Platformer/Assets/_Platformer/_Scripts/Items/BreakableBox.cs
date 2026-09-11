@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    public interface IHittable
+    public interface IBreakable
     {
         bool IsHittable { get; }
         void TakeHit();
     }
-    public class BreakableBox : MonoBehaviour, IHittable
+    public class BreakableBox : MonoBehaviour, IBreakable
     {
         [SerializeField] private BreakableBoxChunk[] _chunks;
         [SerializeField] private Fruit[] _fruits;

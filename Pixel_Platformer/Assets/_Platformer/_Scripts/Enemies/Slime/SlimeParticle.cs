@@ -12,9 +12,9 @@ namespace PixelPlatformer
         {
             if ((_playerMask & (1 << col.gameObject.layer)) != 0)
             {
-                if (col.gameObject.TryGetComponent<IKillable>(out var killable))
+                if (col.gameObject.TryGetComponent<IHittable>(out var killable))
                 {
-                    killable?.Kill();
+                    killable?.TakeHit();
                 }
             }
         }

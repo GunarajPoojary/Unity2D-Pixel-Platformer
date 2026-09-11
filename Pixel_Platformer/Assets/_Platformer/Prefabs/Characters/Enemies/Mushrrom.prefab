@@ -163,13 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de090f67296bd74785c2615172053a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _runData:
-    runSpeed: 3
-  _enemyMask:
+  _runSpeed: 3
+  _playerMask:
     serializedVersion: 2
-    m_Bits: 512
-  _idleData:
-    idleTime: 1
+    m_Bits: 0
+  _idleTime: 1
   _runFX: {fileID: 6195286429718922901}
   _offset: {x: 0.91, y: 0.55}
   _frontCastSize: {x: 0.05, y: 0.12}
@@ -198,6 +196,7 @@ MonoBehaviour:
   _turnSpeed: 0.2
   _fallAcceleration: 1.5
   _fallSpeed: 0.5
+  _renderer: {fileID: 1744589263937877869}
 --- !u!1 &8104561908516727774
 GameObject:
   m_ObjectHideFlags: 0

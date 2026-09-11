@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-    public class Killable : MonoBehaviour, IKillable
+    [RequireComponent( typeof(Collider2D))]
+    public class Hittable : MonoBehaviour, IHittable
     {
         [SerializeField] private float _turnAngle = 15f;
         [SerializeField] private float _jumpHeight = 0.8f;
@@ -13,36 +13,34 @@ namespace PixelPlatformer
         [SerializeField] private float _turnSpeed = 0.2f;
         [SerializeField] private float _fallAcceleration = 1f;
         [SerializeField] private float _fallSpeed = 0.5f;
-        private SpriteRenderer _renderer;
+        [SerializeField] private SpriteRenderer _renderer;
         private Collider2D _collider;
 
-        private bool _isKillable = true;
+        private bool _isHittable = true;
         private float _currentFallSpeed;
 
-        public event Action OnKill;
+        public event Action OnHit;
 
-        public bool IsKillable { get { return _isKillable; } }
+        public bool IsHittable { get { return _isHittable; } }
 
         private void Awake()
         {
             _collider = GetComponent<Collider2D>();
-            _renderer = GetComponent<SpriteRenderer>();
         }
 
-        [ContextMenu("kill")]
-        public void Kill()
+        public void TakeHit()
         {
             GameEvents.Publish(new CameraShakeEventData());
 
             _collider.enabled = false;
             _renderer.sortingOrder = 50;
-            // Debug.Break();
-            StartCoroutine(DieRoutine());
 
-            OnKill?.Invoke();
+            StartCoroutine(HitRoutine());
+
+            OnHit?.Invoke();
         }
 
-        private IEnumerator DieRoutine()
+        private IEnumerator HitRoutine()
         {
             Vector2 startPos = transform.position;
             float angle = UnityEngine.Random.Range(-_turnAngle, _turnAngle);
@@ -75,8 +73,6 @@ namespace PixelPlatformer
                 pos.y -= _currentFallSpeed;
 
                 transform.position = pos;
-
-                pos.y += 5f;
 
                 // viewport co-ordinate origin is (0,0) which is bottom left corner and top right corner is (1,1)
                 // convert world position to viewport co-ordinate and then check if that value is less than 0 which is viewport bottom bound

@@ -7,7 +7,7 @@ namespace PixelPlatformer
     {
         Transform CameraFollowTarget { get; }
         int LookDirection { get; }
-        event Action OnDied;
+        bool CanFollowTarget { get; }
     }
     public class FollowCamera : MonoBehaviour
     {
@@ -16,35 +16,28 @@ namespace PixelPlatformer
         [SerializeField] private float _lookAheadOffset = 4f;
         [SerializeField] private float _lookAheadSmoothTime = 0.2f;
 
-        private IFollowTargetProvider targetProvider;
+        private IFollowTargetProvider _target;
         private Transform _followTarget;
         private Vector3 _velocity;
         private float _currentLookAhead;
         private float _lookAheadVelocity;
-        private bool _canFollowTarget = false;
 
         public void Init(IFollowTargetProvider targetProvider)
         {
-            this.targetProvider = targetProvider;
-            _followTarget = this.targetProvider.CameraFollowTarget;
+            _target = targetProvider;
+            _followTarget = this._target.CameraFollowTarget;
             transform.position = new Vector3(_followTarget.position.x, _followTarget.position.y, transform.position.z);
-            _canFollowTarget = true;
-
-            targetProvider.OnDied += StopFollowing;
-        }
-
-        private void StopFollowing()
-        {
-            _canFollowTarget = false;
-            targetProvider.OnDied -= StopFollowing;
         }
 
         private void LateUpdate()
         {
-            if (!_canFollowTarget) return;
+            if (!_target.CanFollowTarget) return;
 
-            float targetLookAhead = _lookAheadOffset * targetProvider.LookDirection;
-            _currentLookAhead = Mathf.SmoothDamp(_currentLookAhead, targetLookAhead, ref _lookAheadVelocity, _lookAheadSmoothTime);
+            float targetLookAhead = _lookAheadOffset * _target.LookDirection;
+            _currentLookAhead = Mathf.SmoothDamp(_currentLookAhead,
+                                                 targetLookAhead,
+                                                 ref _lookAheadVelocity,
+                                                 _lookAheadSmoothTime);
 
 
             Vector3 desiredPos = _followTarget.position;

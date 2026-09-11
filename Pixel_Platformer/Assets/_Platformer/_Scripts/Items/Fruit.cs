@@ -4,7 +4,7 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Fruit : Collectable
+    public class Fruit : Collectible
     {
         private Rigidbody2D _rb;
 

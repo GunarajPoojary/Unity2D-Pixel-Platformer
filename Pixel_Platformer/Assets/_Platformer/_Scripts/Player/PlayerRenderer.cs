@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerController))]
     public class PlayerRenderer : MonoBehaviour
     {
         private static readonly int JumpID = Animator.StringToHash("isJumping");
         private static readonly int RunID = Animator.StringToHash("isRunning");
         private static readonly int FallID = Animator.StringToHash("isFalling");
         private static readonly int WallSlideID = Animator.StringToHash("isWallSliding");
-        private static readonly int DieID = Animator.StringToHash("die");
+        private static readonly int HitID = Animator.StringToHash("die");
 
         [SerializeField] private Animator _animator;
         [SerializeField] private SpriteRenderer _renderer;
@@ -20,7 +20,7 @@ namespace PixelPlatformer
         [SerializeField] private ParticleSystem _jumpFX;
         [SerializeField] private ParticleSystem _runFX;
 
-        private PlayerMovement _player;
+        private PlayerController _player;
 
         public int LookDirection
         {
@@ -32,7 +32,7 @@ namespace PixelPlatformer
 
         private void Awake()
         {
-            _player = GetComponentInParent<PlayerMovement>();
+            _player = GetComponentInParent<PlayerController>();
         }
 
         private void Update()
@@ -113,9 +113,9 @@ namespace PixelPlatformer
             particle.Play();
         }
 
-        public void Die()
+        public void TriggerHit()
         {
-            _animator.SetTrigger(DieID);
+            _animator.SetTrigger(HitID);
         }
     }
 }

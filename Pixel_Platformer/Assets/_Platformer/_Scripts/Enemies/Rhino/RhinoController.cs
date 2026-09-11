@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
-    public class RhinoController : MonoBehaviour, IKillable
+    public class RhinoController : MonoBehaviour, IHittable
     {
         [SerializeField] private float _chaseSpeed = 5f;
         [SerializeField] private float _acceleration = 5f;
@@ -40,7 +40,7 @@ namespace PixelPlatformer
 
         private bool _isKillable = true;
 
-        public bool IsKillable
+        public bool IsHittable
         {
             get
             {
@@ -156,9 +156,9 @@ namespace PixelPlatformer
             //     crusher.ApplyImpact(_pushForce);
             // }
             if ((_enemyMask.value & (1 << col.gameObject.layer)) != 0
-                && col.collider.TryGetComponent<IKillable>(out var damageable))
+                && col.collider.TryGetComponent<IHittable>(out var damageable))
             {
-                if (damageable == null || !damageable.IsKillable) return;
+                if (damageable == null || !damageable.IsHittable) return;
 
                 var contactPoint = col.contacts[0].point;
 
@@ -168,7 +168,7 @@ namespace PixelPlatformer
 
                 if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                 {
-                    damageable.Kill();
+                    damageable.TakeHit();
                     _canDetect = false;
                 }
             }
@@ -255,7 +255,7 @@ namespace PixelPlatformer
             Gizmos.DrawLine(_back, _isFacingRight ? _leftWallContactPoint : _rightWallContactPoint);
         }
 
-        public void Kill()
+        public void TakeHit()
         {
             Debug.Log("Die");
         }
