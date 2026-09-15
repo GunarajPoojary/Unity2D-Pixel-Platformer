@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    public interface IFollowTargetProvider
-    {
-        Transform CameraFollowTarget { get; }
-        int LookDirection { get; }
-        bool CanFollowTarget { get; }
-    }
     public class FollowCamera : MonoBehaviour
     {
         [SerializeField] private float _smoothTime = 0.1f;
@@ -22,16 +16,16 @@ namespace PixelPlatformer
         private float _currentLookAhead;
         private float _lookAheadVelocity;
 
-        public void Init(IFollowTargetProvider targetProvider)
+        public void Setup(IFollowTargetProvider targetProvider)
         {
             _target = targetProvider;
-            _followTarget = this._target.CameraFollowTarget;
-            transform.position = new Vector3(_followTarget.position.x, _followTarget.position.y, transform.position.z);
+            _followTarget = _target.CameraFollowTarget;
+            // transform.position = new Vector3(_followTarget.position.x, _followTarget.position.y, transform.position.z);
         }
 
         private void LateUpdate()
         {
-            if (!_target.CanFollowTarget) return;
+            if (_target == null || !_target.CanFollowTarget) return;
 
             float targetLookAhead = _lookAheadOffset * _target.LookDirection;
             _currentLookAhead = Mathf.SmoothDamp(_currentLookAhead,

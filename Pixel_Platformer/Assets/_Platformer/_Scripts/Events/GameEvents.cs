@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PixelPlatformer
 {
@@ -15,6 +16,7 @@ namespace PixelPlatformer
     public readonly struct LevelStartEventData { }
     public readonly struct CameraShakeEventData { }
     public readonly struct HitEventData { }
+    public readonly struct StepOnStartCheckpointEvenData { }
 
     public static class GameEvents
     {

@@ -15,7 +15,7 @@ TODOs:
 
 
 
-
+Font from - https://yukipixels.itch.io/boldpixels
 
 // - Implement horizontal follow logic for background
 // - Implement breakable fruit box

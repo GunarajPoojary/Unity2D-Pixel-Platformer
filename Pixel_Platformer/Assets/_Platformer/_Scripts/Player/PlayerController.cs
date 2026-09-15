@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+// using GP.Utils.Gizmo;
 
 namespace PixelPlatformer
 {
@@ -8,6 +9,7 @@ namespace PixelPlatformer
     {
         private const float MOVEMENT_THRESHOLD = 0.01f;
 
+        [SerializeField] private AudioClip _jumpClip;
         [SerializeField] private float _smoothTime = 0.2f;
         [SerializeField] private PlayerMovementDataSO _movementStats;
 
@@ -73,8 +75,6 @@ namespace PixelPlatformer
         public Transform CameraFollowTarget { get { return _cameraFollowTarget; } }
         public int LookDirection { get { return _renderer.LookDirection; } }
         public bool CanFollowTarget { get { return _canFollowTarget; } }
-        // public bool IsHittable { get { return _isHittable; } }
-
 
         public bool IsRunning
         {
@@ -120,8 +120,13 @@ namespace PixelPlatformer
 
         private void Start()
         {
-            _wasFacingRight = _input.MoveInput.x >= 0f;
+            _wasFacingRight = _input.MoveInput >= 0f;
             OnTurn?.Invoke(_wasFacingRight);
+
+            if (!IsGrounded() && IsFalling())
+            {
+                OnFall?.Invoke();
+            }
         }
 
         private void FixedUpdate()
@@ -180,7 +185,7 @@ namespace PixelPlatformer
             }
 
             // The target speed will be max speed when we press input otherwise it will be zero
-            float targetSpeed = _input.MoveInput.x * _movementStats.MaxSpeed;
+            float targetSpeed = _input.MoveInput * _movementStats.MaxSpeed;
             float speedChange;
 
             if (Mathf.Abs(targetSpeed) > MOVEMENT_THRESHOLD)
@@ -199,9 +204,9 @@ namespace PixelPlatformer
             // Mathf.MoveTowards uses constant speedchange
             _horizontalVelocity = Mathf.MoveTowards(_horizontalVelocity, targetSpeed, speedChange * Time.fixedDeltaTime);
 
-            if (Mathf.Abs(_input.MoveInput.x) > MOVEMENT_THRESHOLD)
+            if (Mathf.Abs(_input.MoveInput) > MOVEMENT_THRESHOLD)
             {
-                bool facingRight = _input.MoveInput.x > 0f;
+                bool facingRight = _input.MoveInput > 0f;
 
                 if (facingRight != _wasFacingRight)
                 {
@@ -332,13 +337,14 @@ namespace PixelPlatformer
             ResetJumpBuffer();
 
             OnJump?.Invoke();
+            AudioManager.Instance.PlayAudio(_jumpClip);
         }
 
         private void ExecuteWallJump()
         {
-            Debug.Log("Execute Wall Jump");
+            // Debug.Log("Execute Wall Jump");
 
-            float wallDirection = Mathf.Sign(_input.MoveInput.x);
+            float wallDirection = Mathf.Sign(_input.MoveInput);
 
             _horizontalVelocity = -wallDirection * _movementStats.WallJumpHorizontalForce;
             _verticalVelocity = _movementStats.WallJumpVerticalVelocity;
@@ -431,7 +437,7 @@ namespace PixelPlatformer
         {
             bool wasWallSliding = _isWallSliding;
 
-            bool hasInput = Mathf.Abs(_input.MoveInput.x) > MOVEMENT_THRESHOLD;
+            bool hasInput = Mathf.Abs(_input.MoveInput) > MOVEMENT_THRESHOLD;
             bool isFalling = !IsGrounded() && _verticalVelocity <= 0f;
 
             // must be airborne, falling, and pressing movement causing contact with wall
@@ -448,7 +454,7 @@ namespace PixelPlatformer
             return Physics2D.BoxCast(_wallCheckPoint.position,
                                      _wallCheckSize,
                                      0f,
-                                     Vector2.right * Mathf.Sign(_input.MoveInput.x),
+                                     Vector2.right * Mathf.Sign(_input.MoveInput),
                                      _wallCheckDistance,
                                      _wallLayer);
         }
@@ -462,21 +468,21 @@ namespace PixelPlatformer
 
             var velocity = Vector3.up * _verticalVelocity;
 
-            GizmosUtils.DrawWireArrow(transform.position,
-                                      _offset,
-                                      velocity,
-                                      _arrowWidth,
-                                      _arrowHeight,
-                                      _lineThickness,
-                                      _verticalArrowColor);
+            // GizmosUtils.DrawWireArrow(transform.position,
+            //                           _offset,
+            //                           velocity,
+            //                           _arrowWidth,
+            //                           _arrowHeight,
+            //                           _lineThickness,
+            //                           _verticalArrowColor);
 
-            GizmosUtils.DrawWireArrow(transform.position,
-                                      _offset,
-                                      Vector3.right * _horizontalVelocity,
-                                      _arrowWidth,
-                                      _arrowHeight,
-                                      _lineThickness,
-                                      _horizontalArrowColor);
+            // GizmosUtils.DrawWireArrow(transform.position,
+            //                           _offset,
+            //                           Vector3.right * _horizontalVelocity,
+            //                           _arrowWidth,
+            //                           _arrowHeight,
+            //                           _lineThickness,
+            //                           _horizontalArrowColor);
 
             if (_groundCheckPoint == null) return;
 

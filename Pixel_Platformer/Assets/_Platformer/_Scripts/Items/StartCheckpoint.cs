@@ -7,21 +7,30 @@ namespace PixelPlatformer
     {
         [SerializeField] private SingleClipAnimator _animator;
         [SerializeField] private LayerMask _playerMask;
-        [SerializeField] private ParticleSystem _confettiFX;
+        [SerializeField] private AudioClip _startClip;
         private bool _hasPlayedClip = false;
+        private bool _isPlayerOn;
+
+        public bool IsPlayerOn { get { return _isPlayerOn; } }
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            if (!_hasPlayedClip && (_playerMask & (1 << col.gameObject.layer)) != 0) PlayMoveClip();
+            if (!_hasPlayedClip && (_playerMask & (1 << col.gameObject.layer)) != 0)
+            {
+                PlayStartClip();
+                _hasPlayedClip = true;
+                _isPlayerOn = true;
+                return;
+            }
 
-            _hasPlayedClip = true;
+            _isPlayerOn = false;
         }
 
-        private void PlayMoveClip()
+        private void PlayStartClip()
         {
-            _confettiFX.Play();
-
             _animator.PlayClip();
+            AudioManager.Instance.PlayAudio(_startClip);
+            GameEvents.Publish(new StepOnStartCheckpointEvenData());
         }
     }
 }

@@ -876,7 +876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d0bc9c90ad7254ab0857e41ae3076b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerSpawner: {fileID: 961007417}
+  _player: {fileID: 0}
+  _appearFx: {fileID: 0}
   _playerFollowCamera: {fileID: 1661547537956226064, guid: 07826ffba5804b14e9d12bff6a1e72ba, type: 3}
 --- !u!4 &687257659
 Transform:
@@ -970,7 +971,6 @@ GameObject:
   - component: {fileID: 961007419}
   - component: {fileID: 961007420}
   - component: {fileID: 961007418}
-  - component: {fileID: 961007417}
   m_Layer: 0
   m_Name: PlayerSpawner
   m_TagString: Untagged
@@ -978,19 +978,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &961007417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 961007416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce0a38624d6283744b81b3bd5569c8b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 4928018341784496437, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
 --- !u!95 &961007418
 Animator:
   serializedVersion: 7

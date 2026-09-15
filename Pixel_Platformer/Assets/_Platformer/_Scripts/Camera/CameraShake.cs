@@ -15,14 +15,26 @@ namespace PixelPlatformer
         private void OnEnable()
         {
             GameEvents.Subscribe<CameraShakeEventData>(HandleCameraShake);
+            GameEvents.Subscribe<StepOnStartCheckpointEvenData>(HandleCameraShake);
         }
 
         private void OnDisable()
         {
             GameEvents.Unsubscribe<CameraShakeEventData>(HandleCameraShake);
+            GameEvents.Unsubscribe<StepOnStartCheckpointEvenData>(HandleCameraShake);
+        }
+
+        private void HandleCameraShake(StepOnStartCheckpointEvenData data)
+        {
+            ShakeCamera();
         }
 
         private void HandleCameraShake(CameraShakeEventData data)
+        {
+            ShakeCamera();
+        }
+
+        public void ShakeCamera()
         {
             _shakeTween?.Kill();
             transform.localPosition = Vector3.zero;

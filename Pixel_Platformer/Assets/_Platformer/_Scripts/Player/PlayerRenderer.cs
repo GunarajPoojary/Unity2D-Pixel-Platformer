@@ -79,6 +79,7 @@ namespace PixelPlatformer
         private void HandleJump()
         {
             _animator.SetBool(JumpID, true);
+            _animator.SetBool(FallID, false);
             PlayParticle(_jumpFX);
         }
 
