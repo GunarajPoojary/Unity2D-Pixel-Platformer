@@ -8,8 +8,8 @@ namespace PixelPlatformer
     {
         [SerializeField] private StartCheckpoint _startCheckpoint;
 
-        [ContextMenu("Start Game")]
-        public void StartGame()
+      //  [ContextMenu("Start Game")]
+        private void Start()
         {
             StartCoroutine(StartGameRoutine());
             // wait untill he stands on the platform

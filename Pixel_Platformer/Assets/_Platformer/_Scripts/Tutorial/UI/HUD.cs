@@ -26,7 +26,7 @@ namespace PixelPlatformer
 
         private void HandleGuideClick()
         {
-            _guideUIManager.ShowGuide(_guideButtonAnchorPos);
+            _guideUIManager.ToggleGuide(_guideButtonAnchorPos);
         }
     }
 }

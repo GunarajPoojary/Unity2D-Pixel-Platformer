@@ -6,11 +6,13 @@ namespace PixelPlatformer
     public class PlayerInput : MonoBehaviour
     {
         [SerializeField] private GameObject _mobileInputUIRoot;
+
+#if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS
         [SerializeField] private MobileInputButton _leftButton;
         [SerializeField] private MobileInputButton _rightButton;
         [SerializeField] private MobileInputButton _jumpButton;
-
         [SerializeField] private bool _useMobileInput;
+#endif
 
         private bool _inputEnabled = true;
         private float _moveInput;
