@@ -6,7 +6,7 @@ namespace PixelPlatformer
     public class HUD : MonoBehaviour
     {
         [SerializeField] private Button _guideButton;
-        [SerializeField] private GuideUIManager _guideUIManager;
+        [SerializeField] private TutorialUI _guideUIManager;
         private Vector3 _guideButtonAnchorPos;
 
         private void Awake()
@@ -26,7 +26,7 @@ namespace PixelPlatformer
 
         private void HandleGuideClick()
         {
-            _guideUIManager.ToggleGuide(_guideButtonAnchorPos);
+            _guideUIManager.Toggle();
         }
     }
 }

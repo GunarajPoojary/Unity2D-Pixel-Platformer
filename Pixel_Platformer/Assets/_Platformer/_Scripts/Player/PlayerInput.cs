@@ -28,12 +28,11 @@ namespace PixelPlatformer
         {
 #if UNITY_EDITOR
             _mobileInputUIRoot.SetActive(_useMobileInput);
+#elif UNITY_ANDROID || UNITY_IOS
+    _mobileInputUIRoot.SetActive(true);
+#else
+    _mobileInputUIRoot.SetActive(false);
 #endif
-
-#if UNITY_ANDROID || UNITY_IOS
-            _mobileInputUIRoot.SetActive(true);
-#endif
-            _mobileInputUIRoot.SetActive(false);
         }
 
         private void Update()
@@ -43,14 +42,13 @@ namespace PixelPlatformer
 #if UNITY_EDITOR
             if (_useMobileInput)
                 ReadMobileInput();
-
+            else
+                ReadKeyboardInput();
+#elif UNITY_ANDROID || UNITY_IOS
+                ReadMobileInput();
+#else
             ReadKeyboardInput();
 #endif
-
-#if UNITY_ANDROID || UNITY_IOS
-            ReadMobileInput();
-#endif
-            ReadKeyboardInput();
         }
 
         private void ReadMobileInput()

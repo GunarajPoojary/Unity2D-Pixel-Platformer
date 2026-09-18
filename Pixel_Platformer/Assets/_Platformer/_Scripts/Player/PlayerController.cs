@@ -10,6 +10,9 @@ namespace PixelPlatformer
         private const float MOVEMENT_THRESHOLD = 0.01f;
 
         [SerializeField] private AudioClip _jumpClip;
+        [SerializeField] private AudioClip _landClip;
+        [SerializeField] private AudioClip _hurtClip;
+
         [SerializeField] private float _smoothTime = 0.2f;
         [SerializeField] private PlayerMovementDataSO _movementStats;
 
@@ -70,7 +73,6 @@ namespace PixelPlatformer
         private float _targetAngle;
         // private bool _isHittable = true;
         private Hittable _hittable;
-
 
         public Transform CameraFollowTarget { get { return _cameraFollowTarget; } }
         public int LookDirection { get { return _renderer.LookDirection; } }
@@ -138,10 +140,10 @@ namespace PixelPlatformer
                 HandleMovement();
                 ApplyGravity();
             }
-            else
-            {
-                HandleHitPerformed();
-            }
+            // else
+            // {
+            //     HandleHitPerformed();
+            // }
 
             ApplyMovement();
         }
@@ -267,6 +269,7 @@ namespace PixelPlatformer
             if (!_wasGrounded && IsGrounded())
             {
                 OnLand?.Invoke();
+                AudioManager.Instance.PlayOneShotAudio(_landClip);
             }
 
             // Jump Input Buffer
@@ -276,14 +279,15 @@ namespace PixelPlatformer
             }
             else if (isJumpPressed)
             {
-                ExecuteJump(_initialJumpVelocity);
+                PerformJump(_initialJumpVelocity);
+                AudioManager.Instance.PlayOneShotAudio(_jumpClip);
                 return;
             }
 
             // Wall Jump — jump pressed while sliding, before coyote time applies
             if (_isWallSliding && isJumpPressed)
             {
-                ExecuteWallJump();
+                PerformWallJump();
                 return;
             }
 
@@ -308,7 +312,8 @@ namespace PixelPlatformer
                 if (_coyoteTimer > 0 && isJumpPressed) // _jumpBufferTimer > 0 means jump pressed 
                                                        // or use _jumpPressed flag
                 {
-                    ExecuteJump(_initialJumpVelocity);
+                    PerformJump(_initialJumpVelocity);
+                    AudioManager.Instance.PlayOneShotAudio(_jumpClip);
                 }
             }
 
@@ -330,17 +335,16 @@ namespace PixelPlatformer
             return !IsGrounded() && _verticalVelocity <= 0f;
         }
 
-        private void ExecuteJump(float jumpVelocity)
+        private void PerformJump(float jumpVelocity)
         {
             _verticalVelocity = jumpVelocity;
 
             ResetJumpBuffer();
 
             OnJump?.Invoke();
-            AudioManager.Instance.PlayAudio(_jumpClip);
         }
 
-        private void ExecuteWallJump()
+        private void PerformWallJump()
         {
             // Debug.Log("Execute Wall Jump");
 
@@ -404,21 +408,23 @@ namespace PixelPlatformer
         }
 
         #region Hit Methods
-        private void HandleHitPerformed()
-        {
-            float angle = Mathf.SmoothDampAngle(_rb.rotation,
-                                                                _targetAngle,
-                                                                ref _rotationVelocity,
-                                                                _smoothTime);
+        // private void HandleHitPerformed()
+        // {
+        //     float angle = Mathf.SmoothDampAngle(_rb.rotation,
+        //                                                         _targetAngle,
+        //                                                         ref _rotationVelocity,
+        //                                                         _smoothTime);
 
-            _rb.MoveRotation(angle);
+        //     _rb.MoveRotation(angle);
 
-            ApplyAirborneGravity();
-        }
+        //     ApplyAirborneGravity();
+
+        //     GameEvents.Publish(new PlayerDiedEventData());
+        // }
 
         public void ApplyImpact(float impact)
         {
-            ExecuteJump(impact);
+            PerformJump(impact);
         }
 
         private void HandleHit()
@@ -429,6 +435,8 @@ namespace PixelPlatformer
             _renderer.TriggerHit();
 
             enabled = false;
+            AudioManager.Instance.PlayOneShotAudio(_hurtClip);
+            GameEvents.Publish(new PlayerDiedEventData());
         }
         #endregion
 

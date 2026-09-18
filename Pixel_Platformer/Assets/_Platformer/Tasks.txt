@@ -8,10 +8,8 @@ bunny
 
 
 
-TODOs:
-- Player Corner Correction
-- Implement FSM for Player
-
+TODOs: gameflow
+main menu
 
 
 
@@ -26,3 +24,7 @@ Font from - https://yukipixels.itch.io/boldpixels
 - Implement blower platform
 - Implement scene transition fx
 - traps
+
+audios
+// Collectible sound
+Enemy hit sound

@@ -17,6 +17,7 @@ namespace PixelPlatformer
     public readonly struct CameraShakeEventData { }
     public readonly struct HitEventData { }
     public readonly struct StepOnStartCheckpointEvenData { }
+    public readonly struct PlayerDiedEventData { }
 
     public static class GameEvents
     {

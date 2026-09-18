@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -6,7 +7,7 @@ namespace PixelPlatformer
     {
         [SerializeField] private AudioSource _sfxAudioSource;
 
-        public void PlayAudio(AudioClip clip)
+        public void PlayOneShotAudio(AudioClip clip)
         {
             _sfxAudioSource.PlayOneShot(clip);
         }

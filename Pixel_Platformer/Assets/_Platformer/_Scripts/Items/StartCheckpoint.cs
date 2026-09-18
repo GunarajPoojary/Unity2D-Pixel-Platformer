@@ -29,7 +29,7 @@ namespace PixelPlatformer
         private void PlayStartClip()
         {
             _animator.PlayClip();
-            AudioManager.Instance.PlayAudio(_startClip);
+            AudioManager.Instance.PlayOneShotAudio(_startClip);
             GameEvents.Publish(new StepOnStartCheckpointEvenData());
         }
     }

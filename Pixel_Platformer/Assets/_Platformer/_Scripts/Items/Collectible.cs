@@ -24,12 +24,12 @@ namespace PixelPlatformer
 
         private void OnEnable()
         {
-            _collectedClipAnimator.OnEndPlay += OnCollect;
+            _collectedClipAnimator.OnComplete += OnCollect;
         }
 
         private void OnDisable()
         {
-            _collectedClipAnimator.OnEndPlay -= OnCollect;
+            _collectedClipAnimator.OnComplete -= OnCollect;
         }
 
         private void OnCollect()

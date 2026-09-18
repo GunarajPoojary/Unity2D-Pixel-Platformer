@@ -15,7 +15,7 @@ namespace PixelPlatformer
         private int _keyFrame;
         private Coroutine _coroutine;
 
-        public event Action OnEndPlay;
+        public event Action OnComplete;
 
         public void PlayClip()
         {
@@ -55,7 +55,7 @@ namespace PixelPlatformer
                 yield return null;
             }
 
-            OnEndPlay?.Invoke();
+            OnComplete?.Invoke();
         }
     }
 }

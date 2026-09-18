@@ -11,6 +11,7 @@ namespace PixelPlatformer
         [SerializeField] private Transform _hitCheckPoint;
         [SerializeField] private Vector2 _hitCheckSize = new Vector2(0.5f, 0.1f);
         [SerializeField] private float _hitCheckDistance = 0.01f;
+        [SerializeField] private AudioClip _playerHitSound;
 
         private void FixedUpdate()
         {
@@ -26,6 +27,7 @@ namespace PixelPlatformer
             if (hit.collider.TryGetComponent<IHittable>(out var hittable) && hittable.IsHittable)
             {
                 hittable.TakeHit();
+                AudioManager.Instance.PlayOneShotAudio(_playerHitSound);
                 GetComponent<IImpactable>()?.ApplyImpact(_hitImpact);
             }
         }

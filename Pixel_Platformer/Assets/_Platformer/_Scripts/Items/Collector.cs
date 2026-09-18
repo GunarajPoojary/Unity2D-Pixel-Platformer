@@ -5,6 +5,7 @@ namespace PixelPlatformer
     public class Collector : MonoBehaviour
     {
         [SerializeField] private LayerMask _collectibleMask;
+        [SerializeField] private AudioClip _itemCollectSound;
 
         private void OnTriggerEnter2D(Collider2D col)
         {
@@ -14,6 +15,7 @@ namespace PixelPlatformer
                 if (collectible != null)
                 {
                     collectible.Collect();
+                    AudioManager.Instance.PlayOneShotAudio(_itemCollectSound);
                     GameEvents.Publish(new ItemCollectedEvent());
                 }
             }
