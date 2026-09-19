@@ -4,9 +4,10 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer), typeof(Hittable))]
-    public class MushroomController : MonoBehaviour//, IKillable
+    public class MushroomController : MonoBehaviour
     {
-        private static readonly int IsRunHash = Animator.StringToHash("isRun");
+        private static readonly int RunID = Animator.StringToHash("isRun");
+        private static readonly int HitID = Animator.StringToHash("hit");
 
         [SerializeField] private float _runSpeed = 3f;
         [SerializeField] private LayerMask _playerMask;
@@ -24,8 +25,8 @@ namespace PixelPlatformer
         [SerializeField] private float _edgeCastYOffset = 0.5f;
 
         private Animator _animator;
-        private Hittable _killable;
-       
+        private Hittable _hittable;
+
         private bool _hasReachedEdge;
 
 
@@ -53,23 +54,24 @@ namespace PixelPlatformer
         {
             _animator = GetComponent<Animator>();
             _renderer = GetComponent<SpriteRenderer>();
-            _killable = GetComponent<Hittable>();
+            _hittable = GetComponent<Hittable>();
 
-            _animator.SetBool(IsRunHash, true);
+            _animator.SetBool(RunID, true);
         }
 
         private void OnEnable()
         {
-            _killable.OnHit += HandleKill;
+            _hittable.OnHit += HandleHit;
         }
 
         private void OnDisable()
         {
-            _killable.OnHit -= HandleKill;
+            _hittable.OnHit -= HandleHit;
         }
 
-        private void HandleKill()
+        private void HandleHit()
         {
+            _animator.SetTrigger(HitID);
             enabled = false;
         }
 
@@ -94,6 +96,7 @@ namespace PixelPlatformer
         {
             Vector3 direction = IsFacingLeft ? Vector3.left : Vector3.right;
             transform.position += _runSpeed * Time.deltaTime * direction;
+            _animator.SetBool(RunID, true);
         }
 
         private void StartIdling()
@@ -101,7 +104,7 @@ namespace PixelPlatformer
             _shouldIdle = true;
             _idleTimer = _idleTime;
 
-            _animator.SetBool(IsRunHash, false);
+            _animator.SetBool(RunID, false);
         }
 
         private bool IsWallDetected()
@@ -169,8 +172,6 @@ namespace PixelPlatformer
 
             Turn();
             _shouldIdle = false;
-
-            _animator.SetBool(IsRunHash, true);
         }
 
         private void Turn()

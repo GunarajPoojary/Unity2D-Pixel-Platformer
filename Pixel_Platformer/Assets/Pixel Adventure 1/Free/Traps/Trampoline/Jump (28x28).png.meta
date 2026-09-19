@@ -176,12 +176,12 @@ TextureImporter:
       name: Jump (28x28)_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 27
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 25
+        height: 8
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -198,12 +198,12 @@ TextureImporter:
       name: Jump (28x28)_1
       rect:
         serializedVersion: 2
-        x: 29
+        x: 30
         y: 0
-        width: 25
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 23
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -220,12 +220,12 @@ TextureImporter:
       name: Jump (28x28)_2
       rect:
         serializedVersion: 2
-        x: 57
+        x: 58
         y: 0
-        width: 25
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 23
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -242,12 +242,12 @@ TextureImporter:
       name: Jump (28x28)_3
       rect:
         serializedVersion: 2
-        x: 85
+        x: 86
         y: 0
-        width: 25
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 23
+        height: 22
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -264,12 +264,12 @@ TextureImporter:
       name: Jump (28x28)_4
       rect:
         serializedVersion: 2
-        x: 113
+        x: 114
         y: 0
-        width: 25
-        height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 23
+        height: 14
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -286,12 +286,12 @@ TextureImporter:
       name: Jump (28x28)_5
       rect:
         serializedVersion: 2
-        x: 139
+        x: 140
         y: 0
-        width: 29
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 27
+        height: 8
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -308,12 +308,12 @@ TextureImporter:
       name: Jump (28x28)_6
       rect:
         serializedVersion: 2
-        x: 167
+        x: 168
         y: 0
-        width: 29
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 27
+        height: 8
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -330,12 +330,12 @@ TextureImporter:
       name: Jump (28x28)_7
       rect:
         serializedVersion: 2
-        x: 197
+        x: 198
         y: 0
-        width: 25
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 23
+        height: 10
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -352,7 +352,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e0045ffd986717748948865c26ba8e51
     internalID: 0
     vertices: []
     indices: 
@@ -360,7 +360,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":38.0,"y":38.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Jump (28x28)_0: -3008879249828299126
       Jump (28x28)_1: 4681692366024343091

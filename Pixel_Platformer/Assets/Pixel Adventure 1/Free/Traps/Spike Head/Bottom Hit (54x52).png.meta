@@ -164,12 +164,12 @@ TextureImporter:
       name: Bottom Hit (54x52)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 3
-        width: 55
-        height: 40
+        x: 1
+        y: 4
+        width: 53
+        height: 38
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -186,12 +186,12 @@ TextureImporter:
       name: Bottom Hit (54x52)_1
       rect:
         serializedVersion: 2
-        x: 54
-        y: 3
-        width: 55
-        height: 40
+        x: 55
+        y: 4
+        width: 53
+        height: 38
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -208,12 +208,12 @@ TextureImporter:
       name: Bottom Hit (54x52)_2
       rect:
         serializedVersion: 2
-        x: 110
-        y: 3
-        width: 51
-        height: 42
+        x: 111
+        y: 4
+        width: 49
+        height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -230,12 +230,12 @@ TextureImporter:
       name: Bottom Hit (54x52)_3
       rect:
         serializedVersion: 2
-        x: 166
-        y: 3
-        width: 47
-        height: 44
+        x: 167
+        y: 4
+        width: 45
+        height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -252,7 +252,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 515e81bdf05cdd245a76fea2be84e3db
     internalID: 0
     vertices: []
     indices: 
@@ -260,7 +260,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":38.0,"y":38.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Bottom Hit (54x52)_0: 9190495600968484363
       Bottom Hit (54x52)_1: -1320871119520207472

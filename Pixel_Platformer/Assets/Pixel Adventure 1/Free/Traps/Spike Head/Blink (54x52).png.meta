@@ -164,12 +164,12 @@ TextureImporter:
       name: Blink (54x52)_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 3
-        width: 45
-        height: 45
+        x: 6
+        y: 4
+        width: 43
+        height: 43
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -186,12 +186,12 @@ TextureImporter:
       name: Blink (54x52)_1
       rect:
         serializedVersion: 2
-        x: 59
-        y: 3
-        width: 45
-        height: 45
+        x: 60
+        y: 4
+        width: 43
+        height: 43
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -208,12 +208,12 @@ TextureImporter:
       name: Blink (54x52)_2
       rect:
         serializedVersion: 2
-        x: 113
-        y: 3
-        width: 45
-        height: 45
+        x: 114
+        y: 4
+        width: 43
+        height: 43
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -230,12 +230,12 @@ TextureImporter:
       name: Blink (54x52)_3
       rect:
         serializedVersion: 2
-        x: 167
-        y: 3
-        width: 45
-        height: 45
+        x: 168
+        y: 4
+        width: 43
+        height: 43
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -252,7 +252,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 96d5fab9041d61b49ac14bdba6056bef
     internalID: 0
     vertices: []
     indices: 
@@ -260,7 +260,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":38.0,"y":38.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Blink (54x52)_0: 4303423874142921733
       Blink (54x52)_1: 7370585508839877132
