@@ -1,0 +1,30 @@
+ghost
+rocks
+turtle
+fatird
+skull
+bat
+bunny
+
+
+
+TODOs: gameflow
+main menu
+
+
+
+Font from - https://yukipixels.itch.io/boldpixels
+
+// - Implement horizontal follow logic for background
+// - Implement breakable fruit box
+- State(RUn, Jump, Land), Hit audios
+- particle fx
+- Implement bungie platform
+- Implement breakable platform box
+- Implement blower platform
+- Implement scene transition fx
+- traps
+
+audios
+// Collectible sound
+Enemy hit sound

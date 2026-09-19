@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: PlayerMovementStats
   m_EditorClassIdentifier: 
   <MaxSpeed>k__BackingField: 6.5
-  <GravityMuliplier>k__BackingField: 2.05
+  <GravityMuliplier>k__BackingField: 2.5
   <TurnSpeed>k__BackingField: 100
   <GroundAcceleration>k__BackingField: 97.8
   <GroundDecceleration>k__BackingField: 53.9
-  AirAcceleration: 53.3
-  AirDeceleration: 53.3
-  <JumpHeight>k__BackingField: 1.5
+  <AirAcceleration>k__BackingField: 52
+  <AirDecceleration>k__BackingField: 52
+  <JumpHeight>k__BackingField: 1.8
   <TimeTillJumpApex>k__BackingField: 0.4
   <JumpCutMultiplier>k__BackingField: 0.502
   <JumpBufferTime>k__BackingField: 0.164
   <GroundedVerticalVelocity>k__BackingField: 0.1
-  <CoyoteTime>k__BackingField: 0.169
+  <CoyoteTime>k__BackingField: 0.18
   <WallSlideSpeed>k__BackingField: 2
-  <WallJumpHorizontalForce>k__BackingField: 12
-  <WallJumpVerticalVelocity>k__BackingField: 10
-  <WallJumpLockTime>k__BackingField: 0.15
+  <WallJumpHorizontalForce>k__BackingField: 5
+  <WallJumpVerticalVelocity>k__BackingField: 20
+  <WallJumpLockTime>k__BackingField: 0.19

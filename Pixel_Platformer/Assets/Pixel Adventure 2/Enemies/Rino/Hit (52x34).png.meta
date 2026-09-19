@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -57,10 +57,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -161,15 +161,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hit (52x34)_0
+      name: Hit (52x34)_1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 52
         y: 0
-        width: 105
+        width: 52
         height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -183,15 +183,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hit (52x34)_1
+      name: Hit (52x34)_2
       rect:
         serializedVersion: 2
         x: 104
         y: 0
         width: 52
         height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -205,15 +205,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hit (52x34)_2
+      name: Hit (52x34)_3
       rect:
         serializedVersion: 2
         x: 157
         y: 0
         width: 50
         height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -227,15 +227,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hit (52x34)_3
+      name: Hit (52x34)_4
       rect:
         serializedVersion: 2
         x: 209
         y: 0
         width: 50
         height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -248,11 +248,33 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Hit (52x34)_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 52
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d37803a5a3473034b987918627774e17
+      internalID: -68849442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6781f038886c4d14a8a729f5334ab153
     internalID: 0
     vertices: []
     indices: 
@@ -262,10 +284,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Hit (52x34)_0: -5629135272633566843
-      Hit (52x34)_1: -2715152553310997712
-      Hit (52x34)_2: -4919157991825847783
-      Hit (52x34)_3: 5977564812290476861
+      Hit (52x34)_0: -68849442
+      Hit (52x34)_1: -5629135272633566843
+      Hit (52x34)_2: -2715152553310997712
+      Hit (52x34)_3: -4919157991825847783
+      Hit (52x34)_4: 5977564812290476861
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

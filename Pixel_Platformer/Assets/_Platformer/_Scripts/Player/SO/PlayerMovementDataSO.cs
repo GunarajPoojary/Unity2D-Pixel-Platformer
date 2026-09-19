@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace PixelPlatform
+namespace PixelPlatformer
 {
     [CreateAssetMenu(fileName = "PlayerMovementData", menuName = "Player Movement Data")]
     public class PlayerMovementDataSO : ScriptableObject
@@ -28,5 +28,6 @@ namespace PixelPlatform
         [field: SerializeField, Range(1, 20)] public float WallSlideSpeed { get; private set; } = 2f;
         [field: SerializeField, Range(1, 30)] public float WallJumpHorizontalForce { get; private set; } = 12f;
         [field: SerializeField, Range(1, 20)] public float WallJumpVerticalVelocity { get; private set; } = 10f;
+        [field: SerializeField, Range(0.1f, 2f)] public float WallJumpLockTime { get; private set; } = 0.3f;
     }
 }

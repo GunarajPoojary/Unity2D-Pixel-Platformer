@@ -1,15 +1,16 @@
 using System;
 using UnityEngine;
 
-namespace PixelPlatform
+namespace PixelPlatformer
 {
-    [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerController))]
     public class PlayerRenderer : MonoBehaviour
     {
         private static readonly int JumpID = Animator.StringToHash("isJumping");
         private static readonly int RunID = Animator.StringToHash("isRunning");
         private static readonly int FallID = Animator.StringToHash("isFalling");
         private static readonly int WallSlideID = Animator.StringToHash("isWallSliding");
+        private static readonly int HitID = Animator.StringToHash("die");
 
         [SerializeField] private Animator _animator;
         [SerializeField] private SpriteRenderer _renderer;
@@ -19,11 +20,19 @@ namespace PixelPlatform
         [SerializeField] private ParticleSystem _jumpFX;
         [SerializeField] private ParticleSystem _runFX;
 
-        private PlayerMovement _player;
+        private PlayerController _player;
+
+        public int LookDirection
+        {
+            get
+            {
+                return _renderer.flipX ? -1 : 1;
+            }
+        }
 
         private void Awake()
         {
-            _player = GetComponentInParent<PlayerMovement>();
+            _player = GetComponentInParent<PlayerController>();
         }
 
         private void Update()
@@ -70,6 +79,7 @@ namespace PixelPlatform
         private void HandleJump()
         {
             _animator.SetBool(JumpID, true);
+            _animator.SetBool(FallID, false);
             PlayParticle(_jumpFX);
         }
 
@@ -102,6 +112,11 @@ namespace PixelPlatform
 
             particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particle.Play();
+        }
+
+        public void TriggerHit()
+        {
+            _animator.SetTrigger(HitID);
         }
     }
 }

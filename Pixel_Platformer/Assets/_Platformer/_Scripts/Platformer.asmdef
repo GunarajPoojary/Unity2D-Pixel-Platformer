@@ -2,7 +2,9 @@
     "name": "Platformer",
     "rootNamespace": "PixelPlatformer",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:e24fbdea9ed807e42b498a0643d8f2ec",
+        "GUID:908452ce8231eb14ca8697ae8ea62bdb"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
