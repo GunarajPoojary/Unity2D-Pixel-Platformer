@@ -28,6 +28,7 @@ namespace PixelPlatformer
             _playerFollowCamera.Setup(_player);
         }
 
+        [ContextMenu("Spawn Player")]
         public void SpawnPlayer()
         {
             _appearFXAnimator.PlayClip();

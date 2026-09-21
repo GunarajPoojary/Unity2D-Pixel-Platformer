@@ -1,3 +1,4 @@
+Enemies:
 ghost
 rocks
 turtle
@@ -6,25 +7,20 @@ skull
 bat
 bunny
 
-
-
-TODOs: gameflow
-main menu
-
-
-
 Font from - https://yukipixels.itch.io/boldpixels
 
-// - Implement horizontal follow logic for background
-// - Implement breakable fruit box
-- State(RUn, Jump, Land), Hit audios
-- particle fx
-- Implement bungie platform
-- Implement breakable platform box
-- Implement blower platform
-- Implement scene transition fx
-- traps
+- Collectibles, checkpoints and goals
+- checkpoint system
+- respawn to nearest checkpoint after hit
+- invincibility flicker after respawn
+- save/Load system
 
-audios
-// Collectible sound
-Enemy hit sound
+- trophy trigger that runs the level-complete sequence
+- score system with 3 star ratings
+- gameManager and levelManager for state (playing, paused, won, hit), respawn and scoring
+// - unlock progression, achievements as data assets, and a local leaderboard
+- main menu, level select, pause, settings, achievements, leaderboard and win screen
+- the level badges on the level cards, HUD, and death counter
+- keyboard menu navigation through the EventSystem
+- maybe add post-processing, such as light bloom on coins or a vignette on the citadel level
+- floating score text

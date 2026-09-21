@@ -12,7 +12,7 @@ namespace PixelPlatformer
 
         private IFollowTargetProvider _target;
         private Transform _followTarget;
-        private Vector3 _velocity;
+        private float _velocity;
         private float _currentLookAhead;
         private float _lookAheadVelocity;
 
@@ -20,12 +20,13 @@ namespace PixelPlatformer
         {
             _target = targetProvider;
             _followTarget = _target.CameraFollowTarget;
-            // transform.position = new Vector3(_followTarget.position.x, _followTarget.position.y, transform.position.z);
         }
 
         private void LateUpdate()
         {
             if (_target == null || !_target.CanFollowTarget) return;
+
+            Vector3 pos = transform.position;
 
             float targetLookAhead = _lookAheadOffset * _target.LookDirection;
             _currentLookAhead = Mathf.SmoothDamp(_currentLookAhead,
@@ -34,16 +35,14 @@ namespace PixelPlatformer
                                                  _lookAheadSmoothTime);
 
 
-            Vector3 desiredPos = _followTarget.position;
-            desiredPos.x += _currentLookAhead;
-            desiredPos.z = transform.position.z;
+            float desiredPos = _followTarget.position.x;
+            desiredPos += _currentLookAhead;
 
-            Vector3 smoothedPos = Vector3.SmoothDamp(transform.position,
+            pos.x = Mathf.SmoothDamp(pos.x,
                                                      desiredPos,
                                                      ref _velocity,
                                                      _smoothTime);
-
-            transform.position = smoothedPos;
+            transform.position = pos;
         }
     }
 }

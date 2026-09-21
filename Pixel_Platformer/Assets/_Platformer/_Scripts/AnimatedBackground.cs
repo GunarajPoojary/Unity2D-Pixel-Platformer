@@ -6,13 +6,13 @@ namespace PixelPlatformer
     [RequireComponent(typeof(TilemapRenderer), typeof(Tilemap))]
     public class AnimatedBackground : MonoBehaviour
     {
-        [SerializeField] private float _speed = 5f;
+        [SerializeField] private float _scrollSpeed = 5f;
         [SerializeField] private Tilemap _map;
         [SerializeField] private TileBase _targetTile;
         [SerializeField] private bool _compressBounds = true;
 
         private TilemapRenderer _renderer;
-        private Vector3 _targetPos;
+        private float _scrollDownPos;
         private Transform _mainCam;
 
         private void Awake()
@@ -24,12 +24,6 @@ namespace PixelPlatformer
 
             SwapTiles(_targetTile);
         }
-
-        // [ContextMenu("Extent")]
-        // private void PrintExtents()
-        // {
-        //     Debug.Log(_map.layoutGrid.cellSize);
-        // }
 
         private void Start()
         {
@@ -43,20 +37,18 @@ namespace PixelPlatformer
 
         private void Move()
         {
-            Vector2 camPos = _mainCam.position;
-            Vector2 bgPos = transform.position;
+            float camHorizontalPos = _mainCam.position.x;
+            Vector2 pos = transform.position;
 
-            _targetPos += _speed * Time.deltaTime * Vector3.down;
-            _targetPos.y = Mathf.Repeat(_targetPos.y, _renderer.bounds.extents.y * 0.5f);
+            _scrollDownPos -= _scrollSpeed * Time.deltaTime;
+            _scrollDownPos = Mathf.Repeat(_scrollDownPos, _renderer.bounds.extents.y / 2f);
 
-            Vector2Int desiredBGPos = new Vector2Int((int)camPos.x / ((int)transform.localScale.x * (int)_map.layoutGrid.cellSize.x), (int)camPos.y / ((int)transform.localScale.y * (int)_map.layoutGrid.cellSize.y));
-            // int targetXPos = (int)camPos.x / ((int)transform.localScale.x * (int)_map.layoutGrid.cellSize.x);
-            // int targetYPos = (int)camPos.y / ((int)transform.localScale.y * (int)_map.layoutGrid.cellSize.y);
+            int targetHorizontalPos = (int)camHorizontalPos / ((int)transform.localScale.x * (int)_map.layoutGrid.cellSize.x);
 
-            bgPos.x = desiredBGPos.x * transform.localScale.x * _map.layoutGrid.cellSize.x;
-            bgPos.y = _targetPos.y + (desiredBGPos.y * transform.localScale.y * _map.layoutGrid.cellSize.y);
+            pos.x = targetHorizontalPos * transform.localScale.x * _map.layoutGrid.cellSize.x;
+            pos.y = _scrollDownPos;
 
-            transform.position = bgPos;
+            transform.position = pos;
         }
 
         public void SwapTiles(TileBase newtile)
