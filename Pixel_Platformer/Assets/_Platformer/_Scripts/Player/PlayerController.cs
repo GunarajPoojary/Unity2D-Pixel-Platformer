@@ -269,7 +269,7 @@ namespace PixelPlatformer
             if (!_wasGrounded && IsGrounded())
             {
                 OnLand?.Invoke();
-                AudioManager.Instance.PlayOneShotAudio(_landClip);
+                AudioManager.Instance.PlaySFX(_landClip);
             }
 
             // Jump Input Buffer
@@ -280,7 +280,7 @@ namespace PixelPlatformer
             else if (isJumpPressed)
             {
                 PerformJump(_initialJumpVelocity);
-                AudioManager.Instance.PlayOneShotAudio(_jumpClip);
+                AudioManager.Instance.PlaySFX(_jumpClip);
                 return;
             }
 
@@ -313,7 +313,7 @@ namespace PixelPlatformer
                                                        // or use _jumpPressed flag
                 {
                     PerformJump(_initialJumpVelocity);
-                    AudioManager.Instance.PlayOneShotAudio(_jumpClip);
+                    AudioManager.Instance.PlaySFX(_jumpClip);
                 }
             }
 
@@ -435,7 +435,7 @@ namespace PixelPlatformer
             _renderer.TriggerHit();
 
             enabled = false;
-            AudioManager.Instance.PlayOneShotAudio(_hurtClip);
+            AudioManager.Instance.PlaySFX(_hurtClip);
             GameEvents.Publish(new PlayerDiedEventData());
         }
         #endregion

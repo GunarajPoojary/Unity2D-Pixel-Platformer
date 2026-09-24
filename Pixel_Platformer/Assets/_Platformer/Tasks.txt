@@ -24,3 +24,10 @@ Font from - https://yukipixels.itch.io/boldpixels
 - keyboard menu navigation through the EventSystem
 - maybe add post-processing, such as light bloom on coins or a vignette on the citadel level
 - floating score text
+
+
+Known Bugs:
+- player lands when jumping through the oneway platform
+- player being forcefully pulled down when near the edge
+- player stands on one leg near edge
+- the footstep sound is too loud

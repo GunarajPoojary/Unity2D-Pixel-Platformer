@@ -456,25 +456,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc3966bbb8a726d4695ed9a312ba50e3, type: 3}
---- !u!1 &184034777 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1639924919401109994, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-  m_PrefabInstance: {fileID: 905376335}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &184034779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184034777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5874debe1592ece4fa5f15357032f7a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Platformer::PixelPlatformer.PlayerFootstepTrigger
-  _footstepClips:
-  - {fileID: 8300000, guid: 62f83029a05e88347895db528e229478, type: 3}
 --- !u!1 &186068111
 GameObject:
   m_ObjectHideFlags: 0
@@ -33820,10 +33801,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2197369895570624279, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _playerHitSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 92dcbe03742098e4a998055d7a778b24, type: 3}
     - target: {fileID: 3910124005606433036, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
       propertyPath: m_Name
       value: Player
@@ -33832,53 +33809,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4928018341784496437, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _hurtClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 7fc51f5e0a8a40c4894176206b4354b5, type: 3}
-    - target: {fileID: 4928018341784496437, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _jumpClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 30b8feafdea86a5479097b352a911564, type: 3}
-    - target: {fileID: 4928018341784496437, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _landClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 019333af2c7ca12488671e020c0dc7b7, type: 3}
-    - target: {fileID: 7398987933303538124, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _itemCollectSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 68e5557d31e9a3e4c961dcdb7272906d, type: 3}
-    - target: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _jumpButton
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _leftButton
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _rightButton
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _useMobileInput
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      propertyPath: _mobileInputUIRoot
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1639924919401109994, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 184034779}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
 --- !u!1001 &910539301
 PrefabInstance:
@@ -33950,6 +33884,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4227729754424884136, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
   m_PrefabInstance: {fileID: 910539301}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &969279863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 969279864}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &969279864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969279863}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1066830738
 GameObject:
   m_ObjectHideFlags: 0
@@ -109004,7 +108969,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724f878ca9ae40c4bb125a8a1b246081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sfxAudioSource: {fileID: 292601327}
+  _musicSource: {fileID: 0}
+  _sfxSource: {fileID: 0}
+  _mixer: {fileID: 0}
 --- !u!4 &1846463171
 Transform:
   m_ObjectHideFlags: 0
@@ -112512,3 +112479,4 @@ SceneRoots:
   - {fileID: 171776987}
   - {fileID: 4712998964490432391}
   - {fileID: 2040093093}
+  - {fileID: 969279864}

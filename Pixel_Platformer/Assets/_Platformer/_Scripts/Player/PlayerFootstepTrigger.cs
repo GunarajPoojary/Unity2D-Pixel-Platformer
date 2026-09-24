@@ -10,7 +10,7 @@ namespace PixelPlatformer
         {
             int index = UnityEngine.Random.Range(0, _footstepClips.Length - 1);
             var clip = _footstepClips[index];
-            AudioManager.Instance.PlayOneShotAudio(clip);
+            AudioManager.Instance.PlaySFX(clip);
         }
     }
 }

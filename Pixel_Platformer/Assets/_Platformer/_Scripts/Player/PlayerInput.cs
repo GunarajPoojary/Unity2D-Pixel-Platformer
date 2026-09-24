@@ -51,6 +51,7 @@ namespace PixelPlatformer
 #endif
         }
 
+#if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS
         private void ReadMobileInput()
         {
             if (_leftButton.Pressed)
@@ -76,7 +77,9 @@ namespace PixelPlatformer
                 OnJumpCanceled?.Invoke();
             }
         }
+#endif
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
         private void ReadKeyboardInput()
         {
             _moveInput = Input.GetAxisRaw("Horizontal");
@@ -91,5 +94,6 @@ namespace PixelPlatformer
                 OnJumpCanceled?.Invoke();
             }
         }
+#endif
     }
 }

@@ -1,41 +1,73 @@
+using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace PixelPlatformer
 {
+    public enum GameState { MainMenu, Gameplay, Pause, Win }
+
     public class GameManager : Singleton<GameManager>
     {
-        [SerializeField] private StartCheckpoint _startCheckpoint;
+        [SerializeField] private SceneLoader _sceneLoader;
+        [SerializeField] private SceneReference _mainMenuScene;
+        private GameState _currentState;
 
-      //  [ContextMenu("Start Game")]
+
+        #region Unity API Methods
         private void Start()
         {
-            StartCoroutine(StartGameRoutine());
-            // wait untill he stands on the platform
-            // once on the platform popup control guide UI
-            // wait until the user presses input that shown on the control guide
-            // once user presses right input then hide the control guide UI and continue the game            
-        }
-
-        private IEnumerator StartGameRoutine()
-        {
-            // first spawn the player
-            PlayerManager.Instance.SpawnPlayer();
-
-            yield return new WaitUntil(()=>_startCheckpoint.IsPlayerOn);
-
-            InputManager.Instance.TogglePlayerInput(true);
-        }
-
-        public void RestartGame()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SwitchState(GameState.MainMenu);
         }
 
         private void OnDestroy()
         {
             GameEvents.Clear();
+        }
+        #endregion
+
+        private void SwitchState(GameState state)
+        {
+            _currentState = state;
+
+            switch (state)
+            {
+                case GameState.MainMenu:
+                    EnterMainMenu();
+                    break;
+            }
+        }
+
+        private void EnterMainMenu()
+        {
+            Debug.Log("Open Main Menu");
+            _sceneLoader.LoadScene(_mainMenuScene.BuildIndex, true, true, 1f);
+        }
+
+        public void RestartGame()
+        {
+
+        }
+
+        public void StartGame()
+        {
+
+        }
+
+        public void QuitGame()
+        {
+
+        }
+
+        public void GoToMainMenu()
+        {
+
+        }
+
+        public void ResumeGame()
+        {
+
         }
     }
 }

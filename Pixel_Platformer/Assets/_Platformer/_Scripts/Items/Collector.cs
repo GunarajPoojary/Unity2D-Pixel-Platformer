@@ -15,7 +15,7 @@ namespace PixelPlatformer
                 if (collectible != null)
                 {
                     collectible.Collect();
-                    AudioManager.Instance.PlayOneShotAudio(_itemCollectSound);
+                    AudioManager.Instance.PlaySFX(_itemCollectSound);
                     GameEvents.Publish(new ItemCollectedEvent());
                 }
             }

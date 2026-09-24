@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GP.Utils.Gizmo
 {
-    public static class GizmosUtils
+    public static class GizmoUtils
     {
         public static void DrawWireArrow(
             Vector3 origin,

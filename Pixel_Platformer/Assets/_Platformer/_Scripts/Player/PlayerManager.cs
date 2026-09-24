@@ -11,19 +11,15 @@ namespace PixelPlatformer
         [SerializeField] private SpriteRenderer _appearFXRenderer;
         [SerializeField] private SingleClipAnimator _appearFXAnimator;
 
-        private void OnEnable()
-        {
-            _appearFXAnimator.OnComplete += Spawn;
-        }
-
-        private void OnDisable()
-        {
-            _appearFXAnimator.OnComplete -= Spawn;
-        }
-
         private void Spawn()
         {
+            _appearFXAnimator.OnComplete -= Spawn;
             _appearFXRenderer.enabled = false;
+            SetupPlayer();
+        }
+
+        private void SetupPlayer()
+        {
             _player.gameObject.SetActive(true);
             _playerFollowCamera.Setup(_player);
         }
@@ -32,6 +28,7 @@ namespace PixelPlatformer
         public void SpawnPlayer()
         {
             _appearFXAnimator.PlayClip();
+            _appearFXAnimator.OnComplete += Spawn;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace PixelPlatformer
             if (hit.collider.TryGetComponent<IHittable>(out var hittable) && hittable.IsHittable)
             {
                 hittable.TakeHit();
-                AudioManager.Instance.PlayOneShotAudio(_playerHitSound);
+                AudioManager.Instance.PlaySFX(_playerHitSound);
                 GetComponent<IImpactable>()?.ApplyImpact(_hitImpact);
             }
         }

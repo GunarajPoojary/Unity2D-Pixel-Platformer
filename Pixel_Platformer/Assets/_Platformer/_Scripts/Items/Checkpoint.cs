@@ -46,7 +46,7 @@ namespace PixelPlatformer
         private void FlagOut()
         {
             _flagOutAnimator.PlayClip();
-            AudioManager.Instance.PlayOneShotAudio(_triggerSound);
+            AudioManager.Instance.PlaySFX(_triggerSound);
             GameEvents.Publish(new StepOnStartCheckpointEvenData());
         }
     }
