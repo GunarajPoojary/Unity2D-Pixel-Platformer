@@ -24,6 +24,9 @@ namespace PixelPlatformer
         public event Action OnJumpPerformed;
         public event Action OnJumpCanceled;
 
+        [ContextMenu("Enable Input")]
+        private void EnableInput() => _inputEnabled = true;
+
         public void Init()
         {
 #if UNITY_EDITOR

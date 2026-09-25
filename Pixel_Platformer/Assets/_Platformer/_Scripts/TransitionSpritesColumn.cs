@@ -11,6 +11,11 @@ namespace PixelPlatformer
 
         private void Awake()
         {
+            ResetState();
+        }
+
+        public void ResetState()
+        {
             foreach (RectTransform rect in _spriteRects)
             {
                 rect.localScale = Vector3.zero;
@@ -27,6 +32,21 @@ namespace PixelPlatformer
             foreach (RectTransform rect in _spriteRects)
             {
                 sequence.Join(rect.DOScale(Vector3.one, _tweenDuration).SetEase(_tweenEase));
+            }
+
+            return sequence;
+        }
+        
+        [ContextMenu("Pop down")]
+        public Sequence PopDown()
+        {
+            transform.DOKill();
+
+            Sequence sequence = DOTween.Sequence();
+
+            foreach (RectTransform rect in _spriteRects)
+            {
+                sequence.Join(rect.DOScale(Vector3.zero, _tweenDuration).SetEase(_tweenEase));
             }
 
             return sequence;

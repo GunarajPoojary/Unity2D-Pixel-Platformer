@@ -8,9 +8,32 @@ namespace PixelPlatformer
     {
         [SerializeField] private float _columnDelay = 0.1f;
         [SerializeField] private TransitionSpritesColumn[] _columns;
+        private CanvasGroup _canvasGroup;
 
         [ContextMenu("Play")]
-        public void PlayTransition(Action callback = null)
+        public void PlayTransition(Action onPopUpComplete, Action onPopdownComplete)
+        {
+            Popup(() =>
+            {
+                onPopUpComplete?.Invoke();
+                Popdown(onPopdownComplete);
+            });
+        }
+
+        private void Popdown(Action onComplete)
+        {
+            Sequence seq = DOTween.Sequence();
+
+            for (int i = 0; i < _columns.Length; i++)
+            {
+                TransitionSpritesColumn column = _columns[i];
+                seq.Insert(i * _columnDelay, column.PopDown());
+            }
+
+            seq.OnComplete(() => onComplete?.Invoke());
+        }
+
+        private void Popup(Action onComplete)
         {
             transform.DOKill();
 
@@ -19,10 +42,10 @@ namespace PixelPlatformer
             for (int i = 0; i < _columns.Length; i++)
             {
                 TransitionSpritesColumn column = _columns[i];
-                sequence.Insert(i*_columnDelay, column.PopUp());
+                sequence.Insert(i * _columnDelay, column.PopUp());
             }
 
-            sequence.OnComplete(() => callback?.Invoke());
+            sequence.OnComplete(() => onComplete?.Invoke());
         }
     }
 }

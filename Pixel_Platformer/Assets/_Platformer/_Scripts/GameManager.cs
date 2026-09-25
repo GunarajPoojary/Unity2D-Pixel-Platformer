@@ -11,7 +11,10 @@ namespace PixelPlatformer
     public class GameManager : Singleton<GameManager>
     {
         [SerializeField] private SceneLoader _sceneLoader;
+        [SerializeField] private SceneReference _gameplayScene;
         [SerializeField] private SceneReference _mainMenuScene;
+
+        [SerializeField] private SceneReference[] _levels;
         private GameState _currentState;
 
 
@@ -42,7 +45,7 @@ namespace PixelPlatformer
         private void EnterMainMenu()
         {
             Debug.Log("Open Main Menu");
-            _sceneLoader.LoadScene(_mainMenuScene.BuildIndex, true, true, 1f);
+            _sceneLoader.LoadScene(_mainMenuScene.BuildIndex, null, showTransition: true, showLoadingScreen: true, 1f);
         }
 
         public void RestartGame()
@@ -52,7 +55,9 @@ namespace PixelPlatformer
 
         public void StartGame()
         {
-
+            _sceneLoader.LoadScene(_gameplayScene.BuildIndex);
+            _sceneLoader.UnloadScene(_mainMenuScene.BuildIndex);
+            _sceneLoader.LoadScene(_levels[0].BuildIndex, null, showTransition: true, showLoadingScreen: true, 1f);
         }
 
         public void QuitGame()

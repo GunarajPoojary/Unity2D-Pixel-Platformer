@@ -7,21 +7,25 @@ namespace PixelPlatformer
     {
         [SerializeField] private CanvasGroup group;
         [SerializeField] private PixelProgressBar _progressBar;
-        [SerializeField] private Canvas _canvas;
 
         public void UpdateProgress(float progress)
         {
             _progressBar.SetProgress01(progress);
         }
 
-        public  void Open(Action onComplete = null)
+        public void HideBar()
         {
-            _canvas.enabled = true;
+            _progressBar.Hide();
         }
 
-        public  void Close(Action onComplete = null)
+        public void Open(Action onComplete = null)
         {
-            _canvas.enabled = false;
+            gameObject.SetActive(true);
+        }
+
+        public void Close(Action onComplete = null)
+        {
+            gameObject.SetActive(false);
         }
     }
 }

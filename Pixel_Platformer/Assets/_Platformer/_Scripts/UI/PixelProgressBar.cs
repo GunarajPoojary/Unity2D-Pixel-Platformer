@@ -29,5 +29,10 @@ namespace PixelPlatformer
             _barImage.sprite = _sprites[index];
             Debug.Log($"Progress {progressValue}");
         }
+
+        public void Hide()
+        {
+            gameObject.SetActive(true);
+        }
     }
 }
