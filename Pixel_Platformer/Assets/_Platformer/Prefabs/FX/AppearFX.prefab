@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2549347669251194759}
   - component: {fileID: 2948873675022128808}
+  - component: {fileID: 8483947050716786471}
   m_Layer: 0
   m_Name: AppearFX
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6888740587130274231}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -79,15 +80,41 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.875, y: 5.875}
+  m_Size: {x: 5.25, y: 5.1875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8483947050716786471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6888740587130274231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50e02a481e092a4ba524966caad1471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.PlayerSpawnFX
+  _appearFXRenderer: {fileID: 0}
+  _appearFXAnimator:
+    monoBehaviour: {fileID: 8483947050716786471}
+    _renderer: {fileID: 2948873675022128808}
+    _sprites:
+    - {fileID: -6785241745301479959, guid: c447f4b8dfaa40e48b43d1a7d1c7963c, type: 3}
+    - {fileID: 5861003433466108268, guid: c447f4b8dfaa40e48b43d1a7d1c7963c, type: 3}
+    - {fileID: -5640422760449388286, guid: c447f4b8dfaa40e48b43d1a7d1c7963c, type: 3}
+    - {fileID: 8549794367340245339, guid: c447f4b8dfaa40e48b43d1a7d1c7963c, type: 3}
+    - {fileID: 6207323745429798982, guid: c447f4b8dfaa40e48b43d1a7d1c7963c, type: 3}
+    - {fileID: -8583168353546941631, guid: c447f4b8dfaa40e48b43d1a7d1c7963c, type: 3}
+    - {fileID: -9151302988084357179, guid: c447f4b8dfaa40e48b43d1a7d1c7963c, type: 3}
+    _loop: 0
+    _frameRate: 12

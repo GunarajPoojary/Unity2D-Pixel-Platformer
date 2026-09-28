@@ -17,21 +17,23 @@ namespace PixelPlatformer
 
         public event Action OnComplete;
 
-        public void PlayClip()
+        public void PlayClip(Action onComplete = null)
         {
             if (_coroutine != null)
                 StopClip();
 
-            _coroutine = monoBehaviour.StartCoroutine(PlayClipRoutine());
+            _coroutine = monoBehaviour.StartCoroutine(PlayClipRoutine(onComplete));
         }
 
         public void StopClip()
         {
+            if(_coroutine == null) return;
+            
             monoBehaviour.StopCoroutine(_coroutine);
             _coroutine = null;
         }
 
-        private IEnumerator PlayClipRoutine()
+        private IEnumerator PlayClipRoutine(Action onComplete = null)
         {
             _keyFrame = 0;
             var elapsedTime = 0f;
@@ -55,6 +57,7 @@ namespace PixelPlatformer
                 yield return null;
             }
 
+            onComplete?.Invoke();
             OnComplete?.Invoke();
         }
     }

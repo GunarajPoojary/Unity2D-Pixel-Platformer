@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 936009388}
   - component: {fileID: 936009389}
   m_Layer: 0
-  m_Name: Bootsrtapper
+  m_Name: Bootstrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,10 +160,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 936009387}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeb3f2f8e4a6f714ba848f156abfec61, type: 3}
+  m_Script: {fileID: 11500000, guid: 869a77714445b8f4286f15e4e02395e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _managerScene: {fileID: 11400000, guid: 55b1ace997b74d04abc4d765614b88cf, type: 2}
+  _mainMenuScene: {fileID: 11400000, guid: eb4cb50c2d089d4418bf8d6b10a6db4c, type: 2}
+  _loadingScreen: {fileID: 0}
+  _eventSystemPrefab: {fileID: 1772716761132507781, guid: 1d701e8a61eef6b42a2f1e12130a56f2, type: 3}
+  _sceneTransitionFXPrefab: {fileID: 3341065463838354169, guid: 9276c5a6330aea64aa2f410cc4f4bcf0, type: 3}
+  _loadingScreenPrefab: {fileID: 6481419436092854360, guid: d25d486afa1eaae4f8064843350c1264, type: 3}
+  _audioManagerPrefab: {fileID: 2616690594140575757, guid: ed667f960d34bae47b4a1893388e6f06, type: 3}
+  _gameManagerPrefab: {fileID: 4664728171210912164, guid: 8caf648b178527a4681eef01cdb94898, type: 3}
+  _backgroundMusicClip: {fileID: 8300000, guid: e1b6eea12cf211a4b9c0b7ef17bfb508, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

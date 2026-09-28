@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -16,7 +17,6 @@ namespace PixelPlatformer
         [SerializeField] private AudioSource _sfxSource;
         [SerializeField] private AudioMixer _mixer;
 
-
         private float _masterVolume = 1f;
         private float _musicVolume = 1f;
         private float _sFXVolume = 1f;
@@ -24,6 +24,11 @@ namespace PixelPlatformer
         private bool _isMasterMuted;
         private bool _isMusicMuted;
         private bool _isSFXMuted;
+
+        public async UniTask Initialize()
+        {
+            Debug.Log($"Initializing {GetType().Name}");
+        }
 
         #region Master
         public void SetMasterVolume(float volume)
@@ -52,6 +57,12 @@ namespace PixelPlatformer
         #endregion
 
         #region Music
+        public void SetMusic(bool loop, AudioClip clip)
+        {
+            _musicSource.loop = loop;
+            _musicSource.clip = clip;
+        }
+
         public void PlayMusic()
         {
             _musicSource.Play();

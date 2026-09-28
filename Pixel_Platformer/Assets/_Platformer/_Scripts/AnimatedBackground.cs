@@ -7,27 +7,22 @@ namespace PixelPlatformer
     public class AnimatedBackground : MonoBehaviour
     {
         [SerializeField] private float _scrollSpeed = 5f;
+        [SerializeField] private TilemapRenderer _renderer;
         [SerializeField] private Tilemap _map;
         [SerializeField] private TileBase _targetTile;
         [SerializeField] private bool _compressBounds = true;
 
-        private TilemapRenderer _renderer;
         private float _scrollDownPos;
-        private Transform _mainCam;
+        private Transform _camTransform;
 
-        private void Awake()
+        public void Setup(Transform camTransform)
         {
             if (_compressBounds)
                 _map.CompressBounds();
 
-            _renderer = GetComponent<TilemapRenderer>();
-
             SwapTiles(_targetTile);
-        }
 
-        private void Start()
-        {
-            _mainCam = Camera.main.transform;
+            _camTransform = camTransform;
         }
 
         private void Update()
@@ -37,7 +32,9 @@ namespace PixelPlatformer
 
         private void Move()
         {
-            float camHorizontalPos = _mainCam.position.x;
+            if (!_camTransform) return;
+
+            float camHorizontalPos = _camTransform.position.x;
             Vector2 pos = transform.position;
 
             _scrollDownPos -= _scrollSpeed * Time.deltaTime;

@@ -76,7 +76,7 @@ namespace PixelPlatformer
 
         public Transform CameraFollowTarget { get { return _cameraFollowTarget; } }
         public int LookDirection { get { return _renderer.LookDirection; } }
-        public bool CanFollowTarget { get { return _canFollowTarget; } }
+        public bool CanFollowTarget { get { return _canFollowTarget; } set { value = _cameraFollowTarget; } }
 
         public bool IsRunning
         {
@@ -467,6 +467,11 @@ namespace PixelPlatformer
                                      _wallLayer);
         }
         #endregion
+
+        public void SetPosition(Vector3 pos)
+        {
+            transform.position = pos;
+        }
 
         #region Debug Methods
 #if UNITY_EDITOR

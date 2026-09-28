@@ -1,28 +1,87 @@
-using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace PixelPlatformer
 {
     public class Bootstrapper : MonoBehaviour
     {
-        [SerializeField] private SceneReference _managerScene;
-        private AsyncOperation op;
-        private void Start()
+        [SerializeField] private SceneReference _mainMenuScene;
+
+        [SerializeField] private EventSystem _eventSystemPrefab;
+        [SerializeField] private SceneTransitionFX _sceneTransitionFXPrefab;
+        [SerializeField] private LoadingScreen _loadingScreenPrefab;
+
+        [SerializeField] private AudioManager _audioManagerPrefab;
+        [SerializeField] private GameManager _gameManagerPrefab;
+
+        [SerializeField] private AudioClip _backgroundMusicClip;
+
+        private SceneTransitionFX _sceneTransitionFX;
+        private AudioManager _audioManager;
+        private GameManager _gameManager;
+        private LoadingScreen _loadingScreen;
+
+        private async void Start()
         {
-            // Load the PersisteneManager Scene which contains GameManager which handles flow of the game
-            op = SceneManager.LoadSceneAsync(_managerScene.BuildIndex, LoadSceneMode.Additive);
-            op.completed += Unload;
+            await BindObjects();
+            _sceneTransitionFX.Hide();
+            _loadingScreen.Show();
+            _loadingScreen.UpdateProgress(0.2f);
+
+            // load main menu
+            // scene activation is controlled manually 
+            AsyncOperation op = SceneManager.LoadSceneAsync(_mainMenuScene.BuildIndex, LoadSceneMode.Additive);
+            op.allowSceneActivation = false;
+
+            while (op.progress < 0.9f)
+            {
+                if (op.progress > 0.2f)
+                    _loadingScreen.UpdateProgress(op.progress);
+
+                await UniTask.Yield(); // jumps to next frame
+            }
+
+            _loadingScreen.UpdateProgress(0.9f);
+
+            op.allowSceneActivation = true;
+
+            await op.ToUniTask(); // convert AsyncOperation to UniTask which can be await
+            _loadingScreen.UpdateProgress(1f);
+
+            // now main menu has loaded
+            await UniTask.WaitUntil(() => _backgroundMusicClip.LoadAudioData());
+            await _audioManager.Initialize();
+            await _gameManager.Initialize();
+            await _gameManager.Setup(_loadingScreen, _sceneTransitionFX);
+
+            _sceneTransitionFX.Init();
+
+            op = SceneManager.UnloadSceneAsync(0);
+
+            await op.ToUniTask();
+            _audioManager.SetMusic(true, _backgroundMusicClip);
+            _sceneTransitionFX.Show();
+
+            await _sceneTransitionFX.PlayPopup();
+            _audioManager.PlayMusic();
+            _loadingScreen.Hide();
+            await _sceneTransitionFX.PlayPopdown();
+            _sceneTransitionFX.Hide();
         }
 
-        private void OnDestroy()
+        private async UniTask BindObjects()
         {
-            op.completed -= Unload;
-        }
+            Transform persistentObjects = new GameObject("Persistent Objects").transform;
+            _loadingScreen = Instantiate(_loadingScreenPrefab, persistentObjects);
+            Instantiate(_eventSystemPrefab, persistentObjects);
 
-        private void Unload(AsyncOperation operation)
-        {
-            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            _sceneTransitionFX = Instantiate(_sceneTransitionFXPrefab, persistentObjects);
+            _audioManager = Instantiate(_audioManagerPrefab, persistentObjects);
+            _gameManager = Instantiate(_gameManagerPrefab, persistentObjects);
+
+            DontDestroyOnLoad(persistentObjects);
         }
     }
 }

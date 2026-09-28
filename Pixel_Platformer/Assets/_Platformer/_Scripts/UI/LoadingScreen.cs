@@ -5,12 +5,19 @@ namespace PixelPlatformer
 {
     public class LoadingScreen : MonoBehaviour
     {
-        [SerializeField] private CanvasGroup group;
         [SerializeField] private PixelProgressBar _progressBar;
+        [SerializeField] private Canvas _canvas;
+        private float _progress;
+
+        public float Progress
+        {
+            get { return _progress; }
+        }
 
         public void UpdateProgress(float progress)
         {
-            _progressBar.SetProgress01(progress);
+            _progress = progress;
+            _progressBar.SetProgress01(_progress);
         }
 
         public void HideBar()
@@ -18,14 +25,14 @@ namespace PixelPlatformer
             _progressBar.Hide();
         }
 
-        public void Open(Action onComplete = null)
+        public void Show()
         {
-            gameObject.SetActive(true);
+            _canvas.enabled = true;
         }
 
-        public void Close(Action onComplete = null)
+        public void Hide()
         {
-            gameObject.SetActive(false);
+            _canvas.enabled = false;
         }
     }
 }

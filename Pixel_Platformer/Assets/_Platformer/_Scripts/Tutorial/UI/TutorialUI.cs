@@ -35,7 +35,7 @@ namespace PixelPlatformer
         private Canvas _canvas;
         private int _currentClipIndex;
 
-        private void Awake()
+        public void Init()
         {
             _canvas = GetComponent<Canvas>();
             _canvas.enabled = false;

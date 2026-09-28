@@ -25,9 +25,9 @@ namespace PixelPlatformer
 
             int index = (int)((_sprites.Length - 1)*progressValue);
 
-            Debug.Log($"Index {index}");
+            // Debug.Log($"Index {index}");
             _barImage.sprite = _sprites[index];
-            Debug.Log($"Progress {progressValue}");
+            // Debug.Log($"Progress {progressValue}");
         }
 
         public void Hide()

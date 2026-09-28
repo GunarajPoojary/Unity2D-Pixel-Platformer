@@ -1,109 +1,93 @@
-using System;
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace PixelPlatformer
 {
     public class SceneLoader : MonoBehaviour
     {
-        [SerializeField] private LoadingScreen _loadingScreen;
-        [SerializeField] private SceneTransition _sceneTransition;
-        private AsyncOperation _currentLoadOperation;
-        private AsyncOperation _currentUnloadOperation;
+        private LoadingScreen _loadingScreen;
+        private SceneTransitionFX _sceneTransition;
+
+        public void Setup(LoadingScreen loadingScreen, SceneTransitionFX sceneTransition)
+        {
+            _loadingScreen = loadingScreen;
+            _sceneTransition = sceneTransition;
+        }
 
         #region Public API
-        public void LoadScene(int sceneIndex, Action onComplete = null, bool showTransition = false, bool showLoadingScreen = false, float minLoadTime = 1)
+        public async UniTask LoadScene(int sceneIndex,
+                                       bool showTransition = false,
+                                       bool showLoadingScreen = false,
+                                       float minScreenLoadTime = 0f)
         {
-            if (showLoadingScreen)
-            {
-                StartCoroutine(LoadSceneRoutine(sceneIndex, onComplete, minLoadTime, showTransitionEffect: showTransition));
-            }
-            else
-            {
-                SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
-            }
-        }
-
-        public void UnloadScene(int sceneIndex)
-        {
-            var op = SceneManager.UnloadSceneAsync(sceneIndex);
-            if (op == null)
-            {
-                Debug.LogError($"Could not unload scene {sceneIndex} — not loaded or already unloading.");
-                _currentUnloadOperation = null;
-                return;
-            }
-            _currentUnloadOperation = op;
-        }
-        #endregion
-
-        private IEnumerator LoadSceneRoutine(int sceneIndex, Action onComplete, float minLoadTime, bool showTransitionEffect = false, bool showLoadingScreen = true)
-        {
-            minLoadTime = Mathf.Max(1, minLoadTime);
+            minScreenLoadTime = Mathf.Max(0f, minScreenLoadTime); // avoid negative values
 
             if (showLoadingScreen)
             {
                 _loadingScreen.UpdateProgress(0f);
-                _loadingScreen.Open();
+                _loadingScreen.Show();
             }
 
-            yield return StartCoroutine(LoadSceneAsyncRoutine(sceneIndex, minLoadTime));
+            // scene activation is controlled manually 
+            AsyncOperation op = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+            op.allowSceneActivation = false;
 
-            // loading complete
-            if (showLoadingScreen)
-            {
-                _loadingScreen.UpdateProgress(1f);
-                // _loadingScreen.HideBar();
-
-                if (showTransitionEffect)
-                {
-                    _sceneTransition.PlayTransition(() =>
-                {
-                    _loadingScreen.Close();
-                },()=>onComplete?.Invoke());
-                }
-                else
-                {
-                    onComplete?.Invoke();
-                }
-            }
-        }
-
-        private IEnumerator LoadSceneAsyncRoutine(int sceneIndex, float minLoadTime)
-        {
-            _currentLoadOperation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
-            _currentLoadOperation.allowSceneActivation = false;
-
+            // track operation progress
             float elapsed = 0f;
 
             while (true)
             {
                 elapsed += Time.unscaledDeltaTime;
 
-                float progress = Mathf.Clamp01(elapsed / minLoadTime);
+                // we normalize progress to 0-1
+                float loadProgress = Mathf.Clamp01(op.progress / 0.9f);
 
-                _loadingScreen.UpdateProgress(progress);
+                // if minLoadTime is 0 then we don't let time progress at all
+                float timeProgress = minScreenLoadTime > 0f ? Mathf.Clamp01(elapsed / minScreenLoadTime) : 1f;
+                float progress = Mathf.Min(loadProgress, timeProgress);
 
-                if (elapsed >= minLoadTime && _currentLoadOperation.progress >= 0.9f)
+                if (showLoadingScreen)
+                    _loadingScreen.UpdateProgress(progress);
+
+                if (elapsed >= minScreenLoadTime && op.progress >= 0.9f)
                     break;
-                yield return null;
+
+                await UniTask.Yield(); // jumps to next frame
             }
 
-            _currentLoadOperation.allowSceneActivation = true;
+            op.allowSceneActivation = true;
 
-            yield return new WaitUntil(IsLoadOperationDone);
+            await op.ToUniTask(); // convert AsyncOperation to UniTask which can be await
+
+            if (showLoadingScreen)
+                _loadingScreen.UpdateProgress(1f);
+
+            if (showTransition)
+            {
+                _sceneTransition.Show(); // set the root gameobject which contains those sprites to active
+                // _sceneTransition.PlayPopup(() =>
+                // {
+                //     _sceneTransition.PlayPopdown(() => _sceneTransition.Hide());
+                //     _loadingScreen.Hide();
+                // });
+            }
+            else if (showLoadingScreen)
+            {
+                _loadingScreen.Hide();
+            }
         }
 
-        private bool IsLoadOperationDone()
+        public async UniTask UnloadScene(int sceneIndex)
         {
-            return _currentLoadOperation == null || _currentLoadOperation.isDone;
-        }
+            AsyncOperation op = SceneManager.UnloadSceneAsync(sceneIndex);
 
-        private bool IsUnloadOperationDone()
-        {
-            return _currentUnloadOperation == null || _currentUnloadOperation.isDone;
+            if (op == null)
+            {
+                Debug.LogError($"Could not unload scene {sceneIndex} — not loaded or already unloading.");
+                return;
+            }
         }
+        #endregion
     }
 }

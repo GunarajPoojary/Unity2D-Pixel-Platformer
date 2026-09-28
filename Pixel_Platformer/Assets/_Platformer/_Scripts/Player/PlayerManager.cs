@@ -6,29 +6,32 @@ namespace PixelPlatformer
     public class PlayerManager : Singleton<PlayerManager>
     {
         [SerializeField] private PlayerController _player;
-        [SerializeField] private PlayerInput _playerInput;
-        [SerializeField] private FollowCamera _playerFollowCamera;
-        [SerializeField] private SpriteRenderer _appearFXRenderer;
-        [SerializeField] private SingleClipAnimator _appearFXAnimator;
+        [SerializeField] private PlayerInput _input;
+        [SerializeField] private FollowCamera _followCamera;
+        public PlayerController Player { get { return _player; } }
 
-        private void Spawn()
+        public Transform FollowCam { get { return _followCamera.transform; } }
+
+        public void ToggleInput(bool toggle)
         {
-            _appearFXAnimator.OnComplete -= Spawn;
-            _appearFXRenderer.enabled = false;
-            SetupPlayer();
+            _input.InputEnabled = toggle;
         }
 
-        private void SetupPlayer()
+        public void SetupPlayer(Vector3 position)
         {
-            _player.gameObject.SetActive(true);
-            _playerFollowCamera.Setup(_player);
+            _player.SetPosition(position);
+            _followCamera.Setup(_player);
         }
 
-        [ContextMenu("Spawn Player")]
         public void SpawnPlayer()
         {
-            _appearFXAnimator.PlayClip();
-            _appearFXAnimator.OnComplete += Spawn;
+            _player.gameObject.SetActive(true);
+        }
+
+        public void DespawnPlayer()
+        {
+            _player.gameObject.SetActive(false);
+            ToggleInput(false);
         }
     }
 }

@@ -14,7 +14,7 @@ public class SceneReference : ScriptableObject
     {
         get
         {
-            if (string.IsNullOrEmpty(ScenePath))
+            if (string.IsNullOrEmpty(scenePath))
             {
                 Debug.LogError($"{name}: No Scene Asset assigned.", this);
             }
