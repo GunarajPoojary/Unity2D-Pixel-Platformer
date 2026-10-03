@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 // using GP.Utils.Gizmo;
 
@@ -34,6 +35,7 @@ namespace PixelPlatformer
         [SerializeField] private LayerMask _wallLayer;
 
         [SerializeField] private Transform _cameraFollowTarget;
+        [SerializeField] private Rigidbody2D _rb;
         [SerializeField] private PlayerRenderer _renderer;
         [SerializeField] private float _hitForce = 15f;
 
@@ -51,7 +53,6 @@ namespace PixelPlatformer
 
         private PlayerInput _input;
 
-        private Rigidbody2D _rb;
         private float _gravity;
 
         private bool _canFollowTarget = true;
@@ -88,6 +89,7 @@ namespace PixelPlatformer
 
         public bool IsHit { get; set; } = false;
 
+        public event Action OnMove;
         public event Action<bool> OnTurn; // true means facing right
         public event Action OnFall;
 
@@ -160,6 +162,35 @@ namespace PixelPlatformer
         }
         #endregion
 
+        public void ResetState()
+        {
+            // re-enable everything we switched off after hit
+            enabled = true;
+            _input.enabled = true;
+            _input.ResetInput();
+            if (TryGetComponent(out Stomper hitter)) hitter.enabled = true;
+
+            _hittable.ResetHit();
+            _renderer.ResetHit();
+
+            // movement state
+            _canFollowTarget = true;
+            IsHit = false;
+            _verticalVelocity = 0f;
+            _horizontalVelocity = 0f;
+            _isWallSliding = false;
+            _wasJumping = false;
+            _wallJumpLockTimer = 0f;
+            _jumpBufferTimer = 0f;
+            _coyoteTimer = 0f;
+
+            // physics state
+            _rb.linearVelocity = Vector2.zero;
+            _rb.angularVelocity = 0f;
+            _rb.rotation = 0f;
+            transform.rotation = Quaternion.identity;
+        }
+
         private void SetupJumpVariables()
         {
             /*position equation p(t) = p0 + v0*t + (1/2)*g*t^2
@@ -215,6 +246,7 @@ namespace PixelPlatformer
                     _wasFacingRight = facingRight;
                     OnTurn?.Invoke(facingRight);
                 }
+                OnMove?.Invoke();
             }
         }
 
@@ -430,13 +462,12 @@ namespace PixelPlatformer
         private void HandleHit()
         {
             _canFollowTarget = false;
-            GetComponent<Hitter>().enabled = false;
+            GetComponent<Stomper>().enabled = false;
             _input.enabled = false;
             _renderer.TriggerHit();
 
             enabled = false;
             AudioManager.Instance.PlaySFX(_hurtClip);
-            GameEvents.Publish(new PlayerDiedEventData());
         }
         #endregion
 
@@ -471,6 +502,27 @@ namespace PixelPlatformer
         public void SetPosition(Vector3 pos)
         {
             transform.position = pos;
+        }
+
+        public void DespawnAt(Vector3 position, Action onComplete)
+        {
+            StartCoroutine(DespawnRoutine(position, onComplete));
+            OnJump?.Invoke();
+        }
+
+        private IEnumerator DespawnRoutine(Vector3 position, Action onComplete)
+        {
+            while ((transform.position - position).magnitude > 0.01f)
+            {
+                var targetPos = Vector3.MoveTowards(transform.position,position, _movementStats.DespawnMoveSpeed);
+                _rb.MovePosition(targetPos);
+
+                yield return null;
+            }
+
+            _rb.MovePosition(position); // snap position
+            gameObject.SetActive(false);
+            onComplete?.Invoke();
         }
 
         #region Debug Methods

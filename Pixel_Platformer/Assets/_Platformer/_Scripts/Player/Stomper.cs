@@ -3,7 +3,7 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(PlayerController))]
-    public class Hitter : MonoBehaviour
+    public class Stomper : MonoBehaviour
     {
         [Header("Hit Check")]
         [SerializeField] private LayerMask _hitMask;
@@ -27,6 +27,7 @@ namespace PixelPlatformer
             if (hit.collider.TryGetComponent<IHittable>(out var hittable) && hittable.IsHittable)
             {
                 hittable.TakeHit();
+                GameEvents.Publish(new StompEventData());  
                 AudioManager.Instance.PlaySFX(_playerHitSound);
                 GetComponent<IImpactable>()?.ApplyImpact(_hitImpact);
             }

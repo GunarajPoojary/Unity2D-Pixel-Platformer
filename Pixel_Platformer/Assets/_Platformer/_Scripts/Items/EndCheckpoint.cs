@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -6,30 +7,19 @@ namespace PixelPlatformer
     {
         [SerializeField] private SingleClipAnimator _animator;
         [SerializeField] private LayerMask _playerMask;
-        [SerializeField] private AudioClip _startClip;
-        private bool _hasPlayedClip = false;
-        private bool _isPlayerOn;
+        [SerializeField] private AudioClip _winClip;
+        private bool _hasTriggered = false;
 
-        public bool IsPlayerOn { get { return _isPlayerOn; } }
+        public event Action OnTrigger;
 
-        private void OnCollisionEnter2D(Collision2D col)
+        private void OnTriggerEnter2D(Collider2D col)
         {
-            if (!_hasPlayedClip && (_playerMask & (1 << col.gameObject.layer)) != 0)
-            {
-                PlayStartClip();
-                _hasPlayedClip = true;
-                _isPlayerOn = true;
-                return;
-            }
+            if (_hasTriggered || (_playerMask & (1 << col.gameObject.layer)) == 0) return;
 
-            _isPlayerOn = false;
-        }
-
-        private void PlayStartClip()
-        {
+            _hasTriggered = true;
             _animator.PlayClip();
-            AudioManager.Instance.PlaySFX(_startClip);
-            GameEvents.Publish(new StepOnStartCheckpointEvenData());
+            AudioManager.Instance.PlaySFX(_winClip);
+            OnTrigger?.Invoke();
         }
     }
 }

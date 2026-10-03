@@ -1,23 +1,13 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace PixelPlatformer
 {
-    public readonly struct ItemCollectedEvent
-    {
-        public readonly Collectible collectible;
-
-        public ItemCollectedEvent(Collectible collectible)
-        {
-            this.collectible = collectible;
-        }
-    }
-    public readonly struct LevelStartEventData { }
+    public readonly struct FruitCollectedEvent { }
     public readonly struct CameraShakeEventData { }
-    public readonly struct HitEventData { }
     public readonly struct StepOnStartCheckpointEvenData { }
     public readonly struct PlayerDiedEventData { }
+    public readonly struct StompEventData { }
 
     public static class GameEvents
     {

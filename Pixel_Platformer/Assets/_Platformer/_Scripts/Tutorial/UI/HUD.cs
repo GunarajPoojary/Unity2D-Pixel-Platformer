@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,11 @@ namespace PixelPlatformer
         [SerializeField] private Button _replayLevelButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private TutorialUI _guideUIManager;
+        [SerializeField] private TMP_Text _timerText;
+        [SerializeField] private TMP_Text _enemiesDefeatedText;
+
+        [SerializeField] private TMP_Text _collectibleCountText;
+
         private Vector3 _guideButtonAnchorPos;
 
         private void OnEnable()
@@ -30,6 +36,23 @@ namespace PixelPlatformer
             _guideButtonAnchorPos = _guideButton.GetComponent<RectTransform>().anchoredPosition;
         }
 
+        public void SetCollectibles(int count)
+        {
+            _collectibleCountText.text = count.ToString();
+        }
+        
+        public void SetTime(float seconds)
+        {
+            int mins = (int)(seconds / 60f);
+            float secs = seconds - mins * 60f;
+            _timerText.text = $"{mins:00}:{secs:00.00}";
+        }
+
+        public void SetEnemiesDefeated(int count)
+        {
+            _enemiesDefeatedText.text = count.ToString();
+        }
+
         private void OpenGuide()
         {
             _guideUIManager.Toggle();
@@ -42,7 +65,7 @@ namespace PixelPlatformer
 
         private void OpenSettings()
         {
-            GameManager.Instance.OpenSettingsMenu();
+            GameManager.Instance.PauseGame();
         }
     }
 }

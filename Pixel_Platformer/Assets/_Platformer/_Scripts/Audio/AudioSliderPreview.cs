@@ -8,7 +8,6 @@ namespace PixelPlatformer
     public class AudioSliderPreview : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         [SerializeField] private Slider _slider;
-        [SerializeField] private Toggle _muteToggle;
         [SerializeField] private AudioClip _previewClip;
 
         private bool _isDragging;
@@ -16,21 +15,11 @@ namespace PixelPlatformer
         private void OnEnable()
         {
             _slider.onValueChanged.AddListener(HandleVolumeChanged);
-            _muteToggle.onValueChanged.AddListener(HandleValueChanged);
         }
 
         private void OnDisable()
         {
             _slider.onValueChanged.RemoveListener(HandleVolumeChanged);
-            _muteToggle.onValueChanged.AddListener(HandleValueChanged);
-        }
-
-        private void HandleValueChanged(bool toggle)
-        {
-            if (!toggle)
-            {
-                PlayPreview();
-            }
         }
 
         public void HandleVolumeChanged(float value)

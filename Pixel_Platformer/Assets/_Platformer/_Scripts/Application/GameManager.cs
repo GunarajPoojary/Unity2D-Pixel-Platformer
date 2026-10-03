@@ -17,8 +17,46 @@ namespace PixelPlatformer
         [SerializeField] private SceneReference _gameplayScene;
         [SerializeField] private HUD _hud;
 
+        private int _currentLevelIndex;
         private LoadingScreen _loadingScreen;
         private SceneTransitionFX _sceneTransitionFX;
+        private bool _isPaused;
+
+        public bool IsPaused
+        {
+            get
+            {
+                return _isPaused;
+            }
+        }
+
+        [SerializeField] private float _winScreenDelay = 0.9f;
+
+        public int CurrentLevelIndex
+        {
+            get
+            {
+                return _currentLevelIndex;
+            }
+        }
+
+        public bool IsLastLevel
+        {
+            get
+            {
+                return _currentLevelIndex + 1 >= _levels.Length;
+            }
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.Subscribe<PlayerDiedEventData>(EnterGameLoseState);
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.Unsubscribe<PlayerDiedEventData>(EnterGameLoseState);
+        }
 
         public async UniTask Initialize()
         {
@@ -66,6 +104,7 @@ namespace PixelPlatformer
             op = SceneManager.LoadSceneAsync(_levels[0].BuildIndex, LoadSceneMode.Additive); // replace with actual saved level
             _loadingScreen.UpdateProgress(0.6f);
             await op.ToUniTask();
+            _currentLevelIndex = 0;
 
             Scene level = SceneManager.GetSceneByBuildIndex(_levels[0].BuildIndex);
             SceneManager.SetActiveScene(level);
@@ -99,7 +138,7 @@ namespace PixelPlatformer
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.UpdateProgress(0f);
             _loadingScreen.Show();
-            
+
             PlayerManager.Instance.DespawnPlayer();
 
             await _sceneTransitionFX.PlayPopdown();
@@ -139,9 +178,133 @@ namespace PixelPlatformer
             levelManager.StartLevel();
         }
 
-        public void OpenSettingsMenu()
+        public async void CompleteLevel()
         {
-            Debug.Log("Open Settings");
+            _sceneTransitionFX.Show();
+            await _sceneTransitionFX.PlayPopup();
+            _loadingScreen.UpdateProgress(0f);
+            _loadingScreen.Show();
+
+            PlayerManager.Instance.DespawnPlayer();
+
+            await _sceneTransitionFX.PlayPopdown();
+
+            Scene levelScene = SceneManager.GetActiveScene();
+            _loadingScreen.UpdateProgress(0.1f);
+
+            if (levelScene.IsValid() && levelScene.isLoaded)
+            {
+                await SceneManager.UnloadSceneAsync(levelScene).ToUniTask();
+                _loadingScreen.UpdateProgress(0.3f);
+            }
+
+            bool hasNextLevel = _currentLevelIndex + 1 < _levels.Length;
+
+            if (!hasNextLevel)
+            {
+                // there are no more levels, send player back to the main menu
+                _loadingScreen.Hide();
+                _sceneTransitionFX.Hide();
+                return;
+            }
+
+            _currentLevelIndex++;
+            AsyncOperation op = SceneManager.LoadSceneAsync(_levels[_currentLevelIndex].BuildIndex, LoadSceneMode.Additive);
+            _loadingScreen.UpdateProgress(0.6f);
+            await op.ToUniTask();
+            _loadingScreen.UpdateProgress(1f);
+
+            Scene nextScene = SceneManager.GetSceneByBuildIndex(_levels[_currentLevelIndex].BuildIndex);
+            SceneManager.SetActiveScene(nextScene);
+
+            LevelManager levelManager = LevelManager.Instance;
+            levelManager.SetupLevel();
+
+            await UniTask.DelayFrame(5);
+
+            _sceneTransitionFX.Show();
+            await _sceneTransitionFX.PlayPopup();
+            _loadingScreen.Hide();
+            await _sceneTransitionFX.PlayPopdown();
+
+            levelManager.StartLevel();
+        }
+
+        public async void GoToMainMenu()
+        {
+            Debug.Log("Go To Main Menu");
+
+            if (_isPaused)
+            {
+                _isPaused = false;
+                Time.timeScale = 1f;
+                UIManager.Instance.HidePauseMenu();
+            }
+
+            _sceneTransitionFX.Show();
+            await _sceneTransitionFX.PlayPopup();
+            _loadingScreen.UpdateProgress(0);
+            _loadingScreen.Show();
+            await _sceneTransitionFX.PlayPopdown();
+
+            _loadingScreen.UpdateProgress(0.1f);
+
+            // load gameplay
+            AsyncOperation op = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            await op.ToUniTask(); // convert AsyncOperation to UniTask which can be await
+
+            _loadingScreen.UpdateProgress(0.3f);
+
+            // unload main menu
+            op = SceneManager.LoadSceneAsync(_mainMenuScene.BuildIndex, LoadSceneMode.Additive);
+
+            await op.ToUniTask();
+            _loadingScreen.UpdateProgress(0.5f);
+
+            op = SceneManager.UnloadSceneAsync(_gameplayScene.BuildIndex);
+            await op.ToUniTask();
+
+            _loadingScreen.UpdateProgress(0.8f);
+
+            Scene menuScene = SceneManager.GetSceneByBuildIndex(_mainMenuScene.BuildIndex);
+            SceneManager.SetActiveScene(menuScene);
+
+            _loadingScreen.UpdateProgress(1f);
+            await UniTask.DelayFrame(5);
+
+            _sceneTransitionFX.Show();
+            await _sceneTransitionFX.PlayPopup();
+            _loadingScreen.Hide();
+            await _sceneTransitionFX.PlayPopdown();
+            _sceneTransitionFX.Hide();
+        }
+
+        public void PauseGame()
+        {
+            if (_isPaused) return;
+            _isPaused = true;
+
+            PlayerManager.Instance.ToggleInput(false);
+            UIManager.Instance.ShowPauseMenu();
+        }
+
+        public void ResumeGame()
+        {
+            if (!_isPaused) return;
+            _isPaused = false;
+
+            PlayerManager.Instance.ToggleInput(true);
+            UIManager.Instance.HidePauseMenu();
+        }
+
+        private void EnterGameLoseState(PlayerDiedEventData data)
+        {
+            Debug.Log("Display LoseScreen");
+        }
+
+        public void GoToNextLevel(int levelIndex)
+        {
+            Debug.Log($"Go To Level {levelIndex}");
         }
     }
 }

@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainMenuScene: {fileID: 11400000, guid: eb4cb50c2d089d4418bf8d6b10a6db4c, type: 2}
-  _loadingScreen: {fileID: 0}
   _eventSystemPrefab: {fileID: 1772716761132507781, guid: 1d701e8a61eef6b42a2f1e12130a56f2, type: 3}
   _sceneTransitionFXPrefab: {fileID: 3341065463838354169, guid: 9276c5a6330aea64aa2f410cc4f4bcf0, type: 3}
   _loadingScreenPrefab: {fileID: 6481419436092854360, guid: d25d486afa1eaae4f8064843350c1264, type: 3}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [RequireComponent( typeof(Collider2D))]
+    [RequireComponent(typeof(Collider2D))]
     public class Hittable : MonoBehaviour, IHittable
     {
         [SerializeField] private float _turnAngle = 15f;
@@ -18,14 +18,26 @@ namespace PixelPlatformer
 
         private bool _isHittable = true;
         private float _currentFallSpeed;
+        private int _defaultSortingOrder;
 
         public event Action OnHit;
+        public event Action OnDied;
 
         public bool IsHittable { get { return _isHittable; } }
+
 
         private void Awake()
         {
             _collider = GetComponent<Collider2D>();
+            _defaultSortingOrder = _renderer.sortingOrder;
+        }
+
+        public void ResetHit()
+        {
+            StopAllCoroutines();
+            _currentFallSpeed = 0f;
+            _collider.enabled = true;
+            _renderer.sortingOrder = _defaultSortingOrder;
         }
 
         public void TakeHit()
@@ -77,8 +89,10 @@ namespace PixelPlatformer
                 // viewport co-ordinate origin is (0,0) which is bottom left corner and top right corner is (1,1)
                 // convert world position to viewport co-ordinate and then check if that value is less than 0 which is viewport bottom bound
                 if (Camera.main.WorldToViewportPoint(pos).y < 0)
+                {
+                    OnDied?.Invoke();
                     gameObject.SetActive(false);
-
+                }
                 yield return null;
             }
         }

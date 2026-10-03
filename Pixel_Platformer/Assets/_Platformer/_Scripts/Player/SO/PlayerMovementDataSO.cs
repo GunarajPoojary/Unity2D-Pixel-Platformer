@@ -29,5 +29,7 @@ namespace PixelPlatformer
         [field: SerializeField, Range(1, 30)] public float WallJumpHorizontalForce { get; private set; } = 12f;
         [field: SerializeField, Range(1, 20)] public float WallJumpVerticalVelocity { get; private set; } = 10f;
         [field: SerializeField, Range(0.1f, 2f)] public float WallJumpLockTime { get; private set; } = 0.3f;
+
+        [field: SerializeField, Range(0.1f, 2f)] public float DespawnMoveSpeed { get; private set; } = 0.3f;
     }
 }

@@ -20,6 +20,14 @@ namespace PixelPlatformer
         {
             _target = targetProvider;
             _followTarget = _target.CameraFollowTarget;
+            SnapToTarget();
+        }
+
+        private void SnapToTarget()
+        {
+            Vector3 pos = transform.position;
+            pos.x = _followTarget.position.x + _lookAheadOffset * _target.LookDirection;
+            transform.position = pos;
         }
 
         private void LateUpdate()

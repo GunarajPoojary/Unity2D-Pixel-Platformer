@@ -155,8 +155,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 104.561005, y: 0}
-  m_SizeDelta: {x: -209.12, y: 0}
+  m_AnchoredPosition: {x: 100, y: 0}
+  m_SizeDelta: {x: -200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &155036734
 MonoBehaviour:
@@ -273,8 +273,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -668.76544, y: -329.4786}
-  m_SizeDelta: {x: 405.30856, y: 187.41852}
+  m_AnchoredPosition: {x: -670, y: -330}
+  m_SizeDelta: {x: 400, y: 185}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &682730128
 PrefabInstance:
@@ -505,8 +505,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 719.79553, y: -329.47864}
-  m_SizeDelta: {x: 196.1886, y: 187.41852}
+  m_AnchoredPosition: {x: 720, y: -330}
+  m_SizeDelta: {x: 200, y: 185}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &851096751
 MonoBehaviour:
@@ -646,6 +646,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
+--- !u!114 &905376336 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5573161073225403660, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
+  m_PrefabInstance: {fileID: 905376335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581d90542a5e2114b94701323101c0a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &924416772
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +816,7 @@ MonoBehaviour:
   _player: {fileID: 779253316}
   _input: {fileID: 779253311}
   _followCamera: {fileID: 792567087}
+  _hittable: {fileID: 905376336}
 --- !u!4 &1282625451
 Transform:
   m_ObjectHideFlags: 0
@@ -1048,8 +1060,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -98.09378, y: 0}
-  m_SizeDelta: {x: -196.19, y: 0}
+  m_AnchoredPosition: {x: -100, y: 0}
+  m_SizeDelta: {x: -200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1755788512
 MonoBehaviour:
@@ -1133,12 +1145,15 @@ MonoBehaviour:
   _levelPopupRoot: {fileID: 1789916935}
   _levelIcon: {fileID: 2046918669}
   _levelName: {fileID: 1486521647}
-  _endValue: {x: 0, y: 0.5, z: 0}
-  _tweenJumpPower: 1
-  _tweenNumJumps: 2
-  _jumpDuration: 0.5
   _tutorialUI: {fileID: 855165716}
   _hUD: {fileID: 1988777454}
+  _pauseMenu: {fileID: 4434813899641964820}
+  _holdDuration: 2
+  _hideDuration: 0.4
+  _popDuration: 0.5
+  _overshoot: 2.5
+  _winScreen: {fileID: 4434813899641964819}
+  _loseScreen: {fileID: 4434813899641964821}
 --- !u!4 &1782178243
 Transform:
   m_ObjectHideFlags: 0
@@ -1339,6 +1354,39 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
+--- !u!114 &4434813899641964819 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4612193102659135941, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
+  m_PrefabInstance: {fileID: 4434813899641964818}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 843721eb04c04d8489e42d3aab57ca8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.WinScreen
+--- !u!114 &4434813899641964820 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2293429174157229927, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
+  m_PrefabInstance: {fileID: 4434813899641964818}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 475b0a70be5933a448b7b9bebb87df2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+--- !u!114 &4434813899641964821 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5950277430336559649, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
+  m_PrefabInstance: {fileID: 4434813899641964818}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a40bec05fe1a3104eb9b47282d9acec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.LoseScreen
 --- !u!1001 &6168602416838457881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1350,14 +1398,6 @@ PrefabInstance:
     - target: {fileID: 516231671084468106, guid: 60b9ec3bdce2c2b489e1525fb19756ac, type: 3}
       propertyPath: m_Name
       value: TutorialUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 516231671084468106, guid: 60b9ec3bdce2c2b489e1525fb19756ac, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2136031955279271446, guid: 60b9ec3bdce2c2b489e1525fb19756ac, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4566843902913187540, guid: 60b9ec3bdce2c2b489e1525fb19756ac, type: 3}
       propertyPath: _videoPlayer

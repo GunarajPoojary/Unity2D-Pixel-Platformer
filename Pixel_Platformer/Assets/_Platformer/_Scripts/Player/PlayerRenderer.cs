@@ -58,6 +58,11 @@ namespace PixelPlatformer
             _player.OnWallSlide -= HandleWallSlide;
         }
 
+        public void ResetHit()
+        {
+            _animator.ResetTrigger(HitID);
+        }
+
         private void HandleWallSlide(bool isSliding)
         {
             _animator.SetBool(WallSlideID, isSliding);

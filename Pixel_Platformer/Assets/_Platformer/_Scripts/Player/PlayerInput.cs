@@ -17,7 +17,18 @@ namespace PixelPlatformer
         private bool _inputEnabled = true;
         private float _moveInput;
 
-        public float MoveInput { get { return _moveInput; } }
+        public float MoveInput
+        {
+            get
+            {
+                if (_inputEnabled)
+                {
+                    return _moveInput;
+                }
+
+                return 0; // avoid returning 1 or -1 if input disabled while pressing move keys
+            }
+        }
 
         public bool InputEnabled { get { return _inputEnabled; } set { _inputEnabled = value; } }
 
@@ -36,6 +47,11 @@ namespace PixelPlatformer
 #else
     _mobileInputUIRoot.SetActive(false);
 #endif
+        }
+
+        public void ResetInput()
+        {
+            _moveInput = 0f;
         }
 
         private void Update()

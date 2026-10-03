@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -13,20 +14,36 @@ namespace PixelPlatformer
         [SerializeField] private TutorialUI _tutorialUI;
         [SerializeField] private HUD _hUD;
 
-        [SerializeField] private Vector2 _hiddenPos = new Vector2(0f, 200f); 
-        [SerializeField] private Vector2 _shownPos = new Vector2(0f, -100f); 
-        [SerializeField] private float _tweenJumpPower = 30f;                
-        [SerializeField] private int _tweenNumJumps = 2;
-        [SerializeField] private float _jumpDuration = 0.6f;
+        [SerializeField] private PauseMenu _pauseMenu;
+
         [SerializeField] private float _holdDuration = 2f;
         [SerializeField] private float _hideDuration = 0.4f;
+        [SerializeField] private float _popDuration = 0.5f;
+        [SerializeField] private float _overshoot = 2.5f;
 
         private Sequence _levelPopupSequence;
+        [SerializeField] private WinScreen _winScreen;
+        [SerializeField] private LoseScreen _loseScreen;
+
+        public void ShowWinScreen(LevelResultData result)
+        {
+            _winScreen.Open(result);
+        }
+
+        public void HideWinScreen()
+        {
+            _winScreen.Close();
+        }
+
+        public void SetTimer(float seconds)
+        {
+            _hUD.SetTime(seconds);
+        }
 
         public void ResetLevelPopup()
         {
             _levelPopupSequence?.Kill();
-            _levelPopupRoot.anchoredPosition = _hiddenPos;
+            _levelPopupRoot.localScale = Vector3.zero;
         }
 
         public void SetupGameplayUI()
@@ -35,20 +52,45 @@ namespace PixelPlatformer
             _hUD.Init();
         }
 
-        public void ShowLevel(Sprite levelIcon, string levelName)
+        public void ShowLevel(LevelData data)
         {
-            _levelName.text = levelName;
-            _levelIcon.sprite = levelIcon;
+            _levelName.text = data.levelName;
+            _levelIcon.sprite = data.levelIcon;
 
             _levelPopupSequence?.Kill();
             _levelPopupRoot.gameObject.SetActive(true);
-            _levelPopupRoot.anchoredPosition = _hiddenPos;
+            _levelPopupRoot.localScale = Vector3.zero;
 
             _levelPopupSequence = DOTween.Sequence()
-                .Append(_levelPopupRoot.DOJumpAnchorPos(_shownPos, _tweenJumpPower, _tweenNumJumps, _jumpDuration))
+                .Append(_levelPopupRoot.DOScale(Vector3.one, _popDuration).SetEase(Ease.OutBack, _overshoot))
                 .AppendInterval(_holdDuration)
-                .Append(_levelPopupRoot.DOAnchorPos(_hiddenPos, _hideDuration).SetEase(Ease.InBack))
+                .Append(_levelPopupRoot.DOScale(Vector3.zero, _hideDuration).SetEase(Ease.InBack))
                 .SetLink(gameObject);
+        }
+
+        public void ShowPauseMenu()
+        {
+            _pauseMenu.Open();
+        }
+
+        public void HidePauseMenu()
+        {
+            _pauseMenu.Close();
+        }
+
+        public void SetCollectibles(int count)
+        {
+            _hUD.SetCollectibles(count);
+        }
+
+        public void ShowLoseScreen(LevelResultData result)
+        {
+            _loseScreen.Show(result);
+        }
+
+        public void SetEnemiesDefeated(int count)
+        {
+            _hUD.SetEnemiesDefeated(count);
         }
     }
 }
