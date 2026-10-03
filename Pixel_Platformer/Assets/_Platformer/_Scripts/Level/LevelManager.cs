@@ -11,12 +11,15 @@ namespace PixelPlatformer
         public string levelName;
         public int totalFruits;
         public int totalEnemies;
+        public float estimatedCompletionTime;
+        public int maxStars = 3;
     }
 
     public class LevelManager : Singleton<LevelManager>
     {
         [SerializeField] private float _despawnHeight = 2.5f;
         [SerializeField] private LevelData _levelData;
+        [SerializeField] private LevelScoreDataSO _scoreData;
 
         [SerializeField] private StartCheckpoint _startCheckpoint;
         [SerializeField] private EndCheckpoint _endCheckpoint;
@@ -66,6 +69,10 @@ namespace PixelPlatformer
             _levelResultData.levelIndex = _levelData.levelIndex;
             _levelResultData.fruitsCollected = 0;
             _levelResultData.timeTaken = 0;
+            _levelResultData.estimatedCompletionTime = _levelData.estimatedCompletionTime;
+            _levelResultData.levelName = _levelData.levelName;
+            _levelResultData.enemiesDefeated = 0;
+
 
             _elapsedTime = 0f;
             _isTimeTicking = false;
@@ -96,7 +103,7 @@ namespace PixelPlatformer
             _playerDespawnFX.transform.position = _playerManager.PlayerPosition + Vector3.up * _despawnHeight;
 
             _playerManager.DespawnPlayerAt(_playerDespawnFX.transform.position,
-                () => _playerDespawnFX.PlayFX(() => GameManager.Instance.GoToNextLevel(_levelData.levelIndex)));
+                () => _playerDespawnFX.PlayFX(() => GameManager.Instance.GoToNextLevel()));
 
 
 
@@ -142,6 +149,9 @@ namespace PixelPlatformer
 
             _levelResultData.timeTaken = _elapsedTime;
             _levelResultData.levelIcon = _levelData.levelIcon;
+            _levelResultData.score = ScoreCalculator.Score(_levelResultData, _scoreData);
+            _levelResultData.maxScore = ScoreCalculator.MaxScore(_levelData, _scoreData);
+            _levelResultData.stars = ScoreCalculator.GetStars(_levelResultData.score, _levelResultData.maxScore, _levelData.maxStars);
 
             _uIManager.ShowWinScreen(_levelResultData);
         }

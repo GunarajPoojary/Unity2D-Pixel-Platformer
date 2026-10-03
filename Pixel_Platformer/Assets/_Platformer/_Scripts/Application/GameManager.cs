@@ -178,58 +178,6 @@ namespace PixelPlatformer
             levelManager.StartLevel();
         }
 
-        public async void CompleteLevel()
-        {
-            _sceneTransitionFX.Show();
-            await _sceneTransitionFX.PlayPopup();
-            _loadingScreen.UpdateProgress(0f);
-            _loadingScreen.Show();
-
-            PlayerManager.Instance.DespawnPlayer();
-
-            await _sceneTransitionFX.PlayPopdown();
-
-            Scene levelScene = SceneManager.GetActiveScene();
-            _loadingScreen.UpdateProgress(0.1f);
-
-            if (levelScene.IsValid() && levelScene.isLoaded)
-            {
-                await SceneManager.UnloadSceneAsync(levelScene).ToUniTask();
-                _loadingScreen.UpdateProgress(0.3f);
-            }
-
-            bool hasNextLevel = _currentLevelIndex + 1 < _levels.Length;
-
-            if (!hasNextLevel)
-            {
-                // there are no more levels, send player back to the main menu
-                _loadingScreen.Hide();
-                _sceneTransitionFX.Hide();
-                return;
-            }
-
-            _currentLevelIndex++;
-            AsyncOperation op = SceneManager.LoadSceneAsync(_levels[_currentLevelIndex].BuildIndex, LoadSceneMode.Additive);
-            _loadingScreen.UpdateProgress(0.6f);
-            await op.ToUniTask();
-            _loadingScreen.UpdateProgress(1f);
-
-            Scene nextScene = SceneManager.GetSceneByBuildIndex(_levels[_currentLevelIndex].BuildIndex);
-            SceneManager.SetActiveScene(nextScene);
-
-            LevelManager levelManager = LevelManager.Instance;
-            levelManager.SetupLevel();
-
-            await UniTask.DelayFrame(5);
-
-            _sceneTransitionFX.Show();
-            await _sceneTransitionFX.PlayPopup();
-            _loadingScreen.Hide();
-            await _sceneTransitionFX.PlayPopdown();
-
-            levelManager.StartLevel();
-        }
-
         public async void GoToMainMenu()
         {
             Debug.Log("Go To Main Menu");
@@ -302,9 +250,56 @@ namespace PixelPlatformer
             Debug.Log("Display LoseScreen");
         }
 
-        public void GoToNextLevel(int levelIndex)
+        public async void GoToNextLevel()
         {
-            Debug.Log($"Go To Level {levelIndex}");
+            _sceneTransitionFX.Show();
+            await _sceneTransitionFX.PlayPopup();
+            _loadingScreen.UpdateProgress(0f);
+            _loadingScreen.Show();
+
+            PlayerManager.Instance.DespawnPlayer();
+
+            await _sceneTransitionFX.PlayPopdown();
+
+            Scene levelScene = SceneManager.GetActiveScene();
+            _loadingScreen.UpdateProgress(0.1f);
+
+            if (levelScene.IsValid() && levelScene.isLoaded)
+            {
+                await SceneManager.UnloadSceneAsync(levelScene).ToUniTask();
+                _loadingScreen.UpdateProgress(0.3f);
+            }
+
+            bool hasNextLevel = _currentLevelIndex + 1 < _levels.Length;
+
+            if (!hasNextLevel)
+            {
+                // there are no more levels, send player back to the main menu
+                _loadingScreen.Hide();
+                _sceneTransitionFX.Hide();
+                return;
+            }
+
+            _currentLevelIndex++;
+            AsyncOperation op = SceneManager.LoadSceneAsync(_levels[_currentLevelIndex].BuildIndex, LoadSceneMode.Additive);
+            _loadingScreen.UpdateProgress(0.6f);
+            await op.ToUniTask();
+            _loadingScreen.UpdateProgress(1f);
+
+            Scene nextScene = SceneManager.GetSceneByBuildIndex(_levels[_currentLevelIndex].BuildIndex);
+            SceneManager.SetActiveScene(nextScene);
+
+            LevelManager levelManager = LevelManager.Instance;
+            levelManager.SetupLevel();
+
+            await UniTask.DelayFrame(5);
+
+            _sceneTransitionFX.Show();
+            await _sceneTransitionFX.PlayPopup();
+            _loadingScreen.Hide();
+            await _sceneTransitionFX.PlayPopdown();
+
+            levelManager.StartLevel();
         }
     }
 }

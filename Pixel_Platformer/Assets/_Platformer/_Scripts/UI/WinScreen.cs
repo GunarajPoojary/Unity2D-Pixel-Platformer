@@ -31,6 +31,7 @@ namespace PixelPlatformer
         [SerializeField] private Button _mainMenuButton;
 
         [SerializeField] private Sprite[] _sprites;
+        [SerializeField]private Sprite _emptyStarSprite;
         [SerializeField] private int _frameRate = 12;
         [SerializeField] private PopUp _popUp;
 
@@ -62,9 +63,12 @@ namespace PixelPlatformer
             _timeTakenText.text = $"{result.timeTaken:0.0}s";
             _enemiesDefeated.text = $"{result.enemiesDefeated}/{result.totalEnemies}";
             _fruitsCollectedText.text = $"{result.fruitsCollected}/{result.totalFruits}";
-            int totalScore = ScoreCalculator.CalculateScore(result);
-            _totalScoreText.text = totalScore.ToString();
+            _totalScoreText.text = result.score.ToString();
 
+            foreach (Image image in _starImages)
+            {
+                image.sprite = _emptyStarSprite;
+            }
 
             _overlayCanvasGroup.blocksRaycasts = true;
             _overlayCanvasGroup.DOFade(1f, _overlayFadeDuration);
@@ -75,7 +79,7 @@ namespace PixelPlatformer
             _popUp.Open(() =>
                 {
                     _canvasGroup.interactable = true;
-                    PlayStarPopupClip(ScoreCalculator.GetStars(totalScore, _starImages.Length));
+                    PlayStarPopupClip(result.stars);
                     onComplete?.Invoke();
                 });
         }

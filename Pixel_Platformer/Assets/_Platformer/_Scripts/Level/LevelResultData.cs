@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -12,5 +13,9 @@ namespace PixelPlatformer
         public int totalFruits;
         public int totalEnemies;
         public int enemiesDefeated;
+        public float estimatedCompletionTime;
+        public float score;
+        public float maxScore;
+        public int stars;
     }
 }

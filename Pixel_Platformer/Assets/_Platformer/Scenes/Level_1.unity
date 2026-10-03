@@ -40454,7 +40454,10 @@ MonoBehaviour:
     levelIcon: {fileID: 21300000, guid: 1071946ceb0a36f46b703491571d8e68, type: 3}
     levelName: Citadel
     totalFruits: 4
-    totalEnemies: 5
+    totalEnemies: 7
+    estimatedCompletionTime: 30
+    maxStars: 3
+  _scoreData: {fileID: 11400000, guid: d1181649b3df77f47815558695c6afe2, type: 2}
   _startCheckpoint: {fileID: 1364734630}
   _endCheckpoint: {fileID: 8322644061551742197}
   _playerSpawnFX: {fileID: 1952621947}
