@@ -15,12 +15,14 @@ namespace PixelPlatformer
 
         [SerializeField] private AudioManager _audioManagerPrefab;
         [SerializeField] private GameManager _gameManagerPrefab;
+        [SerializeField] private GameProgressDataManager _gameProgressDataManagerPrefab;
 
         [SerializeField] private AudioClip _backgroundMusicClip;
 
         private SceneTransitionFX _sceneTransitionFX;
         private AudioManager _audioManager;
         private GameManager _gameManager;
+        private GameProgressDataManager _GameProgressDataManager;
         private LoadingScreen _loadingScreen;
 
         private async void Start()
@@ -29,6 +31,11 @@ namespace PixelPlatformer
             _sceneTransitionFX.Hide();
             _loadingScreen.Show();
             _loadingScreen.UpdateProgress(0.2f);
+            
+            await _audioManager.Initialize();
+            await _gameManager.Initialize();
+            await _gameManager.Setup(_loadingScreen, _sceneTransitionFX);
+            await _GameProgressDataManager.Init(_gameManager.TotalLevels);
 
             // load main menu
             // scene activation is controlled manually 
@@ -52,9 +59,6 @@ namespace PixelPlatformer
 
             // now main menu has loaded
             await UniTask.WaitUntil(() => _backgroundMusicClip.LoadAudioData());
-            await _audioManager.Initialize();
-            await _gameManager.Initialize();
-            await _gameManager.Setup(_loadingScreen, _sceneTransitionFX);
 
             _sceneTransitionFX.Init();
 
@@ -80,6 +84,7 @@ namespace PixelPlatformer
             _sceneTransitionFX = Instantiate(_sceneTransitionFXPrefab, persistentObjects);
             _audioManager = Instantiate(_audioManagerPrefab, persistentObjects);
             _gameManager = Instantiate(_gameManagerPrefab, persistentObjects);
+            _GameProgressDataManager = Instantiate(_gameProgressDataManagerPrefab, persistentObjects);
 
             DontDestroyOnLoad(persistentObjects);
         }

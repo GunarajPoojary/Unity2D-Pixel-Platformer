@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Level_2
   m_EditorClassIdentifier: Platformer::SceneReference
   scenePath: Assets/_Platformer/Scenes/Level_2.unity
-  _sceneAsset: {fileID: 102900000, guid: c3a6801634f757746bf3fb8ae0142608, type: 3}
+  _sceneAsset: {fileID: 102900000, guid: 5a2dde7de5fd63146814ede5c6246a29, type: 3}

@@ -8,6 +8,24 @@ namespace PixelPlatformer
     public readonly struct StepOnStartCheckpointEvenData { }
     public readonly struct PlayerDiedEventData { }
     public readonly struct StompEventData { }
+    public readonly struct CompletLevelEvent
+    {
+        public readonly LevelResultData levelResult;
+
+        public CompletLevelEvent(LevelResultData result)
+        {
+            this.levelResult = result;
+        }
+    }
+    public readonly struct UnlockLevelEvent
+    {
+        public readonly int levelIndex;
+
+        public UnlockLevelEvent(int levelIndex)
+        {
+            this.levelIndex = levelIndex;
+        }
+    }
 
     public static class GameEvents
     {

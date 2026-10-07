@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/_Platformer/Scenes/Bootstrap.unity
     guid: 7cd9fa7bab598db4fa65a0f43d3abfcd
   - enabled: 1
-    path: Assets/_Platformer/Scenes/Persistent.unity
-    guid: 4fa9d6046867c2146ac994284140682d
-  - enabled: 1
     path: Assets/_Platformer/Scenes/MainMenu.unity
     guid: d505875f12129db4fb75ff4a8f905b9f
   - enabled: 1
@@ -22,9 +19,15 @@ EditorBuildSettings:
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/_Platformer/Scenes/Level_2.unity
-    guid: c3a6801634f757746bf3fb8ae0142608
+    guid: 5a2dde7de5fd63146814ede5c6246a29
   - enabled: 1
     path: Assets/_Platformer/Scenes/Level_3.unity
     guid: b8e5cfbdcc6b1fb4d8020c0a29949aca
+  - enabled: 1
+    path: Assets/_Platformer/Scenes/Level_4.unity
+    guid: e2bf2abfb9ff77c42a1afb07a2c448f0
+  - enabled: 1
+    path: Assets/_Platformer/Scenes/Level_5.unity
+    guid: 00c154d6fab536d438536e20224bc705
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

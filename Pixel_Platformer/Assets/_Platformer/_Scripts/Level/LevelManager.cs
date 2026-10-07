@@ -1,20 +1,7 @@
-using System;
 using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [Serializable]
-    public class LevelData
-    {
-        public int levelIndex;
-        public Sprite levelIcon;
-        public string levelName;
-        public int totalFruits;
-        public int totalEnemies;
-        public float estimatedCompletionTime;
-        public int maxStars = 3;
-    }
-
     public class LevelManager : Singleton<LevelManager>
     {
         [SerializeField] private float _despawnHeight = 2.5f;
@@ -152,6 +139,7 @@ namespace PixelPlatformer
             _levelResultData.score = ScoreCalculator.Score(_levelResultData, _scoreData);
             _levelResultData.maxScore = ScoreCalculator.MaxScore(_levelData, _scoreData);
             _levelResultData.stars = ScoreCalculator.GetStars(_levelResultData.score, _levelResultData.maxScore, _levelData.maxStars);
+            GameEvents.Publish(new CompletLevelEvent(_levelResultData));
 
             _uIManager.ShowWinScreen(_levelResultData);
         }

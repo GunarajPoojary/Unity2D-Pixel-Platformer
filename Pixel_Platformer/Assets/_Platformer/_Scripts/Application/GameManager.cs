@@ -12,10 +12,8 @@ namespace PixelPlatformer
 
         [SerializeField] private SceneReference[] _levels;
 
-
         [SerializeField] private SceneReference _mainMenuScene;
         [SerializeField] private SceneReference _gameplayScene;
-        [SerializeField] private HUD _hud;
 
         private int _currentLevelIndex;
         private LoadingScreen _loadingScreen;
@@ -29,8 +27,6 @@ namespace PixelPlatformer
                 return _isPaused;
             }
         }
-
-        [SerializeField] private float _winScreenDelay = 0.9f;
 
         public int CurrentLevelIndex
         {
@@ -47,6 +43,8 @@ namespace PixelPlatformer
                 return _currentLevelIndex + 1 >= _levels.Length;
             }
         }
+
+        public int TotalLevels { get { return _levels.Length; } }
 
         private void OnEnable()
         {
@@ -70,7 +68,7 @@ namespace PixelPlatformer
             _sceneTransitionFX = sceneTransitionFX;
         }
 
-        public async void StartGame()
+        public async void StartLevel(int levelIndex)
         {
             _sceneTransitionFX.Show();
             await _sceneTransitionFX.PlayPopup();
@@ -101,12 +99,12 @@ namespace PixelPlatformer
 
 
             // load saved level
-            op = SceneManager.LoadSceneAsync(_levels[0].BuildIndex, LoadSceneMode.Additive); // replace with actual saved level
+            op = SceneManager.LoadSceneAsync(_levels[levelIndex].BuildIndex, LoadSceneMode.Additive);
             _loadingScreen.UpdateProgress(0.6f);
             await op.ToUniTask();
             _currentLevelIndex = 0;
 
-            Scene level = SceneManager.GetSceneByBuildIndex(_levels[0].BuildIndex);
+            Scene level = SceneManager.GetSceneByBuildIndex(_levels[levelIndex].BuildIndex);
             SceneManager.SetActiveScene(level);
 
             LevelManager levelManager = LevelManager.Instance;

@@ -47,6 +47,10 @@ MonoBehaviour:
   _levels:
   - {fileID: 11400000, guid: fb43e27a170d4b649877fecc1ab17e06, type: 2}
   - {fileID: 11400000, guid: b766397ed4a36f949b2e852aa4b4fe48, type: 2}
+  - {fileID: 11400000, guid: 48e9ea1d1de01014eb9ec7f3421f71df, type: 2}
+  - {fileID: 11400000, guid: 387d0e3d1e586db4babf11019cb5f989, type: 2}
+  - {fileID: 11400000, guid: a8ad5b10f45e0944aa19409ace2e9a45, type: 2}
   _mainMenuScene: {fileID: 11400000, guid: eb4cb50c2d089d4418bf8d6b10a6db4c, type: 2}
   _gameplayScene: {fileID: 11400000, guid: 004c4d2d97e3cd44e9eaaaee8ba97f99, type: 2}
+  _winScreenDelay: 0.9
   _hud: {fileID: 6711474169387942725, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
