@@ -28,9 +28,7 @@ namespace PixelPlatformer
 
         [SerializeField] private Ease _showTweenEase = Ease.OutCubic;
         [SerializeField] private float _showTweenDuration = 0.5f;
-
-        [SerializeField] private UnityEvent _onShow;
-        [SerializeField] private UnityEvent _onHide;
+        [SerializeField] private Button _closeButton;
 
         private Canvas _canvas;
         private int _currentClipIndex;
@@ -46,12 +44,14 @@ namespace PixelPlatformer
         {
             _previousButton.onClick.AddListener(PlayPreviousClip);
             _nextButton.onClick.AddListener(PlayNextClip);
+            _closeButton.onClick.AddListener(Hide);
         }
 
         private void OnDisable()
         {
             _previousButton.onClick.RemoveListener(PlayPreviousClip);
             _nextButton.onClick.RemoveListener(PlayNextClip);
+            _closeButton.onClick.RemoveListener(Hide);
         }
 
         private void Start()
@@ -75,14 +75,12 @@ namespace PixelPlatformer
         private void OnShow()
         {
             _videoPlayer.Play();
-            _onShow?.Invoke();
         }
 
         private void OnHide()
         {
             _canvas.enabled = false;
             _videoPlayer.Stop();
-            _onHide?.Invoke();
         }
 
         public void Toggle()

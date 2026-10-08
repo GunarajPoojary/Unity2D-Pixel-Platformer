@@ -6,6 +6,8 @@ namespace PixelPlatformer
 {
     public class MainMenu : MonoBehaviour
     {
+        [SerializeField] private Image _playButtonIcon;   
+
         [SerializeField] private float _duration = 0.5f;
         [SerializeField] private SettingsMenu _settingsMenu;
         [SerializeField] private CanvasGroup _settingsMenuOverlay;
@@ -29,19 +31,7 @@ namespace PixelPlatformer
             _settingsMenuOverlay.blocksRaycasts = false;
 
             _levelsButton.onClick.AddListener(OpenLevelSelectionScreen);
-
-            // LevelProgress.Changed += RefreshPlayLabel;
-
-
-
-
-
-            // RefreshPlayLabel();
-
-            // Coming back from a level via "Levels": reopen the level screen right away.
-            // (GameManager.Instance is null on the very first boot, before it is initialized.)
-            // if (GameManager.Instance != null && GameManager.Instance.ConsumeOpenLevelSelectRequest())
-            //     _levelSelectScreen.Open();
+            GameProgressDataManager.Instance.DataErased += HandleDataErased;
         }
 
         private void OnDisable()
@@ -50,18 +40,39 @@ namespace PixelPlatformer
             _settingsButton.onClick.RemoveListener(OpenSettings);
             _settingsCloseButton.onClick.RemoveListener(CloseSettings);
             _quitButton.onClick.RemoveListener(QuitGame);
-
-
-
-
             _levelsButton.onClick.RemoveListener(OpenLevelSelectionScreen);
 
-            // LevelProgress.Changed -= RefreshPlayLabel;
+            GameProgressDataManager.Instance.DataErased -= HandleDataErased;
         }
+
+
+
+
+
+
+
+
+
 
         private void Start()
         {
             _levelSelectScreen.Init(GameProgressDataManager.Instance.LoadData());
+            RefreshPlayButton();
+        }
+
+        private void HandleDataErased()
+        {
+            _levelSelectScreen.Refresh(GameProgressDataManager.Instance.LoadData());
+            RefreshPlayButton();
+        }
+
+        private void RefreshPlayButton()
+        {
+            int latest = GameProgressDataManager.Instance.GetLatestUnlockedLevel();
+            Sprite icon = _levelSelectScreen.GetLevelIcon(latest);
+
+            _playButtonIcon.sprite = icon;
+            _playButtonIcon.enabled = icon != null;
         }
 
         private void OpenSettings()
@@ -84,7 +95,7 @@ namespace PixelPlatformer
 
         private void StartGame()
         {
-            GameManager.Instance.StartLevel(GameProgressDataManager.Instance.GetLatestUnlockedLevel()-1);
+            GameManager.Instance.StartLevel(GameProgressDataManager.Instance.GetLatestUnlockedLevel() - 1);
         }
 
         private void QuitGame()

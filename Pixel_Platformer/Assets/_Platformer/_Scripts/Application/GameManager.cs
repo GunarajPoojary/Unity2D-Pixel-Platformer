@@ -19,6 +19,7 @@ namespace PixelPlatformer
         private LoadingScreen _loadingScreen;
         private SceneTransitionFX _sceneTransitionFX;
         private bool _isPaused;
+        private bool _isLostGame;
 
         public bool IsPaused
         {
@@ -132,6 +133,7 @@ namespace PixelPlatformer
 
         public async void RestartLevel()
         {
+            _isLostGame = false;
             _sceneTransitionFX.Show();
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.UpdateProgress(0f);
@@ -179,6 +181,7 @@ namespace PixelPlatformer
         public async void GoToMainMenu()
         {
             Debug.Log("Go To Main Menu");
+            _isLostGame = false;
 
             if (_isPaused)
             {
@@ -227,7 +230,8 @@ namespace PixelPlatformer
 
         public void PauseGame()
         {
-            if (_isPaused) return;
+            if (_isPaused || _isLostGame) return;
+
             _isPaused = true;
 
             PlayerManager.Instance.ToggleInput(false);
@@ -245,7 +249,8 @@ namespace PixelPlatformer
 
         private void EnterGameLoseState(PlayerDiedEventData data)
         {
-            Debug.Log("Display LoseScreen");
+            _isLostGame = true;
+            PlayerManager.Instance.ToggleInput(false);
         }
 
         public async void GoToNextLevel()

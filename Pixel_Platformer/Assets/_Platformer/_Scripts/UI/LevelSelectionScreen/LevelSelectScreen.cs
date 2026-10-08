@@ -82,11 +82,6 @@ namespace PixelPlatformer
             }
         }
 
-        private void HandleSlotClicked(int levelIndex)
-        {
-            GameManager.Instance.StartLevel(levelIndex - 1);
-        }
-
         public void Open(Action onComplete = null)
         {
             SlideIn(onComplete);
@@ -95,6 +90,31 @@ namespace PixelPlatformer
         public void Close(Action onComplete = null)
         {
             SlideOut(onComplete);
+        }
+
+        public Sprite GetLevelIcon(int levelIndex)
+        {
+            for (int i = 0; i < _configs.Length; i++)
+                if (_configs[i].levelIndex == levelIndex)
+                    return _configs[i].levelIcon;
+                    
+            return null;
+        }
+
+        public void Refresh(List<LevelRecord> progressData)
+        {
+            for (int i = 0; i < _slots.Count && i < progressData.Count; i++)
+            {
+                _slots[i].BindData(progressData[i].levelIndex,
+                                   _configs[i].levelIcon,
+                                   progressData[i].isUnlocked,
+                                   progressData[i].starsEarned);
+            }
+        }
+
+        private void HandleSlotClicked(int levelIndex)
+        {
+            GameManager.Instance.StartLevel(levelIndex - 1);
         }
 
         private void HandleBackClicked()
@@ -117,7 +137,7 @@ namespace PixelPlatformer
                 .SetLink(gameObject)
                 .OnComplete(() => { onComplete?.Invoke(); });
         }
-        
+
         private void SlideOut(Action onComplete = null)
         {
             _slideSequence?.Kill();

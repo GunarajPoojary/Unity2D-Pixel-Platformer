@@ -23,10 +23,10 @@ Must haves
 - Win Condition(Win screen)
 - Timer
 - Score System with 3 star ratings
-
 - Save System
-- leaderboard(death counter, timer, 3 star ratings, Collecitbles)
 - Level Selection
+
+- leaderboard(death counter, timer, 3 star ratings, Collecitbles)
 
 Nice to haves
 - Achievements

@@ -17,14 +17,24 @@ namespace PixelPlatformer
         public float SFXVolume { get { return _sFXVolume; } }
         public float MusicVolume { get { return _musicVolume; } }
 
-        public async UniTask Initialize()
-        {
-            LoadData();
-        }
-
         private void OnDestroy()
         {
             SaveData();
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused) SaveData();
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveData();
+        }
+
+        public async UniTask Initialize()
+        {
+            LoadData();
         }
 
         #region Music
@@ -78,19 +88,19 @@ namespace PixelPlatformer
         #endregion
 
         #region Save/Load
-        private void SaveData()
+        private void LoadData()
+        {
+            _musicVolume = PlayerPrefs.GetFloat(MUSIC_KEY, 1f);
+            _sFXVolume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
+
+            _musicSource.volume = _musicVolume;
+            _sfxSource.volume = _sFXVolume;
+        }
+
+        public void SaveData()
         {
             PlayerPrefs.SetFloat(MUSIC_KEY, _musicVolume);
             PlayerPrefs.SetFloat(SFX_KEY, _sFXVolume);
-
-            PlayerPrefs.Save();
-        }
-
-        private void LoadData()
-        {
-            PlayerPrefs.GetFloat(MUSIC_KEY, _musicVolume);
-            PlayerPrefs.GetFloat(SFX_KEY, _sFXVolume);
-
             PlayerPrefs.Save();
         }
         #endregion

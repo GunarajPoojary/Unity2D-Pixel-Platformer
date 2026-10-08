@@ -12,6 +12,8 @@ namespace PixelPlatformer
         private GameProgressData _progressData;
         private int _totalLevels;
 
+        public event Action DataErased;
+
         private void OnEnable()
         {
             GameEvents.Subscribe<UnlockLevelEvent>(UnlockLevel);
@@ -24,19 +26,19 @@ namespace PixelPlatformer
             GameEvents.Unsubscribe<CompletLevelEvent>(CompleteLevel);
         }
 
-        private void CompleteLevel(CompletLevelEvent data)
+        private void OnApplicationPause(bool paused)
         {
-            SetLevelRecordData(data.levelResult.levelIndex, data.levelResult.stars);
+            if (paused) SaveData();
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveData();
         }
 
         private void OnDestroy()
         {
-            Save();
-        }
-
-        private void UnlockLevel(UnlockLevelEvent data)
-        {
-            UnlockLevel(data.levelIndex);
+            SaveData();
         }
 
         public async UniTask Init(int totalLevels)
@@ -67,22 +69,13 @@ namespace PixelPlatformer
             }
         }
 
-
-
-
-
-
-
-
-
-
         public List<LevelRecord> LoadData()
         {
 
             return _progressData.records;
         }
 
-        public void Save()
+        public void SaveData()
         {
             PlayerPrefs.SetString(GAME_PROGRESS_KEY, JsonUtility.ToJson(_progressData));
             PlayerPrefs.Save();
@@ -110,12 +103,13 @@ namespace PixelPlatformer
 
         public void UnlockLevel(int targetLevelIndex, int starsEarned = 0)
         {
-            if (targetLevelIndex <= _totalLevels)
-            {
-                var record = _progressData.records[targetLevelIndex - 1];
-                record.isUnlocked = true;
-                record.starsEarned = starsEarned;
-            }
+            if (targetLevelIndex > _totalLevels) return;
+
+            var record = _progressData.records[targetLevelIndex - 1];
+            if (record.isUnlocked) return; 
+
+            record.isUnlocked = true;
+            record.starsEarned = starsEarned;
         }
 
         public int GetLatestUnlockedLevel()
@@ -123,7 +117,7 @@ namespace PixelPlatformer
             int latestLevel = 1;
             for (int i = 0; i < _progressData.records.Count; i++)
             {
-                if (!_progressData.records[i].isUnlocked) return latestLevel;;
+                if (!_progressData.records[i].isUnlocked) return latestLevel; ;
 
                 latestLevel = _progressData.records[i].levelIndex;
             }
@@ -131,9 +125,25 @@ namespace PixelPlatformer
             return latestLevel;
         }
 
-        public void ClearData()
+        public void EraseData()
         {
             PlayerPrefs.DeleteKey(GAME_PROGRESS_KEY);
+
+            _progressData = new GameProgressData(_totalLevels);
+            _progressData.records[0].isUnlocked = true;
+
+            SaveData();
+            DataErased?.Invoke();
+        }
+
+        private void CompleteLevel(CompletLevelEvent data)
+        {
+            SetLevelRecordData(data.levelResult.levelIndex, data.levelResult.stars);
+        }
+
+        private void UnlockLevel(UnlockLevelEvent data)
+        {
+            UnlockLevel(data.levelIndex);
         }
     }
 }

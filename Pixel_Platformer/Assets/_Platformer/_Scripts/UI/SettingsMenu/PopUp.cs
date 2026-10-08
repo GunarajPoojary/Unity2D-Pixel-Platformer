@@ -7,8 +7,10 @@ namespace PixelPlatformer
     [RequireComponent(typeof(RectTransform))]
     public class PopUp : MonoBehaviour
     {
-        [SerializeField] private float _hideDuration = 0.4f;
-        [SerializeField] private float _popDuration = 0.5f;
+        [SerializeField] private Ease _popoutEase = Ease.OutBack;
+        [SerializeField] private Ease _popinEase = Ease.InBack;
+        [SerializeField] private float _hideDuration = 0.1f;
+        [SerializeField] private float _popDuration = 0.1f;
         private Sequence _popupSequence;
         private RectTransform _rect;
 
@@ -35,7 +37,7 @@ namespace PixelPlatformer
             _rect.localScale = Vector3.zero;
 
             _popupSequence = DOTween.Sequence()
-                .Append(_rect.DOScale(Vector3.one, _popDuration).SetEase(Ease.OutBack))
+                .Append(_rect.DOScale(Vector3.one, _popDuration).SetEase(_popoutEase))
                 .SetLink(gameObject).OnComplete(() =>
                 {
                     onComplete?.Invoke();
@@ -47,7 +49,7 @@ namespace PixelPlatformer
             _popupSequence?.Kill();
 
             _popupSequence = DOTween.Sequence()
-                .Append(_rect.DOScale(Vector3.zero, _hideDuration).SetEase(Ease.InBack))
+                .Append(_rect.DOScale(Vector3.zero, _hideDuration).SetEase(_popinEase))
                 .SetLink(gameObject).OnComplete(() =>
                 {
                     onComplete?.Invoke();

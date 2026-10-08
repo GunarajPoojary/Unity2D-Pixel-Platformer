@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -8,25 +9,27 @@ namespace PixelPlatformer
     public class LoseScreen : MonoBehaviour
     {
         [SerializeField] private GameObject _root;
-        [SerializeField] private RectTransform _panel;
+        [SerializeField] private CanvasGroup _overlayCanvasGroup;
+        [SerializeField] private float _overlayFadeDuration = 0.5f;
+        [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private PopUp _popUp;
         [SerializeField] private Image _skullIcon;
         [SerializeField] private TMP_Text _titleText;
         [SerializeField] private TMP_Text _subtitleText;
 
         [Header("Stats")]
-        [SerializeField] private TMP_Text _timeText;
-        [SerializeField] private TMP_Text _bestText;
+        [SerializeField] private TMP_Text _timeTakenText;
+        [SerializeField] private TMP_Text _bestScoreText;
+        [SerializeField] private TMP_Text _fruitsCollectedText;
+        [SerializeField] private TMP_Text _enemiesDefeatedText;
 
         [Header("Buttons")]
         [SerializeField] private Button _retryButton;
         [SerializeField] private Button _mainMenuButton;
 
-
-        private Sequence _sequence;
-
         private void Start()
         {
-            Hide();
+            _root.SetActive(false);
         }
 
         private void OnEnable()
@@ -39,30 +42,50 @@ namespace PixelPlatformer
         {
             _retryButton.onClick.RemoveListener(Retry);
             _mainMenuButton.onClick.RemoveListener(MainMenu);
-            _sequence?.Kill();
         }
 
-        public void Show(LevelResultData result)
+        public void Open(LevelResultData result, Action onComplete = null)
         {
-           Debug.Log("Show Lose screen");
-        }
+            _timeTakenText.text = $"{result.timeTaken:0.0}s";
+            _fruitsCollectedText.text = $"{result.fruitsCollected}/{result.totalFruits}";
+            _enemiesDefeatedText.text = $"{result.enemiesDefeated}/{result.totalEnemies}";
 
-        public void Hide()
+            _overlayCanvasGroup.blocksRaycasts = true;
+            _overlayCanvasGroup.DOFade(1f, _overlayFadeDuration);
+
+            _root.SetActive(true);
+            _canvasGroup.interactable = false;
+
+            _popUp.Open(() =>
+            {
+                _canvasGroup.interactable = true;
+                onComplete?.Invoke();
+            });
+        }
+        public void Close(Action onComplete = null)
         {
-            _sequence?.Kill();
-            _root.SetActive(false);
+            _overlayCanvasGroup.DOFade(0f, _overlayFadeDuration).OnComplete(() =>
+            {
+                _overlayCanvasGroup.blocksRaycasts = false;
+            });
+
+            _canvasGroup.interactable = false;
+
+            _popUp.Close(() =>
+            {
+                onComplete?.Invoke();
+                _root.SetActive(false);
+            });
         }
 
         private void Retry()
         {
-            Hide();
-            GameManager.Instance.RestartLevel();
+            Close(() => GameManager.Instance.RestartLevel());
         }
 
         private void MainMenu()
         {
-            Hide();
-            GameManager.Instance.GoToMainMenu();
+            Close(() => GameManager.Instance.GoToMainMenu());
         }
     }
 }

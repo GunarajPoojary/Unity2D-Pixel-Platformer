@@ -1013,17 +1013,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317484322}
   m_CullTransparentMesh: 1
---- !u!114 &1486521647 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5523730423959960411, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
-  m_PrefabInstance: {fileID: 4434813899641964818}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1755788510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,16 +1131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d20778a39ac5b408672ef761beb248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Platformer::PixelPlatformer.UIManager
-  _levelPopupRoot: {fileID: 1789916935}
-  _levelIcon: {fileID: 2046918669}
-  _levelName: {fileID: 1486521647}
   _tutorialUI: {fileID: 855165716}
   _hUD: {fileID: 1988777454}
   _pauseMenu: {fileID: 4434813899641964820}
-  _holdDuration: 2
-  _hideDuration: 0.4
-  _popDuration: 0.5
-  _overshoot: 2.5
   _winScreen: {fileID: 4434813899641964819}
   _loseScreen: {fileID: 4434813899641964821}
 --- !u!4 &1782178243
@@ -1169,11 +1151,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1789916935 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 9219673036735993259, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
-  m_PrefabInstance: {fileID: 4434813899641964818}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1988777454 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6711474169387942725, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
@@ -1185,17 +1162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe7f440992cb9341bc365c038f3c4a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2046918669 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 949431199482053831, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
-  m_PrefabInstance: {fileID: 4434813899641964818}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1001 &843764235931984431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1341,10 +1307,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4612193102659135941, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
-      propertyPath: _emptyStarSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d0a5f60a3ba7f9f479cfe65b80523012, type: 3}
     - target: {fileID: 6711474169387942725, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
       propertyPath: _guideUIManager
       value: 

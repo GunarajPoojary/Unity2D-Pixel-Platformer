@@ -26,6 +26,7 @@ namespace PixelPlatformer
             _endCheckpoint.OnTrigger += HandleLevelCompleted;
             GameEvents.Subscribe<FruitCollectedEvent>(HandleFruitCollected);
             GameEvents.Subscribe<StompEventData>(HandleStomp);
+            GameEvents.Subscribe<PlayerDiedEventData>(HandlePlayerDied);
         }
 
         private void OnDisable()
@@ -34,6 +35,7 @@ namespace PixelPlatformer
             _endCheckpoint.OnTrigger -= HandleLevelCompleted;
             GameEvents.Unsubscribe<FruitCollectedEvent>(HandleFruitCollected);
             GameEvents.Unsubscribe<StompEventData>(HandleStomp);
+            GameEvents.Unsubscribe<PlayerDiedEventData>(HandlePlayerDied);
         }
 
         private void OnDestroy()
@@ -47,6 +49,16 @@ namespace PixelPlatformer
 
             _elapsedTime += Time.unscaledDeltaTime; // use unscaled timeScale, so pausing doesn't freeze it
             _uIManager.SetTimer(_elapsedTime);
+        }
+
+        private void HandlePlayerDied(PlayerDiedEventData data)
+        {
+            StopTimer();
+
+            _levelResultData.timeTaken = _elapsedTime;
+            _levelResultData.levelIcon = _levelData.levelIcon;
+
+            _uIManager.ShowLoseScreen(_levelResultData);
         }
 
         public void SetupLevel()
@@ -65,7 +77,7 @@ namespace PixelPlatformer
             _isTimeTicking = false;
 
             _uIManager = UIManager.Instance;
-            _uIManager.ResetLevelPopup();
+            // _uIManager.ResetLevelPopup();
             _uIManager.SetTimer(0f);
             _uIManager.SetCollectibles(0);
             _uIManager.SetEnemiesDefeated(0);
@@ -125,7 +137,7 @@ namespace PixelPlatformer
         private void HandlePlayerSpawned()
         {
             _playerManager.ToggleInput(true);
-            _uIManager.ShowLevel(_levelData);
+            // _uIManager.ShowLevel(_levelData);
         }
 
         private void HandleLevelCompleted()

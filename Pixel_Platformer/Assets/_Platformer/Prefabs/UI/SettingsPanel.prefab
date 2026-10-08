@@ -411,8 +411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ee5919d4f8bdd4db928ab84dfcfe3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Platformer::PixelPlatformer.PopUp
-  _hideDuration: 0.4
-  _popDuration: 0.5
+  _popoutEase: 27
+  _popinEase: 26
+  _hideDuration: 0.1
+  _popDuration: 0.1
 --- !u!1 &865636803935964251
 GameObject:
   m_ObjectHideFlags: 0

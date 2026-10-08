@@ -8,20 +8,22 @@ namespace PixelPlatformer
 {
     public class UIManager : Singleton<UIManager>
     {
-        [SerializeField] private RectTransform _levelPopupRoot;
-        [SerializeField] private Image _levelIcon;
-        [SerializeField] private TMP_Text _levelName;
+        // [SerializeField] private Ease _popoutEase = Ease.OutBack;
+        // [SerializeField] private Ease _popinEase = Ease.InBack;
+
+        // [SerializeField] private RectTransform _levelPopupRoot;
+        // [SerializeField] private Image _levelIcon;
+        // [SerializeField] private TMP_Text _levelName;
         [SerializeField] private TutorialUI _tutorialUI;
         [SerializeField] private HUD _hUD;
 
         [SerializeField] private PauseMenu _pauseMenu;
 
-        [SerializeField] private float _holdDuration = 2f;
-        [SerializeField] private float _hideDuration = 0.4f;
-        [SerializeField] private float _popDuration = 0.5f;
-        [SerializeField] private float _overshoot = 2.5f;
+        // [SerializeField] private float _holdDuration = 2f;
+        // [SerializeField] private float _hideDuration = 0.4f;
+        // [SerializeField] private float _popDuration = 0.5f;
 
-        private Sequence _levelPopupSequence;
+        // private Sequence _levelPopupSequence;
         [SerializeField] private WinScreen _winScreen;
         [SerializeField] private LoseScreen _loseScreen;
 
@@ -40,11 +42,11 @@ namespace PixelPlatformer
             _hUD.SetTime(seconds);
         }
 
-        public void ResetLevelPopup()
-        {
-            _levelPopupSequence?.Kill();
-            _levelPopupRoot.localScale = Vector3.zero;
-        }
+        // public void ResetLevelPopup()
+        // {
+        //     _levelPopupSequence?.Kill();
+        //     _levelPopupRoot.localScale = Vector3.zero;
+        // }
 
         public void SetupGameplayUI()
         {
@@ -52,21 +54,21 @@ namespace PixelPlatformer
             _hUD.Init();
         }
 
-        public void ShowLevel(LevelData data)
-        {
-            _levelName.text = data.levelName;
-            _levelIcon.sprite = data.levelIcon;
+        // public void ShowLevel(LevelData data)
+        // {
+        //     _levelName.text = data.levelName;
+        //     _levelIcon.sprite = data.levelIcon;
 
-            _levelPopupSequence?.Kill();
-            _levelPopupRoot.gameObject.SetActive(true);
-            _levelPopupRoot.localScale = Vector3.zero;
+        //     _levelPopupSequence?.Kill();
+        //     _levelPopupRoot.gameObject.SetActive(true);
+        //     _levelPopupRoot.localScale = Vector3.zero;
 
-            _levelPopupSequence = DOTween.Sequence()
-                .Append(_levelPopupRoot.DOScale(Vector3.one, _popDuration).SetEase(Ease.OutBack, _overshoot))
-                .AppendInterval(_holdDuration)
-                .Append(_levelPopupRoot.DOScale(Vector3.zero, _hideDuration).SetEase(Ease.InBack))
-                .SetLink(gameObject);
-        }
+        //     _levelPopupSequence = DOTween.Sequence()
+        //         .Append(_levelPopupRoot.DOScale(Vector3.one, _popDuration).SetEase(_popoutEase))
+        //         .AppendInterval(_holdDuration)
+        //         .Append(_levelPopupRoot.DOScale(Vector3.zero, _hideDuration).SetEase(_popinEase))
+        //         .SetLink(gameObject);
+        // }
 
         public void ShowPauseMenu()
         {
@@ -85,7 +87,12 @@ namespace PixelPlatformer
 
         public void ShowLoseScreen(LevelResultData result)
         {
-            _loseScreen.Show(result);
+            _loseScreen.Open(result);
+        }
+
+        public void HideLoseScreen()
+        {
+            _loseScreen.Close();
         }
 
         public void SetEnemiesDefeated(int count)

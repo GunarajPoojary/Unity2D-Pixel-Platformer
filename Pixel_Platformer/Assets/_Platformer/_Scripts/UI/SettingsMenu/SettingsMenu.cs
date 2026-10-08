@@ -49,6 +49,7 @@ namespace PixelPlatformer
         public void Close(Action onComplete = null)
         {
             _canvasGroup.interactable = false;
+            AudioManager.Instance.SaveData();
 
             _popup.Close(() =>
                 {
@@ -69,7 +70,7 @@ namespace PixelPlatformer
 
         public void EraseProgress()
         {
-            Debug.Log("Erase Game Data");
+            GameProgressDataManager.Instance.EraseData();
         }
 
         public void RefreshUI()
