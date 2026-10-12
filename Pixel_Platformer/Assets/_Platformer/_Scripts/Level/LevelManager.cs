@@ -4,8 +4,16 @@ namespace PixelPlatformer
 {
     public class LevelManager : Singleton<LevelManager>
     {
+        [System.Serializable]
+        public struct LevelObjectives
+        {
+            public int totalFruits;
+            public int totalEnemies;
+            public float estimatedCompletionTime;
+        }
+
         [SerializeField] private float _despawnHeight = 2.5f;
-        [SerializeField] private LevelData _levelData;
+        [SerializeField] private LevelObjectives _levelObjectives;
         [SerializeField] private LevelScoreDataSO _scoreData;
 
         [SerializeField] private StartCheckpoint _startCheckpoint;
@@ -13,17 +21,22 @@ namespace PixelPlatformer
         [SerializeField] private PlayerSpawnFX _playerSpawnFX;
         [SerializeField] private PlayerDespawnFX _playerDespawnFX;
         [SerializeField] private AnimatedBackground _background;
-        private readonly LevelResultData _levelResultData = new LevelResultData();
 
         private float _elapsedTime;
         private bool _isTimeTicking;
+        private float _bestTime;
         private UIManager _uIManager;
         private PlayerManager _playerManager;
+        private LevelRecord _record;
+        private float _maxScore;
+        private int _enemiesDefeated;
+        private int _fruitsCollected;
 
         private void OnEnable()
         {
             _startCheckpoint.OnPlayerLand += HandlePlayerSpawned;
             _endCheckpoint.OnTrigger += HandleLevelCompleted;
+
             GameEvents.Subscribe<FruitCollectedEvent>(HandleFruitCollected);
             GameEvents.Subscribe<StompEventData>(HandleStomp);
             GameEvents.Subscribe<PlayerDiedEventData>(HandlePlayerDied);
@@ -33,6 +46,7 @@ namespace PixelPlatformer
         {
             _startCheckpoint.OnPlayerLand -= HandlePlayerSpawned;
             _endCheckpoint.OnTrigger -= HandleLevelCompleted;
+
             GameEvents.Unsubscribe<FruitCollectedEvent>(HandleFruitCollected);
             GameEvents.Unsubscribe<StompEventData>(HandleStomp);
             GameEvents.Unsubscribe<PlayerDiedEventData>(HandlePlayerDied);
@@ -55,23 +69,13 @@ namespace PixelPlatformer
         {
             StopTimer();
 
-            _levelResultData.timeTaken = _elapsedTime;
-            _levelResultData.levelIcon = _levelData.levelIcon;
-
-            _uIManager.ShowLoseScreen(_levelResultData);
+            _uIManager.ShowLoseScreen();
         }
 
-        public void SetupLevel()
+        public void SetupLevel(LevelRecord record)
         {
-            _levelResultData.totalFruits = _levelData.totalFruits;
-            _levelResultData.totalEnemies = _levelData.totalEnemies;
-            _levelResultData.levelIndex = _levelData.levelIndex;
-            _levelResultData.fruitsCollected = 0;
-            _levelResultData.timeTaken = 0;
-            _levelResultData.estimatedCompletionTime = _levelData.estimatedCompletionTime;
-            _levelResultData.levelName = _levelData.levelName;
-            _levelResultData.enemiesDefeated = 0;
-
+            _record = record;
+            _maxScore = MaxScore(_levelObjectives, _scoreData);
 
             _elapsedTime = 0f;
             _isTimeTicking = false;
@@ -81,6 +85,10 @@ namespace PixelPlatformer
             _uIManager.SetTimer(0f);
             _uIManager.SetCollectibles(0);
             _uIManager.SetEnemiesDefeated(0);
+            _uIManager.SetupWinScreen(
+                GameManager.Instance.GetLevelIcon(record.levelIndex),
+                _levelObjectives.totalEnemies,
+                _levelObjectives.totalFruits);
 
             _playerManager = PlayerManager.Instance;
             _playerManager.OnFirstMove += StartTimer;
@@ -137,33 +145,88 @@ namespace PixelPlatformer
         private void HandlePlayerSpawned()
         {
             _playerManager.ToggleInput(true);
-            // _uIManager.ShowLevel(_levelData);
+            // _uIManager.ShowLevel(_levelObjectives);
         }
 
         private void HandleLevelCompleted()
         {
-            Debug.Log("Level COmplete");
+            Debug.Log("Level Complete");
             _playerManager.ToggleInput(false);
             StopTimer();
 
-            _levelResultData.timeTaken = _elapsedTime;
-            _levelResultData.levelIcon = _levelData.levelIcon;
-            _levelResultData.score = ScoreCalculator.Score(_levelResultData, _scoreData);
-            _levelResultData.maxScore = ScoreCalculator.MaxScore(_levelData, _scoreData);
-            _levelResultData.stars = ScoreCalculator.GetStars(_levelResultData.score, _levelResultData.maxScore, _levelData.maxStars);
-            GameEvents.Publish(new CompletLevelEvent(_levelResultData));
+            var result = new LevelResult()
+            {
+                timeTaken = _elapsedTime,
+                fruitsCollected = _fruitsCollected,
+                enemiesDefeated = _enemiesDefeated,
+                totalFruits = _levelObjectives.totalFruits,
+                totalEnemies = _levelObjectives.totalEnemies
+            };
 
-            _uIManager.ShowWinScreen(_levelResultData);
+            result.score = Mathf.Max(0f, Mathf.Round(TotalScore(result, _scoreData, _levelObjectives.estimatedCompletionTime)));
+            result.starsEarned = GetStars(result.score, _maxScore, 3);
+
+            // read the previous best before the event saves the new record
+            float previousBest = _record != null ? _record.bestScore : 0f;
+            result.isNewBest = result.score > previousBest;
+            result.bestScore = Mathf.Max(previousBest, result.score);
+
+            GameEvents.Publish(new CompletLevelEvent(result));
+
+            _uIManager.ShowWinScreen(result);
         }
+
+
+
+
+
+
+
 
         private void HandleStomp(StompEventData data)
         {
-            _uIManager.SetEnemiesDefeated(++_levelResultData.enemiesDefeated);
+            _uIManager.SetEnemiesDefeated(++_enemiesDefeated);
         }
 
         private void HandleFruitCollected(FruitCollectedEvent data)
         {
-            _uIManager.SetCollectibles(++_levelResultData.fruitsCollected);
+            _uIManager.SetCollectibles(++_fruitsCollected);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        private int GetStars(float score, float maxScore, int maxStars)
+        {
+            float ratio = Mathf.Clamp01(score / maxScore);
+
+            if (ratio >= 0.85f) return maxStars;
+            if (ratio >= 0.5f) return Mathf.Max(1, maxStars - 1);
+
+            return 1;
+        }
+
+        private float TotalScore(LevelResult result, LevelScoreDataSO levelScore, float estimatedCompletionTime)
+        {
+            float timeBonus = (estimatedCompletionTime * levelScore.timeBonus) + (estimatedCompletionTime - result.timeTaken) * levelScore.timePoint;
+
+            return (result.fruitsCollected * levelScore.fruitPoint)
+                         + (result.enemiesDefeated * levelScore.enemyPoint)
+                         + timeBonus;
+        }
+
+        private float MaxScore(LevelObjectives objectives, LevelScoreDataSO levelScore)
+        {
+            return (objectives.totalFruits * levelScore.fruitPoint)
+                   + (objectives.totalEnemies * levelScore.enemyPoint)
+                   + (objectives.estimatedCompletionTime * levelScore.timeBonus);
         }
     }
 }

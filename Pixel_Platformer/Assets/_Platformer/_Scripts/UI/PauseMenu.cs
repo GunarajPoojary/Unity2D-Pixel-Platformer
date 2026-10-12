@@ -36,11 +36,10 @@ namespace PixelPlatformer
             _canvasGroup.interactable = false;
 
             _popUp.Open(() =>
-                {
-                    _canvasGroup.interactable = true;
-                    onComplete?.Invoke();
-                });
-
+            {
+                _canvasGroup.interactable = true;
+                onComplete?.Invoke();
+            });
         }
 
         public void Close(Action onComplete = null)
@@ -53,10 +52,10 @@ namespace PixelPlatformer
             _canvasGroup.interactable = false;
 
             _popUp.Close(() =>
-                {
-                    onComplete?.Invoke();
-                    _root.SetActive(false);
-                });
+            {
+                onComplete?.Invoke();
+                _root.SetActive(false);
+            });
         }
 
         private void OnEnable()
@@ -87,15 +86,16 @@ namespace PixelPlatformer
 
         private void OpenSettings()
         {
-            _popUp.Close();
-            _settingsMenu.Open();
+            _canvasGroup.interactable = false;
+            _popUp.Close(() => _settingsMenu.Open());
         }
 
         private void CloseSettings()
         {
-            _popUp.Open();
-
-            _settingsMenu.Close();
+            _settingsMenu.Close(() =>
+            {
+                _popUp.Open(() => _canvasGroup.interactable = true);
+            });
         }
 
         private void GoToMainMenu()

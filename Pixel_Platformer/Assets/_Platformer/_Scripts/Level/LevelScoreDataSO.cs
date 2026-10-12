@@ -7,6 +7,7 @@ namespace PixelPlatformer
     {
         public int timePoint;
         public int fruitPoint;
-        public int enemyDefeatPoint;
+        public int enemyPoint;
+        public int timeBonus; // per second
     }
 }

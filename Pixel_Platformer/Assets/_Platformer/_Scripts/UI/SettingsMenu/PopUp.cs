@@ -37,11 +37,10 @@ namespace PixelPlatformer
             _rect.localScale = Vector3.zero;
 
             _popupSequence = DOTween.Sequence()
-                .Append(_rect.DOScale(Vector3.one, _popDuration).SetEase(_popoutEase))
-                .SetLink(gameObject).OnComplete(() =>
-                {
-                    onComplete?.Invoke();
-                });
+                                    .Append(_rect.DOScale(Vector3.one, _popDuration).SetEase(_popoutEase))
+                                    .SetUpdate(true) // make the Time Scale not effct the animation
+                                    .SetLink(gameObject)
+                                    .OnComplete(() => onComplete?.Invoke());
         }
 
         public void Close(Action onComplete = null)
@@ -49,11 +48,10 @@ namespace PixelPlatformer
             _popupSequence?.Kill();
 
             _popupSequence = DOTween.Sequence()
-                .Append(_rect.DOScale(Vector3.zero, _hideDuration).SetEase(_popinEase))
-                .SetLink(gameObject).OnComplete(() =>
-                {
-                    onComplete?.Invoke();
-                });
+                                    .Append(_rect.DOScale(Vector3.zero, _hideDuration).SetEase(_popinEase))
+                                    .SetUpdate(true) // make the Time Scale not effct the animation
+                                    .SetLink(gameObject)
+                                    .OnComplete(() => onComplete?.Invoke());
         }
     }
 }

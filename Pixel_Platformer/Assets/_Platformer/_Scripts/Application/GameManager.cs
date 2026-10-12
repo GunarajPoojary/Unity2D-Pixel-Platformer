@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace PixelPlatformer
     {
         public static GameManager Instance { get; private set; }
 
-        [SerializeField] private SceneReference[] _levels;
+        [SerializeField] private LevelDefinitionSO[] _levels;
 
         [SerializeField] private SceneReference _mainMenuScene;
         [SerializeField] private SceneReference _gameplayScene;
@@ -21,46 +20,23 @@ namespace PixelPlatformer
         private bool _isPaused;
         private bool _isLostGame;
 
-        public bool IsPaused
-        {
-            get
-            {
-                return _isPaused;
-            }
-        }
-
-        public int CurrentLevelIndex
-        {
-            get
-            {
-                return _currentLevelIndex;
-            }
-        }
-
-        public bool IsLastLevel
-        {
-            get
-            {
-                return _currentLevelIndex + 1 >= _levels.Length;
-            }
-        }
-
         public int TotalLevels { get { return _levels.Length; } }
 
         private void OnEnable()
         {
             GameEvents.Subscribe<PlayerDiedEventData>(EnterGameLoseState);
+            GameEvents.Subscribe<CompletLevelEvent>(HandleLevelCompleted);
         }
 
         private void OnDisable()
         {
             GameEvents.Unsubscribe<PlayerDiedEventData>(EnterGameLoseState);
+            GameEvents.Unsubscribe<CompletLevelEvent>(HandleLevelCompleted);
         }
 
         public async UniTask Initialize()
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         public async UniTask Setup(LoadingScreen loadingScreen, SceneTransitionFX sceneTransitionFX)
@@ -100,16 +76,17 @@ namespace PixelPlatformer
 
 
             // load saved level
-            op = SceneManager.LoadSceneAsync(_levels[levelIndex].BuildIndex, LoadSceneMode.Additive);
+            var index = levelIndex - 1;
+            op = SceneManager.LoadSceneAsync(_levels[index].LevelScene.BuildIndex, LoadSceneMode.Additive);
             _loadingScreen.UpdateProgress(0.6f);
             await op.ToUniTask();
-            _currentLevelIndex = 0;
+            _currentLevelIndex = levelIndex;
 
-            Scene level = SceneManager.GetSceneByBuildIndex(_levels[levelIndex].BuildIndex);
+            Scene level = SceneManager.GetSceneByBuildIndex(_levels[index].LevelScene.BuildIndex);
             SceneManager.SetActiveScene(level);
 
             LevelManager levelManager = LevelManager.Instance;
-            levelManager.SetupLevel();
+            levelManager.SetupLevel(GameProgressDataManager.Instance.GetRecord(levelIndex));
 
             _loadingScreen.UpdateProgress(1f);
             await UniTask.DelayFrame(5);
@@ -136,6 +113,10 @@ namespace PixelPlatformer
             _isLostGame = false;
             _sceneTransitionFX.Show();
             await _sceneTransitionFX.PlayPopup();
+
+            UIManager.Instance.HideLoseScreen();
+            UIManager.Instance.HideWinScreen();
+
             _loadingScreen.UpdateProgress(0f);
             _loadingScreen.Show();
 
@@ -165,7 +146,7 @@ namespace PixelPlatformer
             SceneManager.SetActiveScene(levelScene);
 
             LevelManager levelManager = LevelManager.Instance;
-            levelManager.SetupLevel();
+            levelManager.SetupLevel(GameProgressDataManager.Instance.GetRecord(_currentLevelIndex));
 
             _loadingScreen.UpdateProgress(1f);
             await UniTask.DelayFrame(5);
@@ -182,13 +163,7 @@ namespace PixelPlatformer
         {
             Debug.Log("Go To Main Menu");
             _isLostGame = false;
-
-            if (_isPaused)
-            {
-                _isPaused = false;
-                Time.timeScale = 1f;
-                UIManager.Instance.HidePauseMenu();
-            }
+            _isPaused = false;
 
             _sceneTransitionFX.Show();
             await _sceneTransitionFX.PlayPopup();
@@ -233,6 +208,7 @@ namespace PixelPlatformer
             if (_isPaused || _isLostGame) return;
 
             _isPaused = true;
+            Time.timeScale = 0f;
 
             PlayerManager.Instance.ToggleInput(false);
             UIManager.Instance.ShowPauseMenu();
@@ -242,6 +218,7 @@ namespace PixelPlatformer
         {
             if (!_isPaused) return;
             _isPaused = false;
+            Time.timeScale = 1f;
 
             PlayerManager.Instance.ToggleInput(true);
             UIManager.Instance.HidePauseMenu();
@@ -284,16 +261,17 @@ namespace PixelPlatformer
             }
 
             _currentLevelIndex++;
-            AsyncOperation op = SceneManager.LoadSceneAsync(_levels[_currentLevelIndex].BuildIndex, LoadSceneMode.Additive);
+            var index = _currentLevelIndex - 1;
+            AsyncOperation op = SceneManager.LoadSceneAsync(_levels[index].LevelScene.BuildIndex, LoadSceneMode.Additive);
             _loadingScreen.UpdateProgress(0.6f);
             await op.ToUniTask();
             _loadingScreen.UpdateProgress(1f);
 
-            Scene nextScene = SceneManager.GetSceneByBuildIndex(_levels[_currentLevelIndex].BuildIndex);
+            Scene nextScene = SceneManager.GetSceneByBuildIndex(_levels[index].LevelScene.BuildIndex);
             SceneManager.SetActiveScene(nextScene);
 
             LevelManager levelManager = LevelManager.Instance;
-            levelManager.SetupLevel();
+            levelManager.SetupLevel(GameProgressDataManager.Instance.GetRecord(_currentLevelIndex));
 
             await UniTask.DelayFrame(5);
 
@@ -303,6 +281,19 @@ namespace PixelPlatformer
             await _sceneTransitionFX.PlayPopdown();
 
             levelManager.StartLevel();
+        }
+
+        public Sprite GetLevelIcon(int levelIndex)
+        {
+            var index = levelIndex - 1;
+            return _levels[index].LevelIcon;
+        }
+
+        private void HandleLevelCompleted(CompletLevelEvent e)
+        {
+            var index = _currentLevelIndex - 1;
+            var levelIndex = _levels[index].LevelIndex;
+            GameProgressDataManager.Instance.SetLevelRecordData(levelIndex, e.levelResult);
         }
     }
 }

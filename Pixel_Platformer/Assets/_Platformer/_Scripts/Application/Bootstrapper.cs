@@ -22,7 +22,7 @@ namespace PixelPlatformer
         private SceneTransitionFX _sceneTransitionFX;
         private AudioManager _audioManager;
         private GameManager _gameManager;
-        private GameProgressDataManager _GameProgressDataManager;
+        private GameProgressDataManager _gameProgressDataManager;
         private LoadingScreen _loadingScreen;
 
         private async void Start()
@@ -35,7 +35,7 @@ namespace PixelPlatformer
             await _audioManager.Initialize();
             await _gameManager.Initialize();
             await _gameManager.Setup(_loadingScreen, _sceneTransitionFX);
-            await _GameProgressDataManager.Init(_gameManager.TotalLevels);
+            await _gameProgressDataManager.Init(_gameManager.TotalLevels);
 
             // load main menu
             // scene activation is controlled manually 
@@ -84,7 +84,7 @@ namespace PixelPlatformer
             _sceneTransitionFX = Instantiate(_sceneTransitionFXPrefab, persistentObjects);
             _audioManager = Instantiate(_audioManagerPrefab, persistentObjects);
             _gameManager = Instantiate(_gameManagerPrefab, persistentObjects);
-            _GameProgressDataManager = Instantiate(_gameProgressDataManagerPrefab, persistentObjects);
+            _gameProgressDataManager = Instantiate(_gameProgressDataManagerPrefab, persistentObjects);
 
             DontDestroyOnLoad(persistentObjects);
         }

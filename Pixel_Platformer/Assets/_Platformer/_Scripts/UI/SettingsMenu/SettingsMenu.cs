@@ -38,10 +38,10 @@ namespace PixelPlatformer
             _root.SetActive(true);
 
             _popup.Open(() =>
-                {
-                    _canvasGroup.interactable = true;
-                    onComplete?.Invoke();
-                });
+            {
+                _canvasGroup.interactable = true;
+                onComplete?.Invoke();
+            });
 
             RefreshUI();
         }
@@ -52,10 +52,10 @@ namespace PixelPlatformer
             AudioManager.Instance.SaveData();
 
             _popup.Close(() =>
-                {
-                    onComplete?.Invoke();
-                    _root.SetActive(false);
-                });
+            {
+                _root.SetActive(false);
+                onComplete?.Invoke();
+            });
         }
 
         public void SetSFXVolume(float value)

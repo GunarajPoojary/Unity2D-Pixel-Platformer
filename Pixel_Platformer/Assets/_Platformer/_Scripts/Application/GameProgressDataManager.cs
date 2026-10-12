@@ -5,6 +5,32 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
+    [System.Serializable]
+    public class GameProgressData
+    {
+        public List<LevelRecord> records;
+        public int latestLevel;
+
+        public GameProgressData(int totalLevels)
+        {
+            records = new List<LevelRecord>(totalLevels);
+
+
+
+            for (int i = 0; i < totalLevels; i++)
+            {
+                records.Add(new LevelRecord
+                {
+                    levelIndex = i + 1,
+                    isUnlocked = i == 0,   // level 1 unlocked by default
+                    StarsEarned = 0,
+                    bestScore = 0f
+                });
+            }
+            latestLevel = 1;
+        }
+    }
+
     public class GameProgressDataManager : Singleton<GameProgressDataManager>
     {
         private const string GAME_PROGRESS_KEY = "Game_Progress";
@@ -13,18 +39,6 @@ namespace PixelPlatformer
         private int _totalLevels;
 
         public event Action DataErased;
-
-        private void OnEnable()
-        {
-            GameEvents.Subscribe<UnlockLevelEvent>(UnlockLevel);
-            GameEvents.Subscribe<CompletLevelEvent>(CompleteLevel);
-        }
-
-        private void OnDisable()
-        {
-            GameEvents.Unsubscribe<UnlockLevelEvent>(UnlockLevel);
-            GameEvents.Unsubscribe<CompletLevelEvent>(CompleteLevel);
-        }
 
         private void OnApplicationPause(bool paused)
         {
@@ -43,35 +57,19 @@ namespace PixelPlatformer
 
         public async UniTask Init(int totalLevels)
         {
-            // load saved progress data
-            // if not found use default data with level 1
-            // var data = new GameProgressData();
-            // data.records.Add(new LevelRecord() { levelIndex = 2, hasCleared = false, starsEarned = 0 });
-            // Debug.Log(JsonUtility.ToJson(data));
             _totalLevels = totalLevels;
 
             string json = PlayerPrefs.GetString(GAME_PROGRESS_KEY, string.Empty);
-            // Debug.Log(loadedData);
 
-            if (string.IsNullOrEmpty(json))
-            {
-                _progressData = new GameProgressData(_totalLevels);
-                _progressData.records[0].isUnlocked = true;
-                return;
-            }
-
-            _progressData = JsonUtility.FromJson<GameProgressData>(json);
+            if (!string.IsNullOrEmpty(json))
+                _progressData = JsonUtility.FromJson<GameProgressData>(json);
 
             if (_progressData == null || _progressData.records == null || _progressData.records.Count == 0)
-            {
-                _progressData = new GameProgressData(_totalLevels);
-                _progressData.records[0].isUnlocked = true;
-            }
+                _progressData = new GameProgressData(totalLevels);
         }
 
         public List<LevelRecord> LoadData()
         {
-
             return _progressData.records;
         }
 
@@ -81,69 +79,59 @@ namespace PixelPlatformer
             PlayerPrefs.Save();
         }
 
-        public void SaveData(List<LevelRecord> records)
+        public void SetLevelRecordData(int levelIndex, LevelResult result)
         {
-            _progressData.records = records;
-
-            PlayerPrefs.SetString(GAME_PROGRESS_KEY, JsonUtility.ToJson(_progressData));
-            PlayerPrefs.Save();
-        }
-
-        public void SetLevelRecordData(int levelIndex, int stars)
-        {
-            LevelRecord record = _progressData.records[levelIndex - 1];
+            var index = levelIndex - 1;
+            LevelRecord record = _progressData.records[index];
 
             // if recorded data found then override it by new best record
             record.isUnlocked = true;
-            record.starsEarned = Mathf.Max(record.starsEarned, stars); // override with best result
+            record.StarsEarned = Mathf.Max(record.StarsEarned, result.starsEarned);
+            record.bestScore = Mathf.Max(record.bestScore, result.score);
 
             // also unlock the next level with new default record data
-            UnlockLevel(levelIndex + 1);
+            var nextLevelIndex = levelIndex + 1;
+            UnlockLevel(nextLevelIndex);
+            SaveData();
         }
 
-        public void UnlockLevel(int targetLevelIndex, int starsEarned = 0)
+        public void UnlockLevel(int targetLevelIndex)
         {
-            if (targetLevelIndex > _totalLevels) return;
+            if (targetLevelIndex > _progressData.records.Count) return;
 
-            var record = _progressData.records[targetLevelIndex - 1];
-            if (record.isUnlocked) return; 
+            var index = targetLevelIndex - 1;
+            var record = _progressData.records[index];
+            if (record.isUnlocked) return;
 
             record.isUnlocked = true;
-            record.starsEarned = starsEarned;
+            record.StarsEarned = 0;
+            record.bestScore = 0;
+
+            _progressData.latestLevel = record.levelIndex;
         }
 
         public int GetLatestUnlockedLevel()
         {
-            int latestLevel = 1;
-            for (int i = 0; i < _progressData.records.Count; i++)
-            {
-                if (!_progressData.records[i].isUnlocked) return latestLevel; ;
-
-                latestLevel = _progressData.records[i].levelIndex;
-            }
-
-            return latestLevel;
+            return _progressData.latestLevel;
         }
 
         public void EraseData()
         {
             PlayerPrefs.DeleteKey(GAME_PROGRESS_KEY);
-
             _progressData = new GameProgressData(_totalLevels);
-            _progressData.records[0].isUnlocked = true;
-
             SaveData();
             DataErased?.Invoke();
         }
 
-        private void CompleteLevel(CompletLevelEvent data)
+        public LevelRecord GetRecord(int currentLevelIndex)
         {
-            SetLevelRecordData(data.levelResult.levelIndex, data.levelResult.stars);
-        }
+            foreach (var item in _progressData.records)
+            {
+                if (item.levelIndex == currentLevelIndex)
+                    return item;
+            }
 
-        private void UnlockLevel(UnlockLevelEvent data)
-        {
-            UnlockLevel(data.levelIndex);
+            return null;
         }
     }
 }

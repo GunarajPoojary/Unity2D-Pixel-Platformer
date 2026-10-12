@@ -27,7 +27,7 @@ namespace PixelPlatformer
         [SerializeField] private WinScreen _winScreen;
         [SerializeField] private LoseScreen _loseScreen;
 
-        public void ShowWinScreen(LevelResultData result)
+        public void ShowWinScreen(LevelResult result)
         {
             _winScreen.Open(result);
         }
@@ -40,6 +40,11 @@ namespace PixelPlatformer
         public void SetTimer(float seconds)
         {
             _hUD.SetTime(seconds);
+        }
+
+        public void SetupWinScreen(Sprite levelIcon, int totalEnemies, int totalFruits)
+        {
+            _winScreen.Setup(levelIcon, totalEnemies, totalFruits);
         }
 
         // public void ResetLevelPopup()
@@ -85,9 +90,9 @@ namespace PixelPlatformer
             _hUD.SetCollectibles(count);
         }
 
-        public void ShowLoseScreen(LevelResultData result)
+        public void ShowLoseScreen()
         {
-            _loseScreen.Open(result);
+            _loseScreen.Open();
         }
 
         public void HideLoseScreen()

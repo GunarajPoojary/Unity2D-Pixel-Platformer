@@ -9,41 +9,25 @@ namespace PixelPlatformer
     [RequireComponent(typeof(RectTransform))]
     public class LevelSelectScreen : MonoBehaviour
     {
-        [SerializeField] private LevelConfig[] _configs;
-
         [SerializeField] private GameObject _root;
         [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private float _slideDuration = 0.5f;
 
         [SerializeField] private Button _backButton;
         [SerializeField] private LevelSlot _slotPrefab;
         [SerializeField] private RectTransform _slotContainer;
-        [SerializeField] private RectTransform _canvasRect;
-
-        private Sequence _slideSequence;
-        private RectTransform _rect;
+        [SerializeField] private float _fadeDuration = 0.5f;
         private readonly List<LevelSlot> _slots = new List<LevelSlot>();
-        private bool _isFocused;
 
-        private Vector2 _anchoredPosition;
-        private Vector2 _outsidePosition;
+        private Tween _fadeTween;
+
+        public event Action BackRequested;
 
         private void Awake()
         {
-            _rect = GetComponent<RectTransform>();
-
-            _anchoredPosition = _rect.anchoredPosition;
-
-            // calculate position completely outside the screen to the right of the viewport
-            float screenWidth = _canvasRect.rect.width;
-
-            // move the panel far enough right so its left edge is completely outside the canvas
-            float panelWidth = _rect.rect.width;
-
-            _outsidePosition = _anchoredPosition + new Vector2(screenWidth + panelWidth, 0f);
-
-            // keep the panel outside the screen
-            _rect.anchoredPosition = _outsidePosition;
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
+            _root.SetActive(false);
         }
 
         private void OnEnable()
@@ -64,19 +48,21 @@ namespace PixelPlatformer
             }
         }
 
-        public void Init(List<LevelRecord> progressData)
+        public void Init(List<LevelRecord> levelRecords)
         {
-
-            for (int i = 0; i < progressData.Count; i++)
+            for (int i = 0; i < levelRecords.Count; i++)
             {
                 var slot = Instantiate(_slotPrefab, _slotContainer);
 
                 slot.Clicked += HandleSlotClicked;
 
-                slot.BindData(progressData[i].levelIndex,
-                              _configs[i].levelIcon,
-                               progressData[i].isUnlocked,
-                              progressData[i].starsEarned);
+                Sprite levelIcon = GameManager.Instance.GetLevelIcon(levelRecords[i].levelIndex);
+
+                slot.BindData(levelRecords[i].levelIndex,
+                              levelIcon,
+                               levelRecords[i].isUnlocked,
+                               levelRecords[i].bestScore,
+                              levelRecords[i].StarsEarned);
 
                 _slots.Add(slot);
             }
@@ -84,70 +70,54 @@ namespace PixelPlatformer
 
         public void Open(Action onComplete = null)
         {
-            SlideIn(onComplete);
+            _root.SetActive(true);
+
+            _fadeTween?.Kill();
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = true;
+
+            _fadeTween = _canvasGroup.DOFade(1f, _fadeDuration).SetLink(gameObject).OnComplete(() =>
+            {
+                _canvasGroup.interactable = true;
+                onComplete?.Invoke();
+            });
         }
 
         public void Close(Action onComplete = null)
         {
-            SlideOut(onComplete);
-        }
+            _fadeTween?.Kill();
+            _canvasGroup.interactable = false;
 
-        public Sprite GetLevelIcon(int levelIndex)
-        {
-            for (int i = 0; i < _configs.Length; i++)
-                if (_configs[i].levelIndex == levelIndex)
-                    return _configs[i].levelIcon;
-                    
-            return null;
-        }
-
-        public void Refresh(List<LevelRecord> progressData)
-        {
-            for (int i = 0; i < _slots.Count && i < progressData.Count; i++)
+            _fadeTween = _canvasGroup.DOFade(0f, _fadeDuration).SetLink(gameObject).OnComplete(() =>
             {
-                _slots[i].BindData(progressData[i].levelIndex,
-                                   _configs[i].levelIcon,
-                                   progressData[i].isUnlocked,
-                                   progressData[i].starsEarned);
-            }
+                _canvasGroup.blocksRaycasts = false;
+                _root.SetActive(false);
+                onComplete?.Invoke();
+            });
         }
 
-        private void HandleSlotClicked(int levelIndex)
+        public void Refresh(List<LevelRecord> levelRecords)
         {
-            GameManager.Instance.StartLevel(levelIndex - 1);
+            for (int i = 0; i < _slots.Count && i < levelRecords.Count; i++)
+            {
+                Sprite levelIcon = GameManager.Instance.GetLevelIcon(levelRecords[i].levelIndex);
+
+                _slots[i].BindData(levelRecords[i].levelIndex,
+                                   levelIcon,
+                                   levelRecords[i].isUnlocked,
+                               levelRecords[i].bestScore,
+                              levelRecords[i].StarsEarned);
+            }
         }
 
         private void HandleBackClicked()
         {
-            Close();
+            BackRequested?.Invoke();
         }
 
-        private void SlideIn(Action onComplete = null)
+        private void HandleSlotClicked(int levelIndex)
         {
-            if (_isFocused) return;
-
-            _slideSequence?.Kill();
-
-            _isFocused = true;
-
-            _rect.anchoredPosition = _outsidePosition;
-
-            _slideSequence = DOTween.Sequence()
-                .Append(_rect.DOAnchorPos(_anchoredPosition, _slideDuration).SetEase(Ease.OutCubic))
-                .SetLink(gameObject)
-                .OnComplete(() => { onComplete?.Invoke(); });
-        }
-
-        private void SlideOut(Action onComplete = null)
-        {
-            _slideSequence?.Kill();
-
-            _isFocused = false;
-
-            _slideSequence = DOTween.Sequence()
-                .Append(_rect.DOAnchorPos(_outsidePosition, _slideDuration).SetEase(Ease.InCubic))
-                .SetLink(gameObject)
-                .OnComplete(() => { onComplete?.Invoke(); });
+            GameManager.Instance.StartLevel(levelIndex);
         }
     }
 }

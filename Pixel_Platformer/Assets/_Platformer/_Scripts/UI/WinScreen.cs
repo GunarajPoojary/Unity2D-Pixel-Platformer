@@ -15,6 +15,8 @@ namespace PixelPlatformer
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _panel;
         [SerializeField] private Image _levelIcon;
+        [SerializeField] private TMP_Text _bestScoreText;
+        [SerializeField] private GameObject _newBestIndicator;
 
         [Header("Stars")]
         [SerializeField] private Image[] _starImages;
@@ -31,16 +33,25 @@ namespace PixelPlatformer
         [SerializeField] private Button _mainMenuButton;
 
         [SerializeField] private Sprite[] _sprites;
-        [SerializeField]private Sprite _emptyStarSprite;
+        [SerializeField] private Sprite _emptyStarSprite;
         [SerializeField] private int _frameRate = 12;
         [SerializeField] private PopUp _popUp;
 
         private int _keyFrame;
         private Coroutine _coroutine;
+        private int _totalEnemies;
+        private int _totalFruits;
 
         private void Start()
         {
             _root.SetActive(false);
+        }
+
+        public void Setup(Sprite levelIcon, int totalEnemies, int totalFruits)
+        {
+            _levelIcon.sprite = levelIcon;
+            _totalEnemies = totalEnemies;
+            _totalFruits = totalFruits;
         }
 
         private void OnEnable()
@@ -57,13 +68,14 @@ namespace PixelPlatformer
             _mainMenuButton.onClick.RemoveListener(MainMenu);
         }
 
-        public void Open(LevelResultData result, Action onComplete = null)
+        public void Open(LevelResult result, Action onComplete = null)
         {
-            _levelIcon.sprite = result.levelIcon;
             _timeTakenText.text = $"{result.timeTaken:0.0}s";
-            _enemiesDefeated.text = $"{result.enemiesDefeated}/{result.totalEnemies}";
-            _fruitsCollectedText.text = $"{result.fruitsCollected}/{result.totalFruits}";
+            _enemiesDefeated.text = $"{result.enemiesDefeated}/{_totalEnemies}";
+            _fruitsCollectedText.text = $"{result.fruitsCollected}/{_totalFruits}";
             _totalScoreText.text = result.score.ToString();
+            _bestScoreText.text = $"Best: {result.bestScore}";
+            _newBestIndicator.SetActive(result.isNewBest);
 
             foreach (Image image in _starImages)
             {
@@ -77,11 +89,11 @@ namespace PixelPlatformer
             _canvasGroup.interactable = false;
 
             _popUp.Open(() =>
-                {
-                    _canvasGroup.interactable = true;
-                    PlayStarPopupClip(result.stars);
-                    onComplete?.Invoke();
-                });
+            {
+                _canvasGroup.interactable = true;
+                PlayStarPopupClip(result.starsEarned);
+                onComplete?.Invoke();
+            });
         }
 
         public void Close(Action onComplete = null)
@@ -143,7 +155,7 @@ namespace PixelPlatformer
 
         private void PlayAgain()
         {
-            Close(() => GameManager.Instance.RestartLevel());
+            GameManager.Instance.RestartLevel();
         }
 
         private void NextLevel()
@@ -153,7 +165,7 @@ namespace PixelPlatformer
 
         private void MainMenu()
         {
-            Close(() => GameManager.Instance.GoToMainMenu());
+            GameManager.Instance.GoToMainMenu();
         }
     }
 }

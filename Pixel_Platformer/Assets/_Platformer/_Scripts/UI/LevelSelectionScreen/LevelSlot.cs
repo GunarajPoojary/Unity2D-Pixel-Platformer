@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ namespace PixelPlatformer
     {
         [SerializeField] private Button _button;
         [SerializeField] private Image _levelIcon;
+        [SerializeField] private TMP_Text _bestScore;
 
         [SerializeField] private Image[] _starImages;
         [SerializeField] private Sprite _lockSprite;
@@ -35,11 +37,12 @@ namespace PixelPlatformer
             _button.onClick.RemoveListener(HandleClick);
         }
 
-        public void BindData(int index, Sprite levelSprite, bool unlocked, int stars)
+        public void BindData(int index, Sprite levelSprite, bool unlocked, float bestScore, int stars)
         {
             _index = index;
 
             _levelIcon.sprite = unlocked ? levelSprite : _lockSprite;
+            _bestScore.gameObject.SetActive(unlocked);
             _levelIcon.enabled = _levelIcon.sprite != null;
 
             _button.interactable = unlocked;
@@ -48,6 +51,8 @@ namespace PixelPlatformer
             {
                 for (int i = 0; i < _starImages.Length; i++)
                     _starImages[i].sprite = i < stars ? _starOnSprite : _starOffSprite;
+
+                _bestScore.text = "Best Score: " + bestScore.ToString();
             }
             else
             {

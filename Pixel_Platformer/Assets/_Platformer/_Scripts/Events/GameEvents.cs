@@ -10,20 +10,11 @@ namespace PixelPlatformer
     public readonly struct StompEventData { }
     public readonly struct CompletLevelEvent
     {
-        public readonly LevelResultData levelResult;
+        public readonly LevelResult levelResult;
 
-        public CompletLevelEvent(LevelResultData result)
+        public CompletLevelEvent(LevelResult result)
         {
             this.levelResult = result;
-        }
-    }
-    public readonly struct UnlockLevelEvent
-    {
-        public readonly int levelIndex;
-
-        public UnlockLevelEvent(int levelIndex)
-        {
-            this.levelIndex = levelIndex;
         }
     }
 

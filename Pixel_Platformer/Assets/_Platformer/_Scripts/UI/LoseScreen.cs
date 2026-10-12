@@ -1,6 +1,5 @@
 using System;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,16 +11,7 @@ namespace PixelPlatformer
         [SerializeField] private CanvasGroup _overlayCanvasGroup;
         [SerializeField] private float _overlayFadeDuration = 0.5f;
         [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private PopUp _popUp;
-        [SerializeField] private Image _skullIcon;
-        [SerializeField] private TMP_Text _titleText;
-        [SerializeField] private TMP_Text _subtitleText;
-
-        [Header("Stats")]
-        [SerializeField] private TMP_Text _timeTakenText;
-        [SerializeField] private TMP_Text _bestScoreText;
-        [SerializeField] private TMP_Text _fruitsCollectedText;
-        [SerializeField] private TMP_Text _enemiesDefeatedText;
+        [SerializeField] private PopupIn _popUpIn;
 
         [Header("Buttons")]
         [SerializeField] private Button _retryButton;
@@ -44,48 +34,39 @@ namespace PixelPlatformer
             _mainMenuButton.onClick.RemoveListener(MainMenu);
         }
 
-        public void Open(LevelResultData result, Action onComplete = null)
+        public void Open(Action onComplete = null)
         {
-            _timeTakenText.text = $"{result.timeTaken:0.0}s";
-            _fruitsCollectedText.text = $"{result.fruitsCollected}/{result.totalFruits}";
-            _enemiesDefeatedText.text = $"{result.enemiesDefeated}/{result.totalEnemies}";
-
             _overlayCanvasGroup.blocksRaycasts = true;
             _overlayCanvasGroup.DOFade(1f, _overlayFadeDuration);
 
             _root.SetActive(true);
             _canvasGroup.interactable = false;
 
-            _popUp.Open(() =>
+            _popUpIn.PlayInTween(() =>
             {
                 _canvasGroup.interactable = true;
                 onComplete?.Invoke();
             });
         }
+
         public void Close(Action onComplete = null)
         {
-            _overlayCanvasGroup.DOFade(0f, _overlayFadeDuration).OnComplete(() =>
-            {
-                _overlayCanvasGroup.blocksRaycasts = false;
-            });
-
+            _overlayCanvasGroup.DOKill();
+            _overlayCanvasGroup.alpha = 0f;
+            _overlayCanvasGroup.blocksRaycasts = false;
             _canvasGroup.interactable = false;
-
-            _popUp.Close(() =>
-            {
-                onComplete?.Invoke();
-                _root.SetActive(false);
-            });
+            _root.SetActive(false);
+            onComplete?.Invoke();
         }
 
         private void Retry()
         {
-            Close(() => GameManager.Instance.RestartLevel());
+            GameManager.Instance.RestartLevel();
         }
 
         private void MainMenu()
         {
-            Close(() => GameManager.Instance.GoToMainMenu());
+            GameManager.Instance.GoToMainMenu();
         }
     }
 }
