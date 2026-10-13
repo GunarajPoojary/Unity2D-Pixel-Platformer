@@ -208,7 +208,6 @@ namespace PixelPlatformer
             if (_isPaused || _isLostGame) return;
 
             _isPaused = true;
-            Time.timeScale = 0f;
 
             PlayerManager.Instance.ToggleInput(false);
             UIManager.Instance.ShowPauseMenu();
@@ -218,7 +217,6 @@ namespace PixelPlatformer
         {
             if (!_isPaused) return;
             _isPaused = false;
-            Time.timeScale = 1f;
 
             PlayerManager.Instance.ToggleInput(true);
             UIManager.Instance.HidePauseMenu();
