@@ -90,7 +90,6 @@ namespace PixelPlatformer
 
             _popUp.Open(() =>
             {
-                _canvasGroup.interactable = true;
                 PlayStarPopupClip(result.starsEarned);
                 onComplete?.Invoke();
             });
@@ -106,10 +105,10 @@ namespace PixelPlatformer
             _canvasGroup.interactable = false;
 
             _popUp.Close(() =>
-                {
-                    onComplete?.Invoke();
-                    _root.SetActive(false);
-                });
+            {
+                onComplete?.Invoke();
+                _root.SetActive(false);
+            });
         }
 
         public void PlayStarPopupClip(int stars, Action onComplete = null)
@@ -151,6 +150,8 @@ namespace PixelPlatformer
                     yield return null;
                 }
             }
+
+            _canvasGroup.interactable = true;
         }
 
         private void PlayAgain()

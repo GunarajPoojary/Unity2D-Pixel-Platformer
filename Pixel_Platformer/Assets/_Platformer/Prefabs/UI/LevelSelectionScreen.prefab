@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 502112365022366545}
   - component: {fileID: 7431915425878185190}
   - component: {fileID: 620535763610853500}
+  - component: {fileID: 4748802798492716093}
   m_Layer: 0
   m_Name: BackButton
   m_TagString: Untagged
@@ -277,9 +278,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20, y: 0}
+  m_AnchoredPosition: {x: 70, y: 0}
   m_SizeDelta: {x: 100, y: 0}
-  m_Pivot: {x: 0, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &502112365022366545
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -362,6 +363,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4748802798492716093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5909728919315530047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b45b79c7fbc0849418f2eff71260a43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.ButtonFeedback
+  _config: {fileID: 11400000, guid: aa34aa246a6740f4b86207cdc67ac9fe, type: 2}
 --- !u!1 &6707884463603386401
 GameObject:
   m_ObjectHideFlags: 0

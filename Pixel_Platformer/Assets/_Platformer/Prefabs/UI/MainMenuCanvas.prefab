@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4209760322786897231}
   - component: {fileID: 2644524380938731752}
   - component: {fileID: 2275966329585195193}
+  - component: {fileID: 4158275677298810714}
   m_Layer: 0
   m_Name: MenuButton_Play
   m_TagString: Untagged
@@ -33,11 +34,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8386609887310384584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 121.166664}
+  m_SizeDelta: {x: 100, y: 101.66667}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4209760322786897231
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -120,6 +121,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4158275677298810714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571277224810597603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b45b79c7fbc0849418f2eff71260a43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.ButtonFeedback
+  _config: {fileID: 11400000, guid: aa34aa246a6740f4b86207cdc67ac9fe, type: 2}
 --- !u!1 &639365533142414211
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +180,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639365533142414211}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
@@ -197,6 +211,7 @@ GameObject:
   - component: {fileID: 273113255196107937}
   - component: {fileID: 6988419262281596949}
   - component: {fileID: 2632766958510542981}
+  - component: {fileID: 1015296827275320697}
   m_Layer: 0
   m_Name: MenuButton_Settings
   m_TagString: Untagged
@@ -218,11 +233,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8386609887310384584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -0.5000305}
+  m_SizeDelta: {x: 100, y: 101.66667}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &273113255196107937
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -305,6 +320,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1015296827275320697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127059635061590901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b45b79c7fbc0849418f2eff71260a43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.ButtonFeedback
+  _config: {fileID: 11400000, guid: aa34aa246a6740f4b86207cdc67ac9fe, type: 2}
 --- !u!1 &2216396066466682566
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +532,7 @@ GameObject:
   - component: {fileID: 1813358353861682138}
   - component: {fileID: 3863336328821118980}
   - component: {fileID: 6692870097300608721}
+  - component: {fileID: 6574064789598941482}
   m_Layer: 0
   m_Name: MenuButton_QuitGame
   m_TagString: Untagged
@@ -525,11 +554,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8386609887310384584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -122.16668}
+  m_SizeDelta: {x: 100, y: 101.66667}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1813358353861682138
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -612,6 +641,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6574064789598941482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3922716615957260598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b45b79c7fbc0849418f2eff71260a43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.ButtonFeedback
+  _config: {fileID: 11400000, guid: aa34aa246a6740f4b86207cdc67ac9fe, type: 2}
 --- !u!1 &4810342846141080316
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,10 +951,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3912413018359914930}
     m_Modifications:
-    - target: {fileID: 2658036884652525477, guid: 4d166eef20f99a741b413e251893c586, type: 3}
-      propertyPath: m_Transition
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4046876684760931049, guid: 4d166eef20f99a741b413e251893c586, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -996,10 +1034,6 @@ PrefabInstance:
     - target: {fileID: 7770611486966560795, guid: 4d166eef20f99a741b413e251893c586, type: 3}
       propertyPath: m_Name
       value: SettingsMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 7834020616530949449, guid: 4d166eef20f99a741b413e251893c586, type: 3}
-      propertyPath: m_Transition
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

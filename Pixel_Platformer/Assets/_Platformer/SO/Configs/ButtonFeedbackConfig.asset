@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54466e6501aad7e42af0dc5246410f94, type: 3}
+  m_Name: ButtonFeedbackConfig
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.ButtonFeedbackConfigSO
+  <ClickClip>k__BackingField: {fileID: 8300000, guid: cbc19b95f9816eb40a0b01008ac1d4ae, type: 3}
+  <PressedScale>k__BackingField: 0.9
+  <PressDuration>k__BackingField: 0.08
+  <ReleaseDuration>k__BackingField: 0.1
+  <PressEase>k__BackingField: 6
+  <ReleaseEase>k__BackingField: 27
