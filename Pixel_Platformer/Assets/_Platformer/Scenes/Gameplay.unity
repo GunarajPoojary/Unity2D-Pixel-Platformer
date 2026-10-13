@@ -1227,6 +1227,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1925280453802592730, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2021735302898038849, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1322,7 +1326,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
 --- !u!114 &4434813899641964819 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4612193102659135941, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9078124028350728537, guid: 5f43c0e8909c3d14dbaebd12f113c680, type: 3}
   m_PrefabInstance: {fileID: 4434813899641964818}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -1364,6 +1368,10 @@ PrefabInstance:
     - target: {fileID: 516231671084468106, guid: 60b9ec3bdce2c2b489e1525fb19756ac, type: 3}
       propertyPath: m_Name
       value: TutorialUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2136031955279271446, guid: 60b9ec3bdce2c2b489e1525fb19756ac, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4566843902913187540, guid: 60b9ec3bdce2c2b489e1525fb19756ac, type: 3}
       propertyPath: _videoPlayer

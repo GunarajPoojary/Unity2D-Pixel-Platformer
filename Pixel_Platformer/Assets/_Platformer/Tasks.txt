@@ -9,24 +9,17 @@ bunny
 
 Font from - https://yukipixels.itch.io/boldpixels
 
-Known Bugs:
-- player lands when jumping through the oneway platform
-- player being forcefully pulled down when near the edge
-- player stands on one leg near edge
+Add:
+2 different music 1 for main menu, 1 for gameplay
+implement music fade in and out for Main Menu to Gameplay scene transition
+implement Level Complete Sound, Level Failed Sound
+implement Player Spawn and Despawn sound effect
+Implement confetti particle
 
-possible fix for the above bugs - Switch to Box COllider
-
-
-
-Must haves
-- Pause menu(Settings menu)
-- Win Condition(Win screen)
-- Timer
-- Score System with 3 star ratings
-- Save System
-- Level Selection
-
-- leaderboard(death counter, timer, 3 star ratings, Collecitbles)
-
-Nice to haves
-- Achievements
+Improvements:
+Replace button icons with actual icons
+Hide the next or previous button when end clip reached in Tutorial
+Star scale up in WinScreen
+Gameplay:
+    the player lands while passing through Onew Way platform
+    implement Corner correction

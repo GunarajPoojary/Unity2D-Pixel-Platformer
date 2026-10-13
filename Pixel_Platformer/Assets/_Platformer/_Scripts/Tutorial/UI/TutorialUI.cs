@@ -99,8 +99,8 @@ namespace PixelPlatformer
 
             _guideLabel.text = _clipLabelPairs[index].label;
 
-            _previousButton.interactable = index > 0;
-            _nextButton.interactable = index < _clipLabelPairs.Length - 1;
+            _previousButton.gameObject.SetActive(index > 0);
+            _nextButton.gameObject.SetActive(index < _clipLabelPairs.Length - 1);
         }
 
         private void PlayNextClip()

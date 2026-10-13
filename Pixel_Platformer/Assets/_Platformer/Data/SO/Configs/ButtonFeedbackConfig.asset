@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54466e6501aad7e42af0dc5246410f94, type: 3}
   m_Name: ButtonFeedbackConfig
   m_EditorClassIdentifier: Platformer::PixelPlatformer.ButtonFeedbackConfigSO
-  <ClickClip>k__BackingField: {fileID: 8300000, guid: cbc19b95f9816eb40a0b01008ac1d4ae, type: 3}
+  <ClickClip>k__BackingField: {fileID: 8300000, guid: 95d25a6724a8a864f859a8b5bd46b023, type: 3}
   <PressedScale>k__BackingField: 0.9
   <PressDuration>k__BackingField: 0.08
   <ReleaseDuration>k__BackingField: 0.1
