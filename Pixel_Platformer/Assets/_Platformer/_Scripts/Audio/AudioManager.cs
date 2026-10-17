@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -10,6 +11,8 @@ namespace PixelPlatformer
 
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private AudioSource _sfxSource;
+
+        private Tween _musicFadeTween;
 
         private float _musicVolume = 1f;
         private float _sFXVolume = 1f;
@@ -69,6 +72,56 @@ namespace PixelPlatformer
             _musicVolume = Mathf.Clamp01(volume);
 
             _musicSource.volume = volume;
+        }
+        
+        public async UniTask PlayMusicWithFade(AudioClip clip, float duration, bool loop = true)
+        {
+            // already playing this track, leave it alone
+            if (_musicSource.isPlaying && _musicSource.clip == clip) return;
+
+            KillMusicFade();
+
+            _musicSource.Stop();
+            _musicSource.clip = clip;
+            _musicSource.loop = loop;
+            _musicSource.volume = 0f;
+            _musicSource.Play();
+
+            // fade up to the player's saved music volume, not a hardcoded 1
+            Tween tween = DOTween.To(() => _musicSource.volume, v => _musicSource.volume = v, _musicVolume, duration)
+                .SetUpdate(true)
+                .SetLink(gameObject);
+            _musicFadeTween = tween;
+
+            await tween.AsyncWaitForCompletion();
+
+            if (_musicFadeTween == tween) _musicFadeTween = null;
+        }
+
+        public async UniTask FadeOutMusic(float duration)
+        {
+            if (!_musicSource.isPlaying) return;
+
+            KillMusicFade();
+
+            Tween tween = DOTween.To(() => _musicSource.volume, v => _musicSource.volume = v, 0f, duration)
+                .SetUpdate(true)
+                .SetLink(gameObject);
+            _musicFadeTween = tween;
+
+            await tween.AsyncWaitForCompletion();
+
+            // a newer fade took over while we were waiting, don't stop its music
+            if (_musicFadeTween != tween) return;
+
+            _musicSource.Stop();
+            _musicFadeTween = null;
+        }
+
+        private void KillMusicFade()
+        {
+            _musicFadeTween?.Kill();
+            _musicFadeTween = null;
         }
         #endregion
 

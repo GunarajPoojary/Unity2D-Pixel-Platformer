@@ -52,3 +52,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1953c94f64da13d4db0bf72f125317a9, type: 2}
   _mainMenuScene: {fileID: 11400000, guid: eb4cb50c2d089d4418bf8d6b10a6db4c, type: 2}
   _gameplayScene: {fileID: 11400000, guid: 004c4d2d97e3cd44e9eaaaee8ba97f99, type: 2}
+  _mainMenuMusic: {fileID: 8300000, guid: 6b68a1f196eb6de4f869659380857c17, type: 3}
+  _gameplayMusic: {fileID: 8300000, guid: 21fad135a5e688a48aa7a93cd8ab4460, type: 3}
+  _musicFadeDuration: 1

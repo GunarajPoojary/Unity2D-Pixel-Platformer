@@ -9,6 +9,7 @@ namespace PixelPlatformer
     {
         [SerializeField] private SceneReference _mainMenuScene;
 
+        [Header("Prefabs")]
         [SerializeField] private EventSystem _eventSystemPrefab;
         [SerializeField] private SceneTransitionFX _sceneTransitionFXPrefab;
         [SerializeField] private LoadingScreen _loadingScreenPrefab;
@@ -16,8 +17,6 @@ namespace PixelPlatformer
         [SerializeField] private AudioManager _audioManagerPrefab;
         [SerializeField] private GameManager _gameManagerPrefab;
         [SerializeField] private GameProgressDataManager _gameProgressDataManagerPrefab;
-
-        [SerializeField] private AudioClip _backgroundMusicClip;
 
         private SceneTransitionFX _sceneTransitionFX;
         private AudioManager _audioManager;
@@ -31,7 +30,7 @@ namespace PixelPlatformer
             _sceneTransitionFX.Hide();
             _loadingScreen.Show();
             _loadingScreen.UpdateProgress(0.2f);
-            
+
             await _audioManager.Initialize();
             await _gameManager.Initialize();
             await _gameManager.Setup(_loadingScreen, _sceneTransitionFX);
@@ -58,18 +57,20 @@ namespace PixelPlatformer
             _loadingScreen.UpdateProgress(1f);
 
             // now main menu has loaded
-            await UniTask.WaitUntil(() => _backgroundMusicClip.LoadAudioData());
+            // await UniTask.WaitUntil(() => _backgroundMusicClip.LoadAudioData());
+            await _gameManager.PreloadMainMenuMusic();
 
             _sceneTransitionFX.Init();
 
             op = SceneManager.UnloadSceneAsync(0);
 
             await op.ToUniTask();
-            _audioManager.SetMusic(true, _backgroundMusicClip);
+            // _audioManager.SetMusic(true, _backgroundMusicClip);
             _sceneTransitionFX.Show();
 
             await _sceneTransitionFX.PlayPopup();
-            _audioManager.PlayMusic();
+            // _audioManager.PlayMusic();
+            _gameManager.PlayMainMenuMusic();
             _loadingScreen.Hide();
             await _sceneTransitionFX.PlayPopdown();
             _sceneTransitionFX.Hide();

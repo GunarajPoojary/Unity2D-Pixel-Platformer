@@ -13,6 +13,8 @@ namespace PixelPlatformer
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private PopUp _popup;
 
+        public event Action EraseRequested;
+
         private void OnEnable()
         {
             _sFXVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
@@ -70,7 +72,7 @@ namespace PixelPlatformer
 
         public void EraseProgress()
         {
-            GameProgressDataManager.Instance.EraseData();
+            EraseRequested?.Invoke(); 
         }
 
         public void RefreshUI()

@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c50e02a481e092a4ba524966caad1471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Platformer::PixelPlatformer.PlayerSpawnFX
-  _appearFXRenderer: {fileID: 0}
+  _spawnClip: {fileID: 8300000, guid: c726bf7e06ca1364e8b5d7d9fb98f00a, type: 3}
   _appearFXAnimator:
     monoBehaviour: {fileID: 8483947050716786471}
     _renderer: {fileID: 2948873675022128808}

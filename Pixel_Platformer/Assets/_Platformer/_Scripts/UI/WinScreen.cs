@@ -15,8 +15,9 @@ namespace PixelPlatformer
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _panel;
         [SerializeField] private Image _levelIcon;
-        [SerializeField] private TMP_Text _bestScoreText;
-        [SerializeField] private GameObject _newBestIndicator;
+
+        [Header("Audio")]
+        [SerializeField] private AudioClip _levelCompleteClip;
 
         [Header("Stars")]
         [SerializeField] private Image[] _starImages;
@@ -26,6 +27,7 @@ namespace PixelPlatformer
         [SerializeField] private TMP_Text _fruitsCollectedText;
         [SerializeField] private TMP_Text _enemiesDefeated;
         [SerializeField] private TMP_Text _totalScoreText;
+        [SerializeField] private Color _bestTextColor = Color.blue;
 
         [Header("Buttons")]
         [SerializeField] private Button _replayButton;
@@ -73,9 +75,7 @@ namespace PixelPlatformer
             _timeTakenText.text = $"{result.timeTaken:0.0}s";
             _enemiesDefeated.text = $"{result.enemiesDefeated}/{_totalEnemies}";
             _fruitsCollectedText.text = $"{result.fruitsCollected}/{_totalFruits}";
-            _totalScoreText.text = result.score.ToString();
-            _bestScoreText.text = $"Best: {result.bestScore}";
-            _newBestIndicator.SetActive(result.isNewBest);
+            _totalScoreText.text = result.isNewBest ? $"<color=#{ColorUtility.ToHtmlStringRGB(_bestTextColor)}>Best! </color>{result.bestScore}" : result.score.ToString();
 
             foreach (Image image in _starImages)
             {
@@ -86,6 +86,7 @@ namespace PixelPlatformer
             _overlayCanvasGroup.DOFade(1f, _overlayFadeDuration);
 
             _root.SetActive(true);
+            AudioManager.Instance.PlaySFX(_levelCompleteClip);
             _canvasGroup.interactable = false;
 
             _popUp.Open(() =>

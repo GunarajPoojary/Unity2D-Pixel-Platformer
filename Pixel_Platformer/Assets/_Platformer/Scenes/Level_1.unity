@@ -117702,6 +117702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a041bda4a72846549aa3df9db5da2b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Platformer::PixelPlatformer.PlayerDespawnFX
+  _despawnClip: {fileID: 8300000, guid: 9eb677281af46be4282907b6dab70e46, type: 3}
   _disappearFXAnimator:
     monoBehaviour: {fileID: 5612130591037676521}
     _renderer: {fileID: 4221969494251261175}

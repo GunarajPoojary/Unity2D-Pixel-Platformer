@@ -5,20 +5,12 @@ namespace PixelPlatformer
 {
     public class PlayerDespawnFX : MonoBehaviour
     {
+        [SerializeField] private AudioClip _despawnClip;
         [SerializeField] private SingleClipAnimator _disappearFXAnimator;
-
-        [ContextMenu("Play")]
-        public void Play()
-        {
-            _disappearFXAnimator.StopClip();
-            _disappearFXAnimator.PlayClip(() =>
-                {
-                    gameObject.SetActive(false);
-                });
-        }
 
         public void PlayFX(Action onCOmplete)
         {
+            AudioManager.Instance.PlaySFX(_despawnClip);
             _disappearFXAnimator.PlayClip(() =>
             {
                 gameObject.SetActive(false);

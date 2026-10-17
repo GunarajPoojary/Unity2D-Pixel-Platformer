@@ -10,6 +10,8 @@ namespace PixelPlatformer
         [SerializeField] private SettingsMenu _settingsMenu;
         [SerializeField] private CanvasGroup _settingsMenuOverlay;
         [SerializeField] private LevelSelectScreen _levelSelectScreen;
+        [SerializeField] private ConfirmDialog _confirmDialog;
+        [SerializeField] private Toaster _toaster;
 
         [SerializeField] private Button _playButton;
         [SerializeField] private Button _settingsButton;
@@ -25,6 +27,7 @@ namespace PixelPlatformer
             _settingsButton.onClick.AddListener(OpenSettings);
             _settingsCloseButton.onClick.AddListener(CloseSettings);
             _quitButton.onClick.AddListener(QuitGame);
+            _settingsMenu.EraseRequested += EraseData;
 
             _settingsMenuOverlay.blocksRaycasts = false;
 
@@ -39,6 +42,7 @@ namespace PixelPlatformer
             _settingsButton.onClick.RemoveListener(OpenSettings);
             _settingsCloseButton.onClick.RemoveListener(CloseSettings);
             _quitButton.onClick.RemoveListener(QuitGame);
+            _settingsMenu.EraseRequested -= EraseData;
 
             GameProgressDataManager.Instance.DataErased -= HandleDataErased;
 
@@ -50,9 +54,15 @@ namespace PixelPlatformer
             _levelSelectScreen.Init(GameProgressDataManager.Instance.LoadData());
         }
 
+        private void EraseData()
+        {
+            GameProgressDataManager.Instance.EraseData();
+        }
+
         private void HandleDataErased()
         {
             _levelSelectScreen.Refresh(GameProgressDataManager.Instance.LoadData());
+            _toaster.Show("Progress data erased");
         }
 
         private void OpenSettings()
@@ -89,7 +99,7 @@ namespace PixelPlatformer
 
         private void QuitGame()
         {
-            GameManager.Instance.QuitGame();
+            _confirmDialog.Open("Are you sure you want to quit?", GameManager.Instance.QuitGame);
         }
     }
 }

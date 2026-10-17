@@ -170,7 +170,7 @@ MonoBehaviour:
   _audioManagerPrefab: {fileID: 2616690594140575757, guid: ed667f960d34bae47b4a1893388e6f06, type: 3}
   _gameManagerPrefab: {fileID: 4664728171210912164, guid: 8caf648b178527a4681eef01cdb94898, type: 3}
   _gameProgressDataManagerPrefab: {fileID: 5439042786647085304, guid: fb3a99c2d8d8978488af8f74145ea161, type: 3}
-  _backgroundMusicClip: {fileID: 8300000, guid: 6b68a1f196eb6de4f869659380857c17, type: 3}
+  _toasterPrefab: {fileID: 5648006075358434377, guid: 0e6f47a678d4b1d48928cb8dec483dfd, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

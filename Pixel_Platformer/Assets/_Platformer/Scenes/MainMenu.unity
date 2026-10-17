@@ -127,6 +127,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 615019339262145817, guid: 3a469f5f169e91545b36da63a7128433, type: 3}
+      propertyPath: _toaster
+      value: 
+      objectReference: {fileID: 1294927854}
+    - target: {fileID: 615019339262145817, guid: 3a469f5f169e91545b36da63a7128433, type: 3}
+      propertyPath: _confirmDialog
+      value: 
+      objectReference: {fileID: 1294927853}
     - target: {fileID: 3912413018359914930, guid: 3a469f5f169e91545b36da63a7128433, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -216,6 +224,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a469f5f169e91545b36da63a7128433, type: 3}
+--- !u!114 &1294927853 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4759057309479036575, guid: 3a469f5f169e91545b36da63a7128433, type: 3}
+  m_PrefabInstance: {fileID: 1294927852}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab41f5756018a974dbaa729b7bd9e42b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::ConfirmationDialog
+--- !u!114 &1294927854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5575124968498432497, guid: 3a469f5f169e91545b36da63a7128433, type: 3}
+  m_PrefabInstance: {fileID: 1294927852}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ca8c3c54cee1a546974be5532e77290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::Toaster
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

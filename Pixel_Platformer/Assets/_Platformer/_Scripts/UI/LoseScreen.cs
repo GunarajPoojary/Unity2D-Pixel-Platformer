@@ -13,6 +13,9 @@ namespace PixelPlatformer
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private PopupIn _popUpIn;
 
+        [Header("Audio")]
+        [SerializeField] private AudioClip _levelFailedClip;
+
         [Header("Buttons")]
         [SerializeField] private Button _retryButton;
         [SerializeField] private Button _mainMenuButton;
@@ -40,6 +43,7 @@ namespace PixelPlatformer
             _overlayCanvasGroup.DOFade(1f, _overlayFadeDuration);
 
             _root.SetActive(true);
+            AudioManager.Instance.PlaySFX(_levelFailedClip);
             _canvasGroup.interactable = false;
 
             _popUpIn.PlayInTween(() =>

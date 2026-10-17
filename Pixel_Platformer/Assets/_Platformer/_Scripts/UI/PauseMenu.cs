@@ -18,6 +18,8 @@ namespace PixelPlatformer
         [SerializeField] private Button _settingsCloseButton;
         [SerializeField] private Button _quitButton;
         [SerializeField] private PopUp _popUp;
+        [SerializeField] private ConfirmDialog _confirmDialog;
+        [SerializeField] private Toaster _toaster;
 
         [SerializeField] private SettingsMenu _settingsMenu;
 
@@ -68,6 +70,7 @@ namespace PixelPlatformer
             _mainMenuButton.onClick.AddListener(GoToMainMenu);
             _settingsCloseButton.onClick.AddListener(CloseSettings);
             _quitButton.onClick.AddListener(QuitGame);
+            _settingsMenu.EraseRequested += ConfirmEraseData;
         }
 
         private void OnDisable()
@@ -77,6 +80,7 @@ namespace PixelPlatformer
             _mainMenuButton.onClick.RemoveListener(GoToMainMenu);
             _settingsCloseButton.onClick.RemoveListener(CloseSettings);
             _quitButton.onClick.RemoveListener(QuitGame);
+            _settingsMenu.EraseRequested -= ConfirmEraseData;
         }
 
         private void ResumeGame()
@@ -103,9 +107,22 @@ namespace PixelPlatformer
             GameManager.Instance.GoToMainMenu();
         }
 
+        private void ConfirmEraseData()
+        {
+            _confirmDialog.Open("This will take you Main Menu Screen, are you sure you want to do this?",
+                                EraseDataAndGoToMainMenu);
+        }
+
+        private void EraseDataAndGoToMainMenu()
+        {
+            GameProgressDataManager.Instance.EraseData();
+            _toaster.Show("Progress data erased");
+            GameManager.Instance.GoToMainMenu();
+        }
+
         private void QuitGame()
         {
-            GameManager.Instance.QuitGame();
+            _confirmDialog.Open("Are you sure you want to quit?", GameManager.Instance.QuitGame);
         }
     }
 }

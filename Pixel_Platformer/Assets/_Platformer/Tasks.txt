@@ -10,16 +10,20 @@ bunny
 Font from - https://yukipixels.itch.io/boldpixels
 
 Add:
-2 different music 1 for main menu, 1 for gameplay
-implement music fade in and out for Main Menu to Gameplay scene transition
-implement Level Complete Sound, Level Failed Sound
-implement Player Spawn and Despawn sound effect
-Implement confetti particle
+//2 different music 1 for main menu, 1 for gameplay
+//implement music fade in and out for Main Menu to Gameplay scene transition
+//implement Level Complete Sound, Level Failed Sound
+//implement Player Spawn and Despawn sound effect
 
 Improvements:
-Replace button icons with actual icons
-Hide the next or previous button when end clip reached in Tutorial
-Star scale up in WinScreen
+//Replace button icons with actual icons
+//Hide the next or previous button when end clip reached in Tutorial
+
 Gameplay:
-    the player lands while passing through Onew Way platform
-    implement Corner correction
+    the player lands while passing through One Way platform
+    implement Corner correction to handle movement near edges of platforms
+    Follow camera look ahead looking opposite direction when the player is wall sliding
+    Player jump and land smoke fx should be slightly above
+    when the player is spawned the player isn't entering fall state and same for despawn, the player should be in jump state
+    player hit requires improvement
+    avoid enemy passing through checkpoints

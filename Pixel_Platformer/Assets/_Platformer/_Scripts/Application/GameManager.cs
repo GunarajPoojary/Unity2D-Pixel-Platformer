@@ -14,6 +14,10 @@ namespace PixelPlatformer
         [SerializeField] private SceneReference _mainMenuScene;
         [SerializeField] private SceneReference _gameplayScene;
 
+        [Header("Music")]
+        [SerializeField] private AudioClip _mainMenuMusic;
+        [SerializeField] private float _musicFadeDuration = 1f;
+
         private int _currentLevelIndex;
         private LoadingScreen _loadingScreen;
         private SceneTransitionFX _sceneTransitionFX;
@@ -48,7 +52,11 @@ namespace PixelPlatformer
         public async void StartLevel(int levelIndex)
         {
             _sceneTransitionFX.Show();
-            await _sceneTransitionFX.PlayPopup();
+            // await _sceneTransitionFX.PlayPopup();
+
+            await UniTask.WhenAll(_sceneTransitionFX.PlayPopup(), AudioManager.Instance.FadeOutMusic(_musicFadeDuration));
+
+
             _loadingScreen.UpdateProgress(0);
             _loadingScreen.Show();
             await _sceneTransitionFX.PlayPopdown();
@@ -94,6 +102,7 @@ namespace PixelPlatformer
             _sceneTransitionFX.Show();
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.Hide();
+
             await _sceneTransitionFX.PlayPopdown();
 
             levelManager.StartLevel();
@@ -166,7 +175,9 @@ namespace PixelPlatformer
             _isPaused = false;
 
             _sceneTransitionFX.Show();
-            await _sceneTransitionFX.PlayPopup();
+            // await _sceneTransitionFX.PlayPopup();
+            await UniTask.WhenAll(_sceneTransitionFX.PlayPopup(), AudioManager.Instance.FadeOutMusic(_musicFadeDuration));
+
             _loadingScreen.UpdateProgress(0);
             _loadingScreen.Show();
             await _sceneTransitionFX.PlayPopdown();
@@ -199,6 +210,7 @@ namespace PixelPlatformer
             _sceneTransitionFX.Show();
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.Hide();
+            PlayMainMenuMusic();  
             await _sceneTransitionFX.PlayPopdown();
             _sceneTransitionFX.Hide();
         }
@@ -285,6 +297,17 @@ namespace PixelPlatformer
         {
             var index = levelIndex - 1;
             return _levels[index].LevelIcon;
+        }
+
+
+        public async UniTask PreloadMainMenuMusic()
+        {
+            await UniTask.WaitUntil(() => _mainMenuMusic.LoadAudioData());
+        }
+
+        public void PlayMainMenuMusic()
+        {
+            AudioManager.Instance.PlayMusicWithFade(_mainMenuMusic, _musicFadeDuration).Forget();
         }
 
         private void HandleLevelCompleted(CompletLevelEvent e)
