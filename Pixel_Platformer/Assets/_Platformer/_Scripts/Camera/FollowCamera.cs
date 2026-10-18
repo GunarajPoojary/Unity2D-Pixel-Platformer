@@ -7,6 +7,7 @@ namespace PixelPlatformer
     {
         [SerializeField] private float _smoothTime = 0.1f;
 
+        [SerializeField] private bool _useLookAhead = false;
         [SerializeField] private float _lookAheadOffset = 4f;
         [SerializeField] private float _lookAheadSmoothTime = 0.2f;
 
@@ -15,6 +16,27 @@ namespace PixelPlatformer
         private float _velocity;
         private float _currentLookAhead;
         private float _lookAheadVelocity;
+        
+        private void LateUpdate()
+        {
+            if (_target == null || !_target.CanFollowTarget) return;
+
+            Vector3 pos = transform.position;
+
+            _currentLookAhead = Mathf.SmoothDamp(_currentLookAhead,
+                                                 GetTargetLookAhead(),
+                                                 ref _lookAheadVelocity,
+                                                 _lookAheadSmoothTime);
+
+
+            float desiredPos = _followTarget.position.x + _currentLookAhead;
+
+            pos.x = Mathf.SmoothDamp(pos.x,
+                                                     desiredPos,
+                                                     ref _velocity,
+                                                     _smoothTime);
+            transform.position = pos;
+        }
 
         public void Setup(IFollowTargetProvider targetProvider)
         {
@@ -30,27 +52,9 @@ namespace PixelPlatformer
             transform.position = pos;
         }
 
-        private void LateUpdate()
+        private float GetTargetLookAhead()
         {
-            if (_target == null || !_target.CanFollowTarget) return;
-
-            Vector3 pos = transform.position;
-
-            float targetLookAhead = _lookAheadOffset * _target.LookDirection;
-            _currentLookAhead = Mathf.SmoothDamp(_currentLookAhead,
-                                                 targetLookAhead,
-                                                 ref _lookAheadVelocity,
-                                                 _lookAheadSmoothTime);
-
-
-            float desiredPos = _followTarget.position.x;
-            desiredPos += _currentLookAhead;
-
-            pos.x = Mathf.SmoothDamp(pos.x,
-                                                     desiredPos,
-                                                     ref _velocity,
-                                                     _smoothTime);
-            transform.position = pos;
+            return _useLookAhead ? _lookAheadOffset * _target.LookDirection : 0f;
         }
     }
 }

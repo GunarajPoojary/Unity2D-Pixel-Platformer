@@ -46,6 +46,7 @@ namespace PixelPlatformer
 
         public void SetupPlayer(Vector3 position)
         {
+            _input.Init();
             _player.SetPosition(position);
             _followCamera.Setup(_player);
         }
