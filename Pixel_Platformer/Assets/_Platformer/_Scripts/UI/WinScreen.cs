@@ -9,11 +9,6 @@ namespace PixelPlatformer
 {
     public class WinScreen : MonoBehaviour
     {
-        [SerializeField] private GameObject _root;
-        [SerializeField] private CanvasGroup _overlayCanvasGroup;
-        [SerializeField] private float _overlayFadeDuration = 0.5f;
-        [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private RectTransform _panel;
         [SerializeField] private Image _levelIcon;
 
         [Header("Audio")]
@@ -37,24 +32,12 @@ namespace PixelPlatformer
         [SerializeField] private Sprite[] _sprites;
         [SerializeField] private Sprite _emptyStarSprite;
         [SerializeField] private int _frameRate = 12;
-        [SerializeField] private PopUp _popUp;
+        [SerializeField] private PanelScaleTween _panelScaleTween;
 
         private int _keyFrame;
         private Coroutine _coroutine;
         private int _totalEnemies;
         private int _totalFruits;
-
-        private void Start()
-        {
-            _root.SetActive(false);
-        }
-
-        public void Setup(Sprite levelIcon, int totalEnemies, int totalFruits)
-        {
-            _levelIcon.sprite = levelIcon;
-            _totalEnemies = totalEnemies;
-            _totalFruits = totalFruits;
-        }
 
         private void OnEnable()
         {
@@ -70,6 +53,13 @@ namespace PixelPlatformer
             _mainMenuButton.onClick.RemoveListener(MainMenu);
         }
 
+        public void Setup(Sprite levelIcon, int totalEnemies, int totalFruits)
+        {
+            _levelIcon.sprite = levelIcon;
+            _totalEnemies = totalEnemies;
+            _totalFruits = totalFruits;
+        }
+
         public void Open(LevelResult result, Action onComplete = null)
         {
             _timeTakenText.text = $"{result.timeTaken:0.0}s";
@@ -82,14 +72,9 @@ namespace PixelPlatformer
                 image.sprite = _emptyStarSprite;
             }
 
-            _overlayCanvasGroup.blocksRaycasts = true;
-            _overlayCanvasGroup.DOFade(1f, _overlayFadeDuration);
-
-            _root.SetActive(true);
             AudioManager.Instance.PlaySFX(_levelCompleteClip);
-            _canvasGroup.interactable = false;
 
-            _popUp.Open(() =>
+            _panelScaleTween.PlayOpen(() =>
             {
                 PlayStarPopupClip(result.starsEarned);
                 onComplete?.Invoke();
@@ -98,17 +83,9 @@ namespace PixelPlatformer
 
         public void Close(Action onComplete = null)
         {
-            _overlayCanvasGroup.DOFade(0f, _overlayFadeDuration).OnComplete(() =>
-            {
-                _overlayCanvasGroup.blocksRaycasts = false;
-            });
-
-            _canvasGroup.interactable = false;
-
-            _popUp.Close(() =>
+            _panelScaleTween.PlayClose(() =>
             {
                 onComplete?.Invoke();
-                _root.SetActive(false);
             });
         }
 
@@ -151,8 +128,6 @@ namespace PixelPlatformer
                     yield return null;
                 }
             }
-
-            _canvasGroup.interactable = true;
         }
 
         private void PlayAgain()

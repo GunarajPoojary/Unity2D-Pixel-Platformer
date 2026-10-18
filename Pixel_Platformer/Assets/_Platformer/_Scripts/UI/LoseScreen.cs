@@ -1,17 +1,14 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace PixelPlatformer
 {
     public class LoseScreen : MonoBehaviour
     {
-        [SerializeField] private GameObject _root;
-        [SerializeField] private CanvasGroup _overlayCanvasGroup;
-        [SerializeField] private float _overlayFadeDuration = 0.5f;
-        [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private PopupIn _popUpIn;
+        [SerializeField] private PanelScaleTween _panelScaleTween;
 
         [Header("Audio")]
         [SerializeField] private AudioClip _levelFailedClip;
@@ -20,9 +17,12 @@ namespace PixelPlatformer
         [SerializeField] private Button _retryButton;
         [SerializeField] private Button _mainMenuButton;
 
-        private void Start()
+        public UnityAction RetryButtonClick
         {
-            _root.SetActive(false);
+            set
+            {
+                _retryButton.onClick.AddListener(value);
+            }
         }
 
         private void OnEnable()
@@ -39,28 +39,20 @@ namespace PixelPlatformer
 
         public void Open(Action onComplete = null)
         {
-            _overlayCanvasGroup.blocksRaycasts = true;
-            _overlayCanvasGroup.DOFade(1f, _overlayFadeDuration);
-
-            _root.SetActive(true);
             AudioManager.Instance.PlaySFX(_levelFailedClip);
-            _canvasGroup.interactable = false;
 
-            _popUpIn.PlayInTween(() =>
+            _panelScaleTween.PlayOpen(() =>
             {
-                _canvasGroup.interactable = true;
                 onComplete?.Invoke();
             });
         }
 
         public void Close(Action onComplete = null)
         {
-            _overlayCanvasGroup.DOKill();
-            _overlayCanvasGroup.alpha = 0f;
-            _overlayCanvasGroup.blocksRaycasts = false;
-            _canvasGroup.interactable = false;
-            _root.SetActive(false);
-            onComplete?.Invoke();
+            _panelScaleTween.PlayClose(() =>
+            {
+                onComplete?.Invoke();
+            });
         }
 
         private void Retry()

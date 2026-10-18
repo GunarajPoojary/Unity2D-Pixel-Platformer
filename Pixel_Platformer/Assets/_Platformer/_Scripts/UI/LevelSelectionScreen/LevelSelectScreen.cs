@@ -9,7 +9,6 @@ namespace PixelPlatformer
     [RequireComponent(typeof(RectTransform))]
     public class LevelSelectScreen : MonoBehaviour
     {
-        [SerializeField] private GameObject _root;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         [SerializeField] private Button _backButton;
@@ -22,12 +21,9 @@ namespace PixelPlatformer
 
         public event Action BackRequested;
 
-        private void Awake()
+        private void Start()
         {
-            _canvasGroup.alpha = 0f;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-            _root.SetActive(false);
+            Hide();
         }
 
         private void OnEnable()
@@ -70,8 +66,6 @@ namespace PixelPlatformer
 
         public void Open(Action onComplete = null)
         {
-            _root.SetActive(true);
-
             _fadeTween?.Kill();
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = true;
@@ -91,7 +85,6 @@ namespace PixelPlatformer
             _fadeTween = _canvasGroup.DOFade(0f, _fadeDuration).SetLink(gameObject).OnComplete(() =>
             {
                 _canvasGroup.blocksRaycasts = false;
-                _root.SetActive(false);
                 onComplete?.Invoke();
             });
         }
@@ -105,9 +98,16 @@ namespace PixelPlatformer
                 _slots[i].BindData(levelRecords[i].levelIndex,
                                    levelIcon,
                                    levelRecords[i].isUnlocked,
-                               levelRecords[i].bestScore,
-                              levelRecords[i].StarsEarned);
+                                   levelRecords[i].bestScore,
+                                   levelRecords[i].StarsEarned);
             }
+        }
+
+        private void Hide()
+        {
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
         }
 
         private void HandleBackClicked()

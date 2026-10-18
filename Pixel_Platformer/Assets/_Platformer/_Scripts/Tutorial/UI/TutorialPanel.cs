@@ -1,15 +1,12 @@
 using System;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace PixelPlatformer
 {
-    [RequireComponent(typeof(Canvas))]
-    public class TutorialUI : MonoBehaviour
+    public class TutorialPanel : MonoBehaviour
     {
         [Serializable]
         private class ClipLabelPair
@@ -21,23 +18,20 @@ namespace PixelPlatformer
         [SerializeField] private ClipLabelPair[] _clipLabelPairs;
         [SerializeField] private VideoPlayer _videoPlayer;
 
-        [SerializeField] private CanvasGroup _root;
+        [SerializeField] private PanelScaleTween _panelScaleTween;
         [SerializeField] private Button _previousButton;
         [SerializeField] private Button _nextButton;
+        [SerializeField] private Button _closeButton;
         [SerializeField] private TMP_Text _guideLabel;
 
-        [SerializeField] private Ease _showTweenEase = Ease.OutCubic;
-        [SerializeField] private float _showTweenDuration = 0.5f;
-        [SerializeField] private Button _closeButton;
-
-        private Canvas _canvas;
         private int _currentClipIndex;
+        private bool _isOpen;
 
         public void Init()
         {
-            _canvas = GetComponent<Canvas>();
-            _canvas.enabled = false;
-            _videoPlayer.Pause();
+            _isOpen = false;
+            SetClip(0);
+            _videoPlayer.Stop();
         }
 
         private void OnEnable()
@@ -54,53 +48,49 @@ namespace PixelPlatformer
             _closeButton.onClick.RemoveListener(Hide);
         }
 
-        private void Start()
-        {
-            PlayClip(0);
-        }
-
         public void Show()
         {
-            _root.alpha = 0f;
-            _canvas.enabled = true;
+            if (_isOpen) return;
+            _isOpen = true;
 
-            _root.DOFade(1f, _showTweenDuration).SetEase(_showTweenEase).OnComplete(OnShow);
+            _videoPlayer.Play();
+            _panelScaleTween.PlayOpen();
         }
 
         public void Hide()
         {
-            _root.DOFade(0f, _showTweenDuration).SetEase(_showTweenEase).OnComplete(OnHide);
-        }
+            if (!_isOpen) return;
+            _isOpen = false;
 
-        private void OnShow()
-        {
-            _videoPlayer.Play();
-        }
-
-        private void OnHide()
-        {
-            _canvas.enabled = false;
-            _videoPlayer.Stop();
+            _panelScaleTween.PlayClose(() =>
+            {
+                _videoPlayer.Stop();
+            });
         }
 
         public void Toggle()
         {
-            if (_canvas.enabled)
+            if (_isOpen)
                 Hide();
             else
                 Show();
         }
 
-        private void PlayClip(int index)
+        private void SetClip(int index)
         {
             _currentClipIndex = index;
             _videoPlayer.clip = _clipLabelPairs[index].clip;
-            _videoPlayer.Play();
 
             _guideLabel.text = _clipLabelPairs[index].label;
 
             _previousButton.gameObject.SetActive(index > 0);
             _nextButton.gameObject.SetActive(index < _clipLabelPairs.Length - 1);
+        }
+
+        private void PlayClip(int index)
+        {
+            SetClip(index);
+            _videoPlayer.Play();
         }
 
         private void PlayNextClip()

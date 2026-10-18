@@ -9,16 +9,6 @@ bunny
 
 Font from - https://yukipixels.itch.io/boldpixels
 
-Add:
-//2 different music 1 for main menu, 1 for gameplay
-//implement music fade in and out for Main Menu to Gameplay scene transition
-//implement Level Complete Sound, Level Failed Sound
-//implement Player Spawn and Despawn sound effect
-
-Improvements:
-//Replace button icons with actual icons
-//Hide the next or previous button when end clip reached in Tutorial
-
 Gameplay:
     the player lands while passing through One Way platform
     implement Corner correction to handle movement near edges of platforms

@@ -9,13 +9,10 @@ namespace PixelPlatformer
         [SerializeField] private Button _guideButton;
         [SerializeField] private Button _replayLevelButton;
         [SerializeField] private Button _settingsButton;
-        [SerializeField] private TutorialUI _guideUIManager;
+        [SerializeField] private TutorialPanel _tutorialPanel;
         [SerializeField] private TMP_Text _timerText;
         [SerializeField] private TMP_Text _enemiesDefeatedText;
-
         [SerializeField] private TMP_Text _collectibleCountText;
-
-        private Vector3 _guideButtonAnchorPos;
 
         private void OnEnable()
         {
@@ -29,11 +26,6 @@ namespace PixelPlatformer
             _guideButton.onClick.RemoveListener(OpenGuide);
             _replayLevelButton.onClick.RemoveListener(ReplayLevel);
             _settingsButton.onClick.RemoveListener(OpenSettings);
-        }
-
-        public void Init()
-        {
-            _guideButtonAnchorPos = _guideButton.GetComponent<RectTransform>().anchoredPosition;
         }
 
         public void SetCollectibles(int count)
@@ -55,7 +47,7 @@ namespace PixelPlatformer
 
         private void OpenGuide()
         {
-            _guideUIManager.Toggle();
+            _tutorialPanel.Toggle();
         }
 
         private void ReplayLevel()
