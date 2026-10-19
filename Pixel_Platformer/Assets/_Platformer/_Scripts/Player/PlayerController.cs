@@ -338,7 +338,6 @@ namespace PixelPlatformer
             else if (isJumpPressed)
             {
                 PerformJump(_initialJumpVelocity);
-                AudioManager.Instance.PlaySFX(_jumpClip);
                 return;
             }
 
@@ -371,7 +370,6 @@ namespace PixelPlatformer
                                                        // or use _jumpPressed flag
                 {
                     PerformJump(_initialJumpVelocity);
-                    AudioManager.Instance.PlaySFX(_jumpClip);
                 }
             }
 
@@ -398,7 +396,7 @@ namespace PixelPlatformer
             _verticalVelocity = jumpVelocity;
 
             ResetJumpBuffer();
-
+            AudioManager.Instance.PlaySFX(_jumpClip);
             OnJump?.Invoke();
         }
 
@@ -418,7 +416,7 @@ namespace PixelPlatformer
             OnWallSlide?.Invoke(false);
 
             ResetJumpBuffer();
-
+            AudioManager.Instance.PlaySFX(_jumpClip);
             OnJump?.Invoke();
         }
         #endregion

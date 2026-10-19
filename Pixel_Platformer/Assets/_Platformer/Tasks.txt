@@ -12,8 +12,8 @@ Font from - https://yukipixels.itch.io/boldpixels
 Gameplay:
     //the player lands while passing through One Way platform
     //Follow camera look ahead looking opposite direction when the player is wall sliding
+    //Wall jump not triggering jump sound
     implement Corner correction to handle movement near edges of platforms
     when the player is spawned the player isn't entering fall state and same for despawn, the player should be in jump state
     player hit requires improvement
     avoid enemy passing through checkpoints
-    Wall jump not triggering jump sound
