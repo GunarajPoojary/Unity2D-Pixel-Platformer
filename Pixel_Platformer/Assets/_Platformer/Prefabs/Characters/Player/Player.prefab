@@ -10128,7 +10128,7 @@ MonoBehaviour:
   _groundCheckDistance: 0.01
   _groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   _oneWayMask:
     serializedVersion: 2
     m_Bits: 256

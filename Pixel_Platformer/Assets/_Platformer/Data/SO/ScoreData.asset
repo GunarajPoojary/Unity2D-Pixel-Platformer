@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Platformer::PixelPlatformer.LevelScoreDataSO
   timePoint: 10
   fruitPoint: 50
-  enemyDefeatPoint: 100
+  enemyPoint: 50
+  timeBonus: 10
