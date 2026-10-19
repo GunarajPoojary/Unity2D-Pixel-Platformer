@@ -11,9 +11,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Walkable
+  - Ground
   - Player
-  - OneWayPlatform
+  - OneWay
   - Enemy
   - Breakable
   - Collectible

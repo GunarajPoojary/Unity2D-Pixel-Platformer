@@ -21,7 +21,8 @@ namespace PixelPlatformer
         [SerializeField] private Transform _groundCheckPoint;
         [SerializeField] private Vector2 _groundCheckSize = new Vector2(0.5f, 0.1f);
         [SerializeField] private float _groundCheckDistance;
-        [SerializeField] private LayerMask _groundLayer;
+        [SerializeField] private LayerMask _groundMask;
+        [SerializeField] private LayerMask _oneWayMask;
 
         [Header("Ceiling Check")]
         [SerializeField] private Transform _ceilingCheckPoint;
@@ -54,6 +55,7 @@ namespace PixelPlatformer
         private PlayerInput _input;
 
         private float _gravity;
+        private LayerMask _walkableMask;
 
         private bool _canFollowTarget = true;
         private float _initialJumpVelocity; // velocity required to reach jump apex
@@ -110,6 +112,8 @@ namespace PixelPlatformer
 
         private void OnEnable()
         {
+            _walkableMask = _groundMask;
+
             _input.OnJumpPerformed += HandleJumpPerformed;
             _input.OnJumpCanceled += HandleJumpCanceled;
             _hittable.OnHit += HandleHit;
@@ -152,13 +156,34 @@ namespace PixelPlatformer
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            // set the vertical velocity to zero when not grounded, falling, 
-            // but making contact with the ground which avoids setting vertical velocity to -ve value 
-            // when collider edge makes contact with ground
-            if (col.gameObject.layer == LayerMask.NameToLayer("Walkable") && !IsGrounded() && IsFalling())
+            // reset the vertical velocity when player makes contact with ground while falling, 
+            if ((_walkableMask & (1 << col.gameObject.layer)) != 0 && IsFalling())
             {
                 _verticalVelocity = _rb.linearVelocityY;
             }
+
+            //check if we hit the one way platform 
+            if ((_oneWayMask & (1 << col.gameObject.layer)) != 0)
+            {
+                // set the includeOneWay flag to true if the normalis greater than 0.5 means player is above the platform
+                for (int i = 0; i < col.contactCount; i++)
+                {
+                    ContactPoint2D point = col.GetContact(i);
+
+                    if (point.normal.y > 0.5f)
+                    {
+                        _walkableMask = _groundMask | _oneWayMask.value;
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D col)
+        {
+            // reset the includeOneWay flag
+            if ((_oneWayMask & (1 << col.gameObject.layer)) != 0)
+                _walkableMask = _groundMask;
         }
         #endregion
 
@@ -252,12 +277,13 @@ namespace PixelPlatformer
 
         private bool IsGrounded()
         {
+
             var hit = Physics2D.BoxCast(_groundCheckPoint.position,
                                         _groundCheckSize,
                                         0f,
                                         Vector2.down,
                                         _groundCheckDistance,
-                                        _groundLayer);
+                                        _walkableMask);
 
             if (!hit)
                 return false;
@@ -267,7 +293,7 @@ namespace PixelPlatformer
 
         private bool HitCeiling()
         {
-            int mask = _groundLayer & ~(1 << LayerMask.NameToLayer("OneWayPlatform")); // ignore One Way Platform which is not ceiling
+            int mask = _groundMask & ~(1 << LayerMask.NameToLayer("OneWayPlatform")); // ignore One Way Platform which is not ceiling
 
             return Physics2D.BoxCast(_ceilingCheckPoint.position,
                                      _ceilingCheckSize,
@@ -514,7 +540,7 @@ namespace PixelPlatformer
         {
             while ((transform.position - position).magnitude > 0.01f)
             {
-                var targetPos = Vector3.MoveTowards(transform.position,position, _movementStats.DespawnMoveSpeed);
+                var targetPos = Vector3.MoveTowards(transform.position, position, _movementStats.DespawnMoveSpeed);
                 _rb.MovePosition(targetPos);
 
                 yield return null;

@@ -10126,9 +10126,12 @@ MonoBehaviour:
   _groundCheckPoint: {fileID: 8385853521407442829}
   _groundCheckSize: {x: 0.1, y: 0.06}
   _groundCheckDistance: 0.01
-  _groundLayer:
+  _groundMask:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 64
+  _oneWayMask:
+    serializedVersion: 2
+    m_Bits: 256
   _ceilingCheckPoint: {fileID: 7756905589218903982}
   _ceilingCheckSize: {x: 0.8, y: 0.12}
   _ceilingCheckDistance: 0.01
