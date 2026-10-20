@@ -9966,8 +9966,9 @@ GameObject:
   - component: {fileID: 65165891365038418}
   - component: {fileID: 4920677950949123394}
   - component: {fileID: 3483247151116930674}
-  - component: {fileID: 8315275832378156492}
   - component: {fileID: 4928018341784496437}
+  - component: {fileID: 7748402711797065344}
+  - component: {fileID: 8315275832378156492}
   - component: {fileID: 3012578002158466891}
   - component: {fileID: 7398987933303538124}
   - component: {fileID: 2197369895570624279}
@@ -10089,6 +10090,66 @@ PolygonCollider2D:
       - {x: -0.60004663, y: 0.44731313}
       - {x: -0.38, y: 0.6844614}
   m_UseDelaunayMesh: 0
+--- !u!114 &4928018341784496437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3910124005606433036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a46e5a71c8bf745ad5d3bbaf842d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jumpClip: {fileID: 8300000, guid: 30b8feafdea86a5479097b352a911564, type: 3}
+  _landClip: {fileID: 8300000, guid: 019333af2c7ca12488671e020c0dc7b7, type: 3}
+  _hurtClip: {fileID: 8300000, guid: 7fc51f5e0a8a40c4894176206b4354b5, type: 3}
+  _cameraFollowTarget: {fileID: 1901949163271838440}
+  _rb: {fileID: 4920677950949123394}
+  _renderer: {fileID: 3012578002158466891}
+  _movement: {fileID: 7748402711797065344}
+  _despawnSpeed: 0.3
+--- !u!114 &7748402711797065344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3910124005606433036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181a0ffd2fe31fc4b94578e379044177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.PlayerMovement
+  _movementStats: {fileID: 11400000, guid: 3f15569da722f75498a66dbd1e627823, type: 2}
+  _groundCheckPoint: {fileID: 8385853521407442829}
+  _groundCheckSize: {x: 0.1, y: 0.06}
+  _groundCheckDistance: 0.01
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _oneWayMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _ceilingCheckPoint: {fileID: 7756905589218903982}
+  _ceilingCheckSize: {x: 0.8, y: 0.12}
+  _ceilingCheckDistance: 0.01
+  _wallCheckPoint: {fileID: 4952127624065969243}
+  _wallCheckSize: {x: 1.32, y: 0.16}
+  _wallCheckDistance: 0.01
+  _wallMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _rb: {fileID: 4920677950949123394}
+  _toggleGizmos: 0
+  _showDebugLabels: 0
+  _lineThickness: 5
+  _verticalArrowColor: {r: 0, g: 1, b: 0, a: 1}
+  _horizontalArrowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _arrowWidth: 1
+  _arrowHeight: 1
+  _offset: {x: 0, y: -1, z: 0}
 --- !u!114 &8315275832378156492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10106,53 +10167,6 @@ MonoBehaviour:
   _rightButton: {fileID: 0}
   _jumpButton: {fileID: 0}
   _useMobileInput: 0
---- !u!114 &4928018341784496437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3910124005606433036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50a46e5a71c8bf745ad5d3bbaf842d9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _jumpClip: {fileID: 8300000, guid: 30b8feafdea86a5479097b352a911564, type: 3}
-  _landClip: {fileID: 8300000, guid: 019333af2c7ca12488671e020c0dc7b7, type: 3}
-  _hurtClip: {fileID: 8300000, guid: 7fc51f5e0a8a40c4894176206b4354b5, type: 3}
-  _smoothTime: 0.1
-  _movementStats: {fileID: 11400000, guid: 3f15569da722f75498a66dbd1e627823, type: 2}
-  _groundCheckPoint: {fileID: 8385853521407442829}
-  _groundCheckSize: {x: 0.1, y: 0.06}
-  _groundCheckDistance: 0.01
-  _groundMask:
-    serializedVersion: 2
-    m_Bits: 0
-  _oneWayMask:
-    serializedVersion: 2
-    m_Bits: 256
-  _ceilingCheckPoint: {fileID: 7756905589218903982}
-  _ceilingCheckSize: {x: 0.8, y: 0.12}
-  _ceilingCheckDistance: 0.01
-  _wallCheckPoint: {fileID: 4952127624065969243}
-  _wallCheckSize: {x: 1.32, y: 0.16}
-  _wallCheckDistance: 0.01
-  _wallLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _cameraFollowTarget: {fileID: 1901949163271838440}
-  _rb: {fileID: 0}
-  _renderer: {fileID: 3012578002158466891}
-  _hitForce: 15
-  _toggleGizmos: 0
-  _showDebugLabels: 0
-  _lineThickness: 5
-  _verticalArrowColor: {r: 0, g: 1, b: 0, a: 1}
-  _horizontalArrowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _arrowWidth: 1
-  _arrowHeight: 1
-  _offset: {x: 0, y: -1, z: 0}
 --- !u!114 &3012578002158466891
 MonoBehaviour:
   m_ObjectHideFlags: 0

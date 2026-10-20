@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -15,89 +14,50 @@ namespace PixelPlatformer
         [SerializeField] private Animator _animator;
         [SerializeField] private SpriteRenderer _renderer;
 
-
         [SerializeField] private ParticleSystem _landFX;
         [SerializeField] private ParticleSystem _jumpFX;
         [SerializeField] private ParticleSystem _runFX;
-
-        private PlayerController _player;
-
-        public int LookDirection
-        {
-            get
-            {
-                return _renderer.flipX ? -1 : 1;
-            }
-        }
-
-        private void Awake()
-        {
-            _player = GetComponentInParent<PlayerController>();
-        }
-
-        private void Update()
-        {
-            HandleMovement();
-        }
-
-        private void OnEnable()
-        {
-            _player.OnJump += HandleJump;
-            _player.OnFall += HandleFall;
-            _player.OnLand += HandleLand;
-            _player.OnTurn += HandleTurn;
-            _player.OnWallSlide += HandleWallSlide;
-        }
-
-        private void OnDisable()
-        {
-            _player.OnJump -= HandleJump;
-            _player.OnFall -= HandleFall;
-            _player.OnLand -= HandleLand;
-            _player.OnTurn -= HandleTurn;
-            _player.OnWallSlide -= HandleWallSlide;
-        }
 
         public void ResetHit()
         {
             _animator.ResetTrigger(HitID);
         }
 
-        private void HandleWallSlide(bool isSliding)
+        public void SlideWall(bool slide)
         {
-            _animator.SetBool(WallSlideID, isSliding);
+            _animator.SetBool(WallSlideID, slide);
         }
 
-        private void HandleLand()
+        public void Land()
         {
             _animator.SetBool(FallID, false);
             _animator.SetBool(JumpID, false);
             PlayParticle(_landFX);
         }
 
-        private void HandleFall()
+        public void Fall()
         {
             _animator.SetBool(FallID, true);
             _animator.SetBool(JumpID, false);
         }
 
-        private void HandleJump()
+        public void Jump()
         {
             _animator.SetBool(JumpID, true);
             _animator.SetBool(FallID, false);
             PlayParticle(_jumpFX);
         }
 
-        private void HandleTurn(bool isRight)
+        public void Turn(bool isRight)
         {
             _renderer.flipX = !isRight;
         }
 
-        private void HandleMovement()
+        public void Move(bool isRunning)
         {
-            _animator.SetBool(RunID, _player.IsRunning);
+            _animator.SetBool(RunID, isRunning);
 
-            if (_player.IsRunning)
+            if (isRunning)
             {
                 if (!_runFX.isPlaying)
                     _runFX.Play();
@@ -109,6 +69,10 @@ namespace PixelPlatformer
             }
         }
 
+        public void TriggerHit()
+        {
+            _animator.SetTrigger(HitID);
+        }
 
         private void PlayParticle(ParticleSystem particle)
         {
@@ -117,11 +81,6 @@ namespace PixelPlatformer
 
             particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particle.Play();
-        }
-
-        public void TriggerHit()
-        {
-            _animator.SetTrigger(HitID);
         }
     }
 }

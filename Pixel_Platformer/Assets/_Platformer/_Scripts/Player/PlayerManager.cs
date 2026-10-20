@@ -53,25 +53,22 @@ namespace PixelPlatformer
 
         public void SpawnPlayer()
         {
-            _player.gameObject.SetActive(true);
-            _player.ResetState();
+            _player.Spawn();
 
-            _player.OnJump += HandleFirstInput;
-            _player.OnMove += HandleFirstInput;
+            _player.OnFirstMove += HandleFirstMovement;
         }
 
         public void DespawnPlayer()
         {
-            _player.gameObject.SetActive(false);
+            _player.Despawn();
             ToggleInput(false);
         }
 
-        private void HandleFirstInput()
+        private void HandleFirstMovement()
         {
             OnFirstMove?.Invoke();
 
-            _player.OnJump -= HandleFirstInput;
-            _player.OnMove -= HandleFirstInput;
+            _player.OnFirstMove -= HandleFirstMovement;
         }
 
         public void DespawnPlayerAt(Vector3 position, Action onComplete)
