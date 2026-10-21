@@ -14,6 +14,6 @@ Gameplay:
     //Follow camera look ahead looking opposite direction when the player is wall sliding
     //Wall jump not triggering jump sound
     //avoid enemy passing through checkpoints
+    //when the player is spawned the player isn't entering fall state and same for despawn, the player should be in jump state
     implement Corner correction to handle movement near edges of platforms
-    when the player is spawned the player isn't entering fall state and same for despawn, the player should be in jump state
     player hit requires improvement

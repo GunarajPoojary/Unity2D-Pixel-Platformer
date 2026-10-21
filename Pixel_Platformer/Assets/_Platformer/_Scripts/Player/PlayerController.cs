@@ -7,15 +7,17 @@ namespace PixelPlatformer
     [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IImpactable, IFollowTargetProvider
     {
+        [Header("SFX Clips")]
         [SerializeField] private AudioClip _jumpClip;
         [SerializeField] private AudioClip _landClip;
         [SerializeField] private AudioClip _hurtClip;
 
-        [SerializeField] private Transform _cameraFollowTarget;
         [SerializeField] private PlayerRenderer _renderer;
         [SerializeField] private PlayerMovement _movement;
+        [SerializeField] private PlayerInput _input;
 
-        private PlayerInput _input;
+        [SerializeField] private float _bodyCenter = 0.786f; // got it from boxcollider
+        [SerializeField] private Transform _cameraFollowTarget;
 
         private bool _canFollowTarget = true;
         private Hittable _hittable;
@@ -24,7 +26,7 @@ namespace PixelPlatformer
         public int LookDirection { get { return _movement.LookDirection; } }
         public bool CanFollowTarget { get { return _canFollowTarget; } }
 
-        public bool IsHit { get; set; } = false;
+        public bool MovementEnabled { get; set; }
 
         public event Action OnFirstMove;
 
@@ -63,11 +65,6 @@ namespace PixelPlatformer
             _hittable.OnHit -= HandleHit;
         }
 
-        private void Start()
-        {
-            _movement.Init(_input.MoveInput);
-        }
-
         private void Update()
         {
             _renderer.Move(_movement.IsRunning);
@@ -75,10 +72,8 @@ namespace PixelPlatformer
 
         private void FixedUpdate()
         {
-            if (!IsHit)
-            {
+            if (MovementEnabled)
                 _movement.SimulateMovement(_input.MoveInput);
-            }
 
             _movement.ApplyMovement();
         }
@@ -142,16 +137,19 @@ namespace PixelPlatformer
 
             enabled = false;
             AudioManager.Instance.PlaySFX(_hurtClip);
+            GameEvents.Publish(new PlayerDiedEventData());
         }
         #endregion
 
         public void SetPosition(Vector3 pos)
         {
+            pos.y -= _bodyCenter;
             transform.position = pos;
         }
 
         public void DespawnAt(Vector3 position, Action onComplete)
         {
+            MovementEnabled = false;
             StartCoroutine(DespawnRoutine(position, onComplete));
             _renderer.Jump();
         }
@@ -160,19 +158,17 @@ namespace PixelPlatformer
         {
             _movement.ResetState();
             enabled = true;
-            _input.enabled = true;
-            _input.ResetInput();
             if (TryGetComponent(out Stomper stomper)) stomper.enabled = true;
 
             _hittable.ResetHit();
             _renderer.ResetHit();
 
             _canFollowTarget = true;
-            IsHit = false;
         }
 
         private IEnumerator DespawnRoutine(Vector3 position, Action onComplete)
         {
+            position.y -= _bodyCenter;
             while (!_movement.StepTowards(position))
                 yield return null;
 
@@ -183,12 +179,20 @@ namespace PixelPlatformer
         public void Spawn()
         {
             gameObject.SetActive(true);
+            _renderer.Turn(true);
+            _renderer.Fall();
+            MovementEnabled = true;
             ResetState();
         }
 
         public void Despawn()
         {
             gameObject.SetActive(false);
+        }
+
+        public void ToggleInput(bool toggle)
+        {
+            _input.InputEnabled = toggle;
         }
     }
 }

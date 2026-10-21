@@ -10105,11 +10105,11 @@ MonoBehaviour:
   _jumpClip: {fileID: 8300000, guid: 30b8feafdea86a5479097b352a911564, type: 3}
   _landClip: {fileID: 8300000, guid: 019333af2c7ca12488671e020c0dc7b7, type: 3}
   _hurtClip: {fileID: 8300000, guid: 7fc51f5e0a8a40c4894176206b4354b5, type: 3}
-  _cameraFollowTarget: {fileID: 1901949163271838440}
-  _rb: {fileID: 4920677950949123394}
   _renderer: {fileID: 3012578002158466891}
   _movement: {fileID: 7748402711797065344}
-  _despawnSpeed: 0.3
+  _input: {fileID: 8315275832378156492}
+  _bodyCenter: 0.786
+  _cameraFollowTarget: {fileID: 1901949163271838440}
 --- !u!114 &7748402711797065344
 MonoBehaviour:
   m_ObjectHideFlags: 0

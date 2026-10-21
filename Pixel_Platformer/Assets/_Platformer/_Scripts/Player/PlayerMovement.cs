@@ -126,15 +126,6 @@ namespace PixelPlatformer
         }
         #endregion
 
-        public void Init(float moveInput)
-        {
-            _wasFacingRight = moveInput >= 0f;
-            OnTurn?.Invoke(_wasFacingRight);
-
-            if (!IsGrounded() && IsFalling())
-                OnFall?.Invoke();
-        }
-
         public void SimulateMovement(float moveInput)
         {
             _moveInput = moveInput;
@@ -152,7 +143,7 @@ namespace PixelPlatformer
                 _rb.MovePosition(target);
                 return true;
             }
- 
+
             _rb.MovePosition(Vector3.MoveTowards(transform.position, target, _movementStats.DespawnMoveSpeed));
             return false;
         }
@@ -242,7 +233,7 @@ namespace PixelPlatformer
                                         _groundCheckDistance,
                                         _walkableMask);
 
-            return hit& hit.point.y <= _groundCheckPoint.position.y;
+            return hit & hit.point.y <= _groundCheckPoint.position.y;
         }
 
         private bool HitCeiling()

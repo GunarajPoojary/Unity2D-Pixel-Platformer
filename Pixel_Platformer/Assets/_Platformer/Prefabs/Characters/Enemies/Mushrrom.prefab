@@ -177,7 +177,7 @@ MonoBehaviour:
   _frontCastSize: {x: 0.05, y: 0.12}
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 4160
   _castDistance: 0.06
   _renderer: {fileID: 1744589263937877869}
   _edgeCastSize: {x: 0.1, y: 0.08}

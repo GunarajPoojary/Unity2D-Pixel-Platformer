@@ -35,9 +35,6 @@ namespace PixelPlatformer
         public event Action OnJumpPerformed;
         public event Action OnJumpCanceled;
 
-        [ContextMenu("Enable Input")]
-        private void EnableInput() => _inputEnabled = true;
-
         public void Init()
         {
 #if UNITY_EDITOR
@@ -47,11 +44,6 @@ namespace PixelPlatformer
 #else
     _mobileInputUIRoot.SetActive(false);
 #endif
-        }
-
-        public void ResetInput()
-        {
-            _moveInput = 0f;
         }
 
         private void Update()

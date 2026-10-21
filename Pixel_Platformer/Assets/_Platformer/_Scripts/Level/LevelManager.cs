@@ -152,6 +152,7 @@ namespace PixelPlatformer
         {
             Debug.Log("Level Complete");
             _playerManager.ToggleInput(false);
+            // _playerManager.TogglePlayerMovement(false);
             StopTimer();
 
             var result = new LevelResult()

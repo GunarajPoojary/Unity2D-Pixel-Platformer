@@ -830,17 +830,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &779253311 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
-  m_PrefabInstance: {fileID: 905376335}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e2f59b8533e6cd4b8d17c1515d2010a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &779253316 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4928018341784496437, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
@@ -1081,6 +1070,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4928018341784496437, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
+      propertyPath: _input
+      value: 
+      objectReference: {fileID: 905376336}
     - target: {fileID: 7945379063261812098, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -1108,13 +1101,13 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
 --- !u!114 &905376336 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5573161073225403660, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8315275832378156492, guid: f563446a2eba39b409e2d76527ceebc4, type: 3}
   m_PrefabInstance: {fileID: 905376335}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 581d90542a5e2114b94701323101c0a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e2f59b8533e6cd4b8d17c1515d2010a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &924416772
@@ -1805,10 +1798,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d0bc9c90ad7254ab0857e41ae3076b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 779253316}
-  _input: {fileID: 779253311}
+  _controller: {fileID: 779253316}
   _followCamera: {fileID: 792567087}
-  _hittable: {fileID: 905376336}
+  _input: {fileID: 905376336}
 --- !u!4 &1282625451
 Transform:
   m_ObjectHideFlags: 0
