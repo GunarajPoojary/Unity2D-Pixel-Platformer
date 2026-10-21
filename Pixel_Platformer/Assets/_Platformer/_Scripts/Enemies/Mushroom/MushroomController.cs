@@ -144,7 +144,7 @@ namespace PixelPlatformer
 
                 if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                 {
-                    hittable?.TakeHit();
+                    hittable.TakeHit(currentPos);
                 }
             }
         }

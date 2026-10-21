@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -17,6 +18,12 @@ namespace PixelPlatformer
         [SerializeField] private ParticleSystem _landFX;
         [SerializeField] private ParticleSystem _jumpFX;
         [SerializeField] private ParticleSystem _runFX;
+        private int _defaultSortingOrder;
+
+        private void Awake()
+        {
+            _defaultSortingOrder = _renderer.sortingOrder;
+        }
 
         public void ResetHit()
         {
@@ -81,6 +88,16 @@ namespace PixelPlatformer
 
             particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particle.Play();
+        }
+
+        public void SetSortingOrder(int order)
+        {
+            _renderer.sortingOrder = order;
+        }
+
+        public void SetDefaultOrder()
+        {
+            SetSortingOrder(_defaultSortingOrder);
         }
     }
 }

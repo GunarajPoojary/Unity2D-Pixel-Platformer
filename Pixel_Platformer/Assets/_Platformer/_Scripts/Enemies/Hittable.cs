@@ -40,7 +40,7 @@ namespace PixelPlatformer
             _renderer.sortingOrder = _defaultSortingOrder;
         }
 
-        public void TakeHit()
+        public void TakeHit(Vector2 hitSourcePosition)
         {
             GameEvents.Publish(new CameraShakeEventData());
 

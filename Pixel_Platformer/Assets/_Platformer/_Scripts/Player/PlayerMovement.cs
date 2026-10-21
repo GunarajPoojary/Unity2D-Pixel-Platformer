@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
+#if UNITY_EDITOR
 using GP.Utils.Gizmo;
+#endif
 
 namespace PixelPlatformer
 {
@@ -31,6 +33,16 @@ namespace PixelPlatformer
 
         [SerializeField] private Rigidbody2D _rb;
 
+
+        [Header("Hit impact")]
+        [SerializeField] private float _jumpHeight = 4f;
+        [SerializeField] private float _horizontalSpeed = 2f;
+        [SerializeField] private float _spin = 180f;
+        [SerializeField] private float _gravityScale = 5f;
+
+
+
+
 #if UNITY_EDITOR
         [Header("Debugging")]
         [SerializeField] private bool _toggleGizmos;
@@ -60,6 +72,7 @@ namespace PixelPlatformer
 
         private bool _isWallSliding;
         private float _wallJumpLockTimer;
+        private bool _isFlying;
 
         public bool IsRunning
         {
@@ -70,6 +83,9 @@ namespace PixelPlatformer
         }
 
         public int LookDirection { get; private set; }
+        public Vector3 LinearVelocity { get { return _rb.linearVelocity; } }
+
+        public bool IsFlying { get { return _isFlying; } set { value = _isFlying; } }
 
         public event Action OnMove;
         public event Action<bool> OnTurn; // true means facing right
@@ -331,6 +347,11 @@ namespace PixelPlatformer
             return !IsGrounded() && _verticalVelocity <= 0f;
         }
 
+        public void PerformJump()
+        {
+            PerformJump(_initialJumpVelocity);
+        }
+
         public void PerformJump(float jumpVelocity)
         {
             _verticalVelocity = jumpVelocity;
@@ -424,6 +445,39 @@ namespace PixelPlatformer
                                      _wallMask);
         }
         #endregion
+
+        public void RestoreControlledBody()
+        {
+            _isFlying = false;
+            _rb.gravityScale = 0f;
+            _rb.linearVelocity = Vector2.zero;
+            _rb.angularVelocity = 0f;
+            _rb.freezeRotation = true;
+            _rb.mass = 0.0001f;
+        }
+
+        public void ApplyHitImpact(int hitDirection)
+        {
+            const float GRAVITY = -9.81f;
+
+            _isFlying = true;
+            _rb.gravityScale = _gravityScale;
+            _rb.linearVelocity = Vector2.zero;
+            _rb.angularVelocity = 0f;
+            _rb.freezeRotation = false;
+            _rb.mass = 1f;
+
+            // v = sqrt(2 * g * h) gives an apex of exactly _jumpHeight
+            float gravity = Mathf.Abs(GRAVITY) * _gravityScale;
+            float launchSpeedY = Mathf.Sqrt(2f * gravity * _jumpHeight);
+            float launchSpeedX = _horizontalSpeed * hitDirection;
+
+            Vector2 impulse = new Vector2(launchSpeedX, launchSpeedY);
+            _rb.AddForce(impulse, ForceMode2D.Impulse);
+
+            float spinDirection = UnityEngine.Random.value < 0.5f ? -1f : 1f;
+            _rb.angularVelocity = _spin * spinDirection;
+        }
 
         #region Debug Methods
 #if UNITY_EDITOR

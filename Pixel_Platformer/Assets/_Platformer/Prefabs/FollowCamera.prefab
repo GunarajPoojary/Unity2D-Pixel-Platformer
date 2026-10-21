@@ -141,10 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86d004ad32dc4e54fac9f151479ccdba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shakeStrength: 0.6
-  _shakeDuration: 0.5
-  _shakeVibrato: 10
-  _elasticity: 1
+  _shakeStrength: 0.45
+  _shakeDuration: 0.15
+  _shakeVibrato: 20
+  _elasticity: 10
 --- !u!1 &2525525486040811382
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,5 +191,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _smoothTime: 0.25
+  _useLookAhead: 0
   _lookAheadOffset: 4
   _lookAheadSmoothTime: 0.25

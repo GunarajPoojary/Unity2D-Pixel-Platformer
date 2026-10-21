@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -7,13 +8,14 @@ namespace PixelPlatformer
     {
         [Header("Hit Check")]
         [SerializeField] private LayerMask _hitMask;
-        [SerializeField] private float _hitImpact = 25f;
         [SerializeField] private Transform _hitCheckPoint;
         [SerializeField] private Vector2 _hitCheckSize = new Vector2(0.5f, 0.1f);
         [SerializeField] private float _hitCheckDistance = 0.01f;
         [SerializeField] private AudioClip _playerHitSound;
 
-        private void FixedUpdate()
+        public event Action OnStomp;
+
+        public void HandleStomp()
         {
             RaycastHit2D hit = Physics2D.BoxCast(_hitCheckPoint.position,
                                         _hitCheckSize,
@@ -26,10 +28,10 @@ namespace PixelPlatformer
 
             if (hit.collider.TryGetComponent<IHittable>(out var hittable) && hittable.IsHittable)
             {
-                hittable.TakeHit();
-                GameEvents.Publish(new StompEventData());  
+                hittable.TakeHit(transform.position);
+                GameEvents.Publish(new StompEventData());
                 AudioManager.Instance.PlaySFX(_playerHitSound);
-                GetComponent<IImpactable>()?.ApplyImpact(_hitImpact);
+                OnStomp?.Invoke();
             }
         }
 

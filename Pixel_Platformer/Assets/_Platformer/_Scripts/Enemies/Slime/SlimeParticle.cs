@@ -14,7 +14,7 @@ namespace PixelPlatformer
             {
                 if (col.gameObject.TryGetComponent<IHittable>(out var killable))
                 {
-                    killable?.TakeHit();
+                    killable?.TakeHit(transform.position);
                 }
             }
         }

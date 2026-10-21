@@ -5,7 +5,8 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D))]
-    public class PlayerController : MonoBehaviour, IImpactable, IFollowTargetProvider
+    [RequireComponent(typeof(Collider2D))]
+    public class PlayerController : MonoBehaviour, IHittable, IFollowTargetProvider
     {
         [Header("SFX Clips")]
         [SerializeField] private AudioClip _jumpClip;
@@ -15,12 +16,15 @@ namespace PixelPlatformer
         [SerializeField] private PlayerRenderer _renderer;
         [SerializeField] private PlayerMovement _movement;
         [SerializeField] private PlayerInput _input;
+        [SerializeField] private Stomper _stomper;
 
         [SerializeField] private float _bodyCenter = 0.786f; // got it from boxcollider
         [SerializeField] private Transform _cameraFollowTarget;
 
         private bool _canFollowTarget = true;
-        private Hittable _hittable;
+        private Rigidbody2D _rb;
+        private Collider2D _collider;
+        private bool _isHittable = true;
 
         public Transform CameraFollowTarget { get { return _cameraFollowTarget; } }
         public int LookDirection { get { return _movement.LookDirection; } }
@@ -28,13 +32,16 @@ namespace PixelPlatformer
 
         public bool MovementEnabled { get; set; }
 
+        public bool IsHittable { get { return _isHittable; } }
+
         public event Action OnFirstMove;
 
         #region Unity API Methods
         private void Awake()
         {
             _input = GetComponent<PlayerInput>();
-            _hittable = GetComponent<Hittable>();
+            _rb = GetComponent<Rigidbody2D>();
+            _collider = GetComponent<Collider2D>();
         }
 
         private void OnEnable()
@@ -46,9 +53,10 @@ namespace PixelPlatformer
             _movement.OnJump += HandleJump;
             _movement.OnWallSlide += HandleWallSlide;
 
+            _stomper.OnStomp += HandleStomp;
+
             _input.OnJumpPerformed += HandleJumpPerformed;
             _input.OnJumpCanceled += HandleJumpCanceled;
-            _hittable.OnHit += HandleHit;
         }
 
         private void OnDisable()
@@ -60,22 +68,47 @@ namespace PixelPlatformer
             _movement.OnJump -= HandleJump;
             _movement.OnWallSlide -= HandleWallSlide;
 
+            _stomper.OnStomp -= HandleStomp;
+
             _input.OnJumpPerformed -= HandleJumpPerformed;
             _input.OnJumpCanceled -= HandleJumpCanceled;
-            _hittable.OnHit -= HandleHit;
         }
 
         private void Update()
         {
+            // if (_input.InputEnabled)
             _renderer.Move(_movement.IsRunning);
+
+            if (!_movement.IsFlying) return;
+
+            // below 0 on Y means the object has fallen off the bottom of the screen
+            if (_movement.LinearVelocity.y < 0f && IsOutOfView())
+            {
+                _movement.RestoreControlledBody();
+                GameEvents.Publish(new PlayerDiedEventData());
+
+                gameObject.SetActive(false);
+            }
         }
 
         private void FixedUpdate()
         {
+            if (_movement.IsFlying) return;
+
             if (MovementEnabled)
+            {
                 _movement.SimulateMovement(_input.MoveInput);
+                _stomper.HandleStomp();
+            }
 
             _movement.ApplyMovement();
+        }
+
+        private bool IsOutOfView()
+        {
+            // viewport co-ordinate origin is (0,0) which is bottom left corner and top right corner is (1,1)
+            // convert world position to viewport co-ordinate and then check if that value is less than 0 which is viewport bottom bound
+            return Camera.main.WorldToViewportPoint(transform.position).y < 0f;
         }
         #endregion
 
@@ -123,21 +156,9 @@ namespace PixelPlatformer
         }
 
         #region Hit Methods
-        public void ApplyImpact(float impact)
+        public void HandleStomp()
         {
-            _movement.PerformJump(impact);
-        }
-
-        private void HandleHit()
-        {
-            _canFollowTarget = false;
-            GetComponent<Stomper>().enabled = false;
-            _input.enabled = false;
-            _renderer.TriggerHit();
-
-            enabled = false;
-            AudioManager.Instance.PlaySFX(_hurtClip);
-            GameEvents.Publish(new PlayerDiedEventData());
+            _movement.PerformJump();
         }
         #endregion
 
@@ -157,13 +178,20 @@ namespace PixelPlatformer
         public void ResetState()
         {
             _movement.ResetState();
-            enabled = true;
-            if (TryGetComponent(out Stomper stomper)) stomper.enabled = true;
+            _stomper.enabled = true;
 
-            _hittable.ResetHit();
+            ResetHit();
+            _isHittable = true;
             _renderer.ResetHit();
 
             _canFollowTarget = true;
+        }
+
+        public void ResetHit()
+        {
+            _movement.RestoreControlledBody();
+            _collider.enabled = true;
+            _renderer.SetDefaultOrder();
         }
 
         private IEnumerator DespawnRoutine(Vector3 position, Action onComplete)
@@ -193,6 +221,26 @@ namespace PixelPlatformer
         public void ToggleInput(bool toggle)
         {
             _input.InputEnabled = toggle;
+        }
+
+        public void TakeHit(Vector2 hitSourcePosition)
+        {
+            _isHittable = false;
+            MovementEnabled = false;
+            GameEvents.Publish(new CameraShakeEventData());
+
+            _collider.enabled = false;
+            _renderer.SetSortingOrder(50);
+
+            int hitDirection = transform.position.x - hitSourcePosition.x > 0f ? 1 : -1;
+
+            _movement.ApplyHitImpact(hitDirection);
+
+            _canFollowTarget = false;
+            _stomper.enabled = false;
+            _renderer.TriggerHit();
+
+            AudioManager.Instance.PlaySFX(_hurtClip);
         }
     }
 }

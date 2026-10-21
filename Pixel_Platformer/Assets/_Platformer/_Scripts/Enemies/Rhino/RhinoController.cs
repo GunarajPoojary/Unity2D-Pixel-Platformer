@@ -168,7 +168,7 @@ namespace PixelPlatformer
 
                 if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                 {
-                    damageable.TakeHit();
+                    damageable.TakeHit(transform.position);
                     _canDetect = false;
                 }
             }
@@ -255,7 +255,7 @@ namespace PixelPlatformer
             Gizmos.DrawLine(_back, _isFacingRight ? _leftWallContactPoint : _rightWallContactPoint);
         }
 
-        public void TakeHit()
+        public void TakeHit(Vector2 hitSourcePosition)
         {
             Debug.Log("Die");
         }
