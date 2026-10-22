@@ -6,7 +6,7 @@ namespace PixelPlatformer
 {
     [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
-    public class PlayerController : MonoBehaviour, IHittable, IFollowTargetProvider
+    public class PlayerController : MonoBehaviour, IHittable, IImpactable, IFollowTargetProvider
     {
         [Header("SFX Clips")]
         [SerializeField] private AudioClip _jumpClip;
@@ -16,19 +16,21 @@ namespace PixelPlatformer
         [SerializeField] private PlayerRenderer _renderer;
         [SerializeField] private PlayerMovement _movement;
         [SerializeField] private PlayerInput _input;
-        [SerializeField] private Stomper _stomper;
 
         [SerializeField] private float _bodyCenter = 0.786f; // got it from boxcollider
         [SerializeField] private Transform _cameraFollowTarget;
+        [SerializeField] private AudioClip _playerHitSound;
+        [SerializeField] private LayerMask _breakableMask;
 
         private bool _canFollowTarget = true;
-        private Rigidbody2D _rb;
         private Collider2D _collider;
         private bool _isHittable = true;
+        private bool _isImpactable = true;
 
         public Transform CameraFollowTarget { get { return _cameraFollowTarget; } }
         public int LookDirection { get { return _movement.LookDirection; } }
         public bool CanFollowTarget { get { return _canFollowTarget; } }
+        public bool IsImpactable { get { return _isImpactable; } }
 
         public bool MovementEnabled { get; set; }
 
@@ -40,7 +42,6 @@ namespace PixelPlatformer
         private void Awake()
         {
             _input = GetComponent<PlayerInput>();
-            _rb = GetComponent<Rigidbody2D>();
             _collider = GetComponent<Collider2D>();
         }
 
@@ -52,8 +53,6 @@ namespace PixelPlatformer
             _movement.OnLand += HandleLand;
             _movement.OnJump += HandleJump;
             _movement.OnWallSlide += HandleWallSlide;
-
-            _stomper.OnStomp += HandleStomp;
 
             _input.OnJumpPerformed += HandleJumpPerformed;
             _input.OnJumpCanceled += HandleJumpCanceled;
@@ -68,10 +67,31 @@ namespace PixelPlatformer
             _movement.OnJump -= HandleJump;
             _movement.OnWallSlide -= HandleWallSlide;
 
-            _stomper.OnStomp -= HandleStomp;
-
             _input.OnJumpPerformed -= HandleJumpPerformed;
             _input.OnJumpCanceled -= HandleJumpCanceled;
+        }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if ((_breakableMask & (1 << col.gameObject.layer)) == 0) return;
+
+            if (!col.gameObject.TryGetComponent(out IBreakable breakable) || !breakable.IsBreakable)
+                return;
+
+            for (int i = 0; i < col.contactCount; i++)
+            {
+                float normalY = col.GetContact(i).normal.y;
+
+                if (Mathf.Abs(normalY) <= 0.5f) continue; // ignore side contacts
+
+                // normal points from the container towards the player,
+                // so a negative Y means the player hit it from below
+                if (normalY < 0f)
+                    _movement.ResetVerticalVelocity();
+
+                breakable.Break();
+                return;
+            }
         }
 
         private void Update()
@@ -98,7 +118,6 @@ namespace PixelPlatformer
             if (MovementEnabled)
             {
                 _movement.SimulateMovement(_input.MoveInput);
-                _stomper.HandleStomp();
             }
 
             _movement.ApplyMovement();
@@ -156,9 +175,16 @@ namespace PixelPlatformer
         }
 
         #region Hit Methods
-        public void HandleStomp()
+        public void ApplyImpact(GameObject source, float force)
         {
-            _movement.PerformJump();
+            _movement.PerformJump(force);
+
+            if (source.TryGetComponent(out IHittable hittable) && hittable.IsHittable)
+            {
+                GameEvents.Publish(new StompEventData());
+                AudioManager.Instance.PlaySFX(_playerHitSound);
+                hittable.TakeHit(transform.position);
+            }
         }
         #endregion
 
@@ -178,7 +204,7 @@ namespace PixelPlatformer
         public void ResetState()
         {
             _movement.ResetState();
-            _stomper.enabled = true;
+            _isImpactable = true;
 
             ResetHit();
             _isHittable = true;
@@ -237,7 +263,7 @@ namespace PixelPlatformer
             _movement.ApplyHitImpact(hitDirection);
 
             _canFollowTarget = false;
-            _stomper.enabled = false;
+            _isImpactable = false;
             _renderer.TriggerHit();
 
             AudioManager.Instance.PlaySFX(_hurtClip);

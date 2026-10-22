@@ -7,7 +7,7 @@ namespace PixelPlatformer
     {
         [SerializeField] protected SingleClipAnimator _idleClipAnimator;
         [SerializeField] protected SingleClipAnimator _collectedClipAnimator;
-        private bool _canCollect = true;
+        protected bool _canCollect = true;
 
         public bool CanCollect
         {

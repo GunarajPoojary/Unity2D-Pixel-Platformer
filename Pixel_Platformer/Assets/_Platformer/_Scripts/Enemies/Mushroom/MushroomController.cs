@@ -32,16 +32,7 @@ namespace PixelPlatformer
 
         private bool _shouldIdle;
         private float _idleTimer;
-
-        public Animator Animator
-        {
-            get { return _animator; }
-        }
-
-        public ParticleSystem RunFX
-        {
-            get { return _runFX; }
-        }
+        private EnemyHitter _hitHandler;
 
         // flipX = false -> facing left
         // flipX = true -> facing right
@@ -55,6 +46,7 @@ namespace PixelPlatformer
             _animator = GetComponent<Animator>();
             _renderer = GetComponent<SpriteRenderer>();
             _hittable = GetComponent<Hittable>();
+            _hitHandler = new EnemyHitter(_playerMask);
 
             _animator.SetBool(RunID, true);
         }
@@ -131,22 +123,7 @@ namespace PixelPlatformer
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            if ((_playerMask.value & (1 << col.gameObject.layer)) != 0
-                        && col.collider.TryGetComponent<IHittable>(out var hittable))
-            {
-                if (hittable == null || !hittable.IsHittable) return;
-
-                var contactPoint = col.contacts[0].point;
-
-                Vector2 currentPos = transform.position;
-
-                Vector2 direction = contactPoint - currentPos;
-
-                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-                {
-                    hittable.TakeHit(currentPos);
-                }
-            }
+            _hitHandler.CheckForHit(col, transform.position);
         }
 
         private bool HasReachedEdge()

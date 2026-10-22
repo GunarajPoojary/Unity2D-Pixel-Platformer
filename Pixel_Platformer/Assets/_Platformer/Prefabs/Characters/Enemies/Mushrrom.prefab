@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6773328924695115592}
   - component: {fileID: 4287653114595161435}
   - component: {fileID: 4041724035866200045}
+  - component: {fileID: 1325318844302020506}
   m_Layer: 9
   m_Name: Mushrrom
   m_TagString: Untagged
@@ -177,7 +178,7 @@ MonoBehaviour:
   _frontCastSize: {x: 0.05, y: 0.12}
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 4160
+    m_Bits: 4416
   _castDistance: 0.06
   _renderer: {fileID: 1744589263937877869}
   _edgeCastSize: {x: 0.1, y: 0.08}
@@ -201,6 +202,23 @@ MonoBehaviour:
   _fallAcceleration: 1.5
   _fallSpeed: 0.5
   _renderer: {fileID: 1744589263937877869}
+--- !u!114 &1325318844302020506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900663292518196487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42ee8006728456e449cfd801198a592c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.StompImpactTrigger
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _normalThreshold: 0.5
+  _impactForce: 25
 --- !u!1 &8104561908516727774
 GameObject:
   m_ObjectHideFlags: 0

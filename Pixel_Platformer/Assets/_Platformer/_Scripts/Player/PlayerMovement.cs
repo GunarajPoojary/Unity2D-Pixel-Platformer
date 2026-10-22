@@ -166,7 +166,7 @@ namespace PixelPlatformer
 
         public void ResetState()
         {
-            _verticalVelocity = 0f;
+            ResetVerticalVelocity();
             _horizontalVelocity = 0f;
             _isWallSliding = false;
             _wasJumping = false;
@@ -477,6 +477,11 @@ namespace PixelPlatformer
 
             float spinDirection = UnityEngine.Random.value < 0.5f ? -1f : 1f;
             _rb.angularVelocity = _spin * spinDirection;
+        }
+
+        public void ResetVerticalVelocity()
+        {
+            _verticalVelocity = 0f;
         }
 
         #region Debug Methods

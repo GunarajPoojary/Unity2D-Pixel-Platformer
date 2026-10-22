@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PixelPlatformer
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class BreakableBoxChunk : MonoBehaviour
+    public class ContainerChunk : MonoBehaviour
     {
         [SerializeField] private int _totalKeyframes = 12;
         [SerializeField] private LayerMask _groundLayer;

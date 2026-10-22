@@ -6,7 +6,7 @@ namespace PixelPlatformer
     [RequireComponent(typeof(TilemapRenderer), typeof(Tilemap))]
     public class AnimatedBackground : MonoBehaviour
     {
-        [SerializeField] private float _scrollSpeed = 5f;
+        [SerializeField] private float _scrollSpeed = 2.5f;
         [SerializeField] private TilemapRenderer _renderer;
         [SerializeField] private Tilemap _map;
         [SerializeField] private TileBase _targetTile;

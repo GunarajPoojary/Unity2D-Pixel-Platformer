@@ -9971,7 +9971,6 @@ GameObject:
   - component: {fileID: 8315275832378156492}
   - component: {fileID: 3012578002158466891}
   - component: {fileID: 7398987933303538124}
-  - component: {fileID: 2197369895570624279}
   - component: {fileID: 5573161073225403660}
   m_Layer: 7
   m_Name: Player
@@ -10108,9 +10107,12 @@ MonoBehaviour:
   _renderer: {fileID: 3012578002158466891}
   _movement: {fileID: 7748402711797065344}
   _input: {fileID: 8315275832378156492}
-  _stomper: {fileID: 2197369895570624279}
   _bodyCenter: 0.786
   _cameraFollowTarget: {fileID: 1901949163271838440}
+  _playerHitSound: {fileID: 8300000, guid: 92dcbe03742098e4a998055d7a778b24, type: 3}
+  _breakableMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &7748402711797065344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10205,26 +10207,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   _itemCollectSound: {fileID: 8300000, guid: 68e5557d31e9a3e4c961dcdb7272906d, type: 3}
---- !u!114 &2197369895570624279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3910124005606433036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a5ff6b4ac79344dbe98b3279955205, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitMask:
-    serializedVersion: 2
-    m_Bits: 512
-  _hitImpact: 25
-  _hitCheckPoint: {fileID: 2987519879630416187}
-  _hitCheckSize: {x: 1, y: 0.1}
-  _hitCheckDistance: 0.01
-  _playerHitSound: {fileID: 8300000, guid: 92dcbe03742098e4a998055d7a778b24, type: 3}
 --- !u!114 &5573161073225403660
 MonoBehaviour:
   m_ObjectHideFlags: 0

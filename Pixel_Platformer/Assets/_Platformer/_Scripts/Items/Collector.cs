@@ -10,7 +10,7 @@ namespace PixelPlatformer
         private void OnTriggerEnter2D(Collider2D col)
         {
             if ((_collectibleMask & (1 << col.gameObject.layer)) != 0
-                && col.gameObject.TryGetComponent<ICollectible>(out var collectible))
+                && col.gameObject.TryGetComponent<ICollectible>(out var collectible) && collectible.CanCollect)
             {
                 if (collectible != null)
                 {

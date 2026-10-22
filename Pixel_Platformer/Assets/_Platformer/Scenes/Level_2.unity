@@ -74552,14 +74552,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Platformer::PixelPlatformer.LevelManager
   _despawnHeight: 5
-  _levelData:
-    levelIndex: 2
-    levelIcon: {fileID: 21300000, guid: 1071946ceb0a36f46b703491571d8e68, type: 3}
-    levelName: Citadel
-    totalFruits: 4
-    totalEnemies: 7
-    estimatedCompletionTime: 30
-    maxStars: 3
+  _levelObjectives:
+    totalFruits: 0
+    totalEnemies: 0
+    estimatedCompletionTime: 0
   _scoreData: {fileID: 11400000, guid: d1181649b3df77f47815558695c6afe2, type: 2}
   _startCheckpoint: {fileID: 1364734630}
   _endCheckpoint: {fileID: 8322644061551742197}
@@ -77743,7 +77739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c0d5071b274dd1469ce50b92b83b89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scrollSpeed: 4
+  _scrollSpeed: 2.5
   _renderer: {fileID: 1918467461}
   _map: {fileID: 1918467462}
   _targetTile: {fileID: 11400000, guid: fb7c2f2406c87184da42e55cc126bc0f, type: 2}
@@ -78222,6 +78218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a041bda4a72846549aa3df9db5da2b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Platformer::PixelPlatformer.PlayerDespawnFX
+  _despawnClip: {fileID: 0}
   _disappearFXAnimator:
     monoBehaviour: {fileID: 5612130591037676521}
     _renderer: {fileID: 4221969494251261175}
