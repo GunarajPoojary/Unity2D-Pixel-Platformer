@@ -27,6 +27,9 @@ namespace PixelPlatformer
         private int _currentClipIndex;
         private bool _isOpen;
 
+        public event Action OnOpened;
+        public event Action OnClosed;
+
         public void Init()
         {
             _isOpen = false;
@@ -53,6 +56,8 @@ namespace PixelPlatformer
             if (_isOpen) return;
             _isOpen = true;
 
+            OnOpened?.Invoke();
+
             _videoPlayer.Play();
             _panelScaleTween.PlayOpen();
         }
@@ -61,6 +66,8 @@ namespace PixelPlatformer
         {
             if (!_isOpen) return;
             _isOpen = false;
+
+            OnClosed?.Invoke();
 
             _panelScaleTween.PlayClose(() =>
             {

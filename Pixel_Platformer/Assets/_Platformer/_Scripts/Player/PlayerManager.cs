@@ -11,6 +11,7 @@ namespace PixelPlatformer
 
         public Transform FollowCam { get { return _followCamera.transform; } }
         public Vector3 PlayerPosition { get { return _controller.transform.position; } }
+        public bool InputEnabled { get { return _input.InputEnabled; } }
 
         public event Action OnFirstMove;
 
