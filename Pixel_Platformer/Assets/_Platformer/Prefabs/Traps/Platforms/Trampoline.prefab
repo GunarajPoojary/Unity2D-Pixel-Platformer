@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 796897781667365063}
   - component: {fileID: 1953053418665600658}
+  - component: {fileID: 3457226844772184862}
   - component: {fileID: 4200628685544650207}
   m_Layer: 0
   m_Name: Trampoline
@@ -92,6 +93,52 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!61 &3457226844772184862
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8381257716823778664}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.34375}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1.4375, y: 0.6875}
+    newSize: {x: 1.4375, y: 0.6875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.4375, y: 0.6875}
+  m_EdgeRadius: 0
 --- !u!114 &4200628685544650207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,3 +166,7 @@ MonoBehaviour:
     - {fileID: 4723107735738678597, guid: 9eadc18b9331bd74fbf2d429f9c74b16, type: 3}
     _loop: 0
     _frameRate: 12
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _impactForce: 40

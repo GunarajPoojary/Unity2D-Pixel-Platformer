@@ -74494,34 +74494,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8381257716823778664, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 998212426}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
---- !u!1 &998212425 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8381257716823778664, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
-  m_PrefabInstance: {fileID: 998212424}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &998212426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 998212425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93abb835d8f96794e99041dc8354f02a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  _jumpClipAnimator:
-    monoBehaviour: {fileID: 0}
-    _renderer: {fileID: 0}
-    _sprites: []
-    _loop: 0
-    _frameRate: 12
 --- !u!1 &1082826660
 GameObject:
   m_ObjectHideFlags: 0
