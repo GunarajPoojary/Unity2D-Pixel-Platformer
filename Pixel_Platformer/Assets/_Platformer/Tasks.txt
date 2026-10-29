@@ -1,11 +1,12 @@
 Enemies:
+trunk
+plant
+chicken
+rhino
 ghost
-rocks
 turtle
 fatird
-skull
 bat
-bunny
 
 Font from - https://yukipixels.itch.io/boldpixels
 

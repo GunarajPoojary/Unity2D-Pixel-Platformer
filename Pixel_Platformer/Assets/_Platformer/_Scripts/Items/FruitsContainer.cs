@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PixelPlatformer
 {
@@ -11,13 +12,14 @@ namespace PixelPlatformer
     public class FruitsContainer : MonoBehaviour, IBreakable
     {
         [SerializeField] private ContainerChunk[] _chunks;
-        [SerializeField] private Fruit[] _fruits;
+        [SerializeField] private DynamicFruit[] _dynamicFruits;
         [SerializeField] private int _totalHits = 1;
         [SerializeField] private SingleClipAnimator _hitClipAnimator;
 
         [Header("Spread Settings")]
-        [SerializeField] private float _minImpulseForce = 2f;
-        [SerializeField] private float _maxImpulseForce = 5f;
+        [FormerlySerializedAs("_minImpulseForce")]
+        [SerializeField] private float _baseImpulseForce = 4f;
+        [SerializeField] private float _forceIncrement = 1f;
 
         private int _remainingHits;
         private bool _isBreakable = true;
@@ -36,7 +38,7 @@ namespace PixelPlatformer
                 chunk.gameObject.SetActive(false);
             }
 
-            foreach (Fruit fruit in _fruits)
+            foreach (DynamicFruit fruit in _dynamicFruits)
             {
                 fruit.gameObject.SetActive(false);
             }
@@ -60,23 +62,31 @@ namespace PixelPlatformer
         {
             _hitClipAnimator._renderer.enabled = false;
 
+            int rightCount = 0;
+            int leftCount = 0;
+
             for (int i = 0; i < _chunks.Length; i++)
             {
                 _chunks[i].gameObject.SetActive(true);
-                _chunks[i].ApplyImpulseForce(GetSideForce(i % 2 == 0));
+                _chunks[i].ApplyImpulseForce(GetSideForce(i % 2 == 0, ref rightCount, ref leftCount));
             }
 
-            for (int i = 0; i < _fruits.Length; i++)
+            rightCount = 0;
+            leftCount = 0;
+
+            for (int i = 0; i < _dynamicFruits.Length; i++)
             {
-                _fruits[i].gameObject.SetActive(true);
-                _fruits[i].ApplyImpulseForce(GetSideForce(i % 2 == 0));
+                _dynamicFruits[i].gameObject.SetActive(true);
+                _dynamicFruits[i].Throw(GetSideForce(i % 2 == 0, ref rightCount, ref leftCount));
             }
         }
 
-        private Vector2 GetSideForce(bool isRight)
+        private Vector2 GetSideForce(bool isRight, ref int rightCount, ref int leftCount)
         {
+            int count = isRight ? rightCount++ : leftCount++;
+
             Vector2 direction = isRight ? Vector2.right : Vector2.left;
-            float force = Random.Range(_minImpulseForce, _maxImpulseForce);
+            float force = _baseImpulseForce + count * _forceIncrement;
 
             return direction * force;
         }

@@ -13,22 +13,17 @@ namespace PixelPlatformer
         [SerializeField] private LayerMask _playerMask;
         [SerializeField] private float _idleTime = 1f;
         [SerializeField] private ParticleSystem _runFX;
-        [SerializeField] private Vector2 _offset;
 
-        [SerializeField] private Vector2 _frontCastSize;
-        [SerializeField] private LayerMask _groundLayer;
-        [SerializeField] private float _castDistance = 0.1f;
+        [SerializeField] private float _patrolOffsetX;
+        [SerializeField] private float _patrolWidth = 8f;
+        [SerializeField] private float _bodyHalfWidth = 0.5f;
 
         [SerializeField] private SpriteRenderer _renderer;
-
-        [SerializeField] private Vector2 _edgeCastSize;
-        [SerializeField] private float _edgeCastYOffset = 0.5f;
 
         private Animator _animator;
         private Hittable _hittable;
 
-        private bool _hasReachedEdge;
-
+        private float _patrolCenterX;
 
         private bool _shouldIdle;
         private float _idleTimer;
@@ -49,6 +44,11 @@ namespace PixelPlatformer
             _hitHandler = new EnemyHitter(_playerMask);
 
             _animator.SetBool(RunID, true);
+        }
+
+        private void Start()
+        {
+            _patrolCenterX = transform.position.x + _patrolOffsetX;
         }
 
         private void OnEnable()
@@ -75,13 +75,8 @@ namespace PixelPlatformer
                 return;
             }
 
-            if (IsWallDetected() || HasReachedEdge())
-            {
-                StartIdling();
-                return;
-            }
-
             Run();
+            CheckPatrolEnd();
         }
 
         private void Run()
@@ -89,6 +84,27 @@ namespace PixelPlatformer
             Vector3 direction = IsFacingLeft ? Vector3.left : Vector3.right;
             transform.position += _runSpeed * Time.deltaTime * direction;
             _animator.SetBool(RunID, true);
+        }
+
+        private void CheckPatrolEnd()
+        {
+            float minX = _patrolCenterX - _patrolWidth * 0.5f + _bodyHalfWidth;
+            float maxX = _patrolCenterX + _patrolWidth * 0.5f - _bodyHalfWidth;
+
+            Vector3 position = transform.position;
+
+            if (IsFacingLeft && position.x <= minX)
+            {
+                position.x = minX;
+                transform.position = position;
+                StartIdling();
+            }
+            else if (!IsFacingLeft && position.x >= maxX)
+            {
+                position.x = maxX;
+                transform.position = position;
+                StartIdling();
+            }
         }
 
         private void StartIdling()
@@ -99,46 +115,9 @@ namespace PixelPlatformer
             _animator.SetBool(RunID, false);
         }
 
-        private bool IsWallDetected()
-        {
-            Vector2 origin = transform.position;
-
-            // only flip the X offset
-            origin.x += IsFacingLeft ? -_offset.x : _offset.x;
-
-            // Y stays the same
-            origin.y += _offset.y;
-
-            Vector2 direction = IsFacingLeft ? Vector2.left : Vector2.right;
-
-            var hit = Physics2D.BoxCast(origin,
-                                        _frontCastSize,
-                                        0f,
-                                        direction,
-                                        _castDistance,
-                                        _groundLayer);
-
-            return hit.collider != null;
-        }
-
         private void OnCollisionEnter2D(Collision2D col)
         {
             _hitHandler.CheckForHit(col, transform.position);
-        }
-
-        private bool HasReachedEdge()
-        {
-            Vector2 origin = transform.position;
-
-            // flip x offset
-            origin.x += IsFacingLeft ? -_offset.x : _offset.x;
-            origin.y += _offset.y - _edgeCastYOffset;
-
-            var hit = Physics2D.BoxCast(origin, _edgeCastSize, 0f, Vector2.down, _castDistance, _groundLayer);
-
-            _hasReachedEdge = hit.collider == null;
-
-            return _hasReachedEdge;
         }
 
         private void HandleIdling()
@@ -158,32 +137,16 @@ namespace PixelPlatformer
 
         private void OnDrawGizmosSelected()
         {
-            if (_renderer == null) return;
+            float centerX = Application.isPlaying ? _patrolCenterX : transform.position.x + _patrolOffsetX;
+            float y = transform.position.y;
 
-            Vector2 origin = transform.position;
+            Vector3 left = new Vector3(centerX - _patrolWidth * 0.5f, y, 0f);
+            Vector3 right = new Vector3(centerX + _patrolWidth * 0.5f, y, 0f);
 
-            // only flip x
-            origin.x += IsFacingLeft ? -_offset.x : _offset.x;
-
-            // add y offset as it is
-            origin.y += _offset.y;
-
-            Vector2 direction = IsFacingLeft ? Vector2.left : Vector2.right;
-            Vector2 target = origin + direction * _castDistance;
-
-            Gizmos.DrawWireCube(origin, _frontCastSize);
-            Gizmos.DrawWireCube(target, _frontCastSize);
-            Gizmos.DrawLine(origin, target);
-
-            Vector2 edgeOrigin = origin;
-            edgeOrigin.y -= _edgeCastYOffset;
-
-            Vector2 edgeDirection = Vector2.down;
-            Vector2 edgeTarget = edgeOrigin + edgeDirection * _castDistance;
-
-            Gizmos.DrawWireCube(edgeOrigin, _edgeCastSize);
-            Gizmos.DrawLine(edgeOrigin, edgeTarget);
-            Gizmos.DrawWireCube(edgeTarget, _edgeCastSize);
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(left, right);
+            Gizmos.DrawWireSphere(left, 0.15f);
+            Gizmos.DrawWireSphere(right, 0.15f);
         }
     }
 }

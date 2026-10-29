@@ -1,22 +1,47 @@
+using System;
 using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [RequireComponent(typeof(Rigidbody2D))]
-    public class Fruit : Collectible
+    public class Fruit : MonoBehaviour, ICollectible
     {
-        private Rigidbody2D _rb;
+        [SerializeField] protected SingleClipAnimator _idleClipAnimator;
+        [SerializeField] protected SingleClipAnimator _collectedClipAnimator;
+        private bool _canCollect = true;
 
-        private void Awake()
+        public bool CanCollect
         {
-            _rb = GetComponent<Rigidbody2D>();
+            get
+            {
+                return _canCollect;
+            }
         }
 
-        public void ApplyImpulseForce(Vector2 force)
+        public event Action OnCollected;
+
+        private void OnEnable()
         {
             _idleClipAnimator.PlayClip();
+            _collectedClipAnimator.OnComplete += HandleCollect;
+        }
 
-            _rb.AddForce(force, ForceMode2D.Impulse);
+        private void OnDisable()
+        {
+            _collectedClipAnimator.OnComplete -= HandleCollect;
+        }
+
+        private void HandleCollect()
+        {
+            OnCollected?.Invoke();
+            gameObject.SetActive(false);
+        }
+
+        public void Collect()
+        {
+            // Debug.Log($"Collect {transform.name}");
+            _idleClipAnimator.StopClip();
+            _collectedClipAnimator.PlayClip();
+            _canCollect = false;
         }
     }
 }
