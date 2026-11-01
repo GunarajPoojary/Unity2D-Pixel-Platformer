@@ -13,7 +13,7 @@ namespace PixelPlatformer
             _threshold = threshold;
         }
 
-        public void CheckForHit(Collision2D col, Vector3 hitPosition)
+        public void TryHitTarget(Collision2D col, Vector3 hitPosition)
         {
             if ((_targetMask.value & (1 << col.gameObject.layer)) == 0)
                 return;

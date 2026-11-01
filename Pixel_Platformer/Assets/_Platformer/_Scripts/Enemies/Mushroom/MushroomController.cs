@@ -117,7 +117,7 @@ namespace PixelPlatformer
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            _hitHandler.CheckForHit(col, transform.position);
+            _hitHandler.TryHitTarget(col, transform.position);
         }
 
         private void HandleIdling()

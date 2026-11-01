@@ -6,17 +6,26 @@ namespace PixelPlatformer
     public class FallingPlatform : MonoBehaviour
     {
         [SerializeField] private LayerMask _offTriggerMask;
-        [SerializeField] private SingleClipAnimator _offClipAnimator;
+        [SerializeField] private SingleClipAnimator _onClipAnimator;
         // default on state
         // turn off when player steps on it after
+
+        private void Start()
+        {
+            _onClipAnimator.PlayClip();
+        }
 
         private void OnCollisionEnter2D(Collision2D col)
         {
             if ((_offTriggerMask & (1 << col.gameObject.layer)) != 0)
             {
-                _offClipAnimator.PlayClip();
-                return;
+                PlayOff();
             }
+        }
+
+        private void PlayOff()
+        {
+            Debug.Log("Off");
         }
     }
 }

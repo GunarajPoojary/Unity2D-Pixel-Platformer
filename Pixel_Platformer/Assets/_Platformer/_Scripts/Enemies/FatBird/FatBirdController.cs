@@ -86,7 +86,6 @@ namespace PixelPlatformer
             return hit.collider != null && InMask(_playerMask, hit.collider);
         }
 
-        // Falling: gravity on. Landed: gravity off. Clearing isFalling plays the Grounded animation.
         private void SetFalling(bool falling)
         {
             _rb.linearVelocity = Vector2.zero;
@@ -94,7 +93,6 @@ namespace PixelPlatformer
             _animator.SetBool(FallID, falling);
         }
 
-        /// <summary>Animation event on the Grounded clip: rise past the original height to the top edge.</summary>
         public void Rise()
         {
             _dropping = false;
@@ -103,7 +101,7 @@ namespace PixelPlatformer
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            _hitHandler.CheckForHit(col, transform.position);
+            _hitHandler.TryHitTarget(col, transform.position);
 
             if (InMask(_playerMask, col.collider))
                 _animator.SetTrigger(HitID);
