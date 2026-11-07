@@ -316,7 +316,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -353,6 +353,9 @@ MonoBehaviour:
   _hitMask:
     serializedVersion: 2
     m_Bits: 448
+  _playerMask:
+    serializedVersion: 2
+    m_Bits: 128
   _renderer: {fileID: 7945003386331417386}
   _collider: {fileID: 3592230687206531533}
   _chunks:

@@ -6,6 +6,7 @@ namespace PixelPlatformer
     public class TrunkController : MonoBehaviour
     {
         private static readonly int RunID = Animator.StringToHash("isRun");
+        private static readonly int AttackID = Animator.StringToHash("isAttack");
         private static readonly int HitID = Animator.StringToHash("hit");
 
         [SerializeField] private float _runSpeed = 3f;
@@ -16,6 +17,12 @@ namespace PixelPlatformer
         [SerializeField] private float _patrolOffsetX;
         [SerializeField] private float _patrolWidth = 8f;
         [SerializeField] private float _bodyHalfWidth = 0.5f;
+
+        // detection zone is fixed to the patrol area, so it never depends on where the trunk currently is
+        [SerializeField] private float _detectHeight = 1f;
+        [SerializeField] private float _detectOffsetY;
+        [SerializeField] private Transform _muzzle;
+        [SerializeField] private BulletPool _bulletPool;
 
         [SerializeField] private SpriteRenderer _renderer;
 
@@ -28,11 +35,14 @@ namespace PixelPlatformer
         private float _idleTimer;
         private EnemyHitter _hitHandler;
 
-        // flipX = false -> facing left
-        // flipX = true -> facing right
         public bool IsFacingLeft
         {
             get { return !_renderer.flipX; }
+        }
+
+        private Vector2 FacingDir
+        {
+            get { return IsFacingLeft ? Vector2.left : Vector2.right; }
         }
 
         private void Awake()
@@ -43,6 +53,9 @@ namespace PixelPlatformer
             _hitHandler = new EnemyHitter(_playerMask);
 
             _animator.SetBool(RunID, true);
+
+            if (_bulletPool == null)
+                Debug.LogError($"{nameof(TrunkController)}: BulletPool is not assigned.", this);
         }
 
         private void Start()
@@ -62,12 +75,24 @@ namespace PixelPlatformer
 
         private void HandleHit()
         {
+            _animator.SetBool(AttackID, false);
+            _animator.SetBool(RunID, false);
             _animator.SetTrigger(HitID);
             enabled = false;
         }
 
         private void Update()
         {
+            if (TryGetPlayerInZone(out Collider2D player))
+            {
+                FaceTowards(player.transform.position.x);
+                _animator.SetBool(AttackID, true);
+                _animator.SetBool(RunID, false);
+                return;
+            }
+
+            _animator.SetBool(AttackID, false);
+
             if (_shouldIdle)
             {
                 HandleIdling();
@@ -134,18 +159,61 @@ namespace PixelPlatformer
             _renderer.flipX = !_renderer.flipX;
         }
 
-        private void OnDrawGizmosSelected()
+        private void FaceTowards(float targetX)
+        {
+            bool shouldFaceLeft = targetX < transform.position.x;
+
+            if (shouldFaceLeft != IsFacingLeft)
+                Turn();
+        }
+
+        // Detection zone = the patrol area (full patrol width, _detectHeight tall), centered on the patrol center.
+        private Vector2 DetectCenter()
         {
             float centerX = Application.isPlaying ? _patrolCenterX : transform.position.x + _patrolOffsetX;
-            float y = transform.position.y;
+            return new Vector2(centerX, transform.position.y + _detectOffsetY);
+        }
 
-            Vector3 left = new Vector3(centerX - _patrolWidth * 0.5f, y, 0f);
-            Vector3 right = new Vector3(centerX + _patrolWidth * 0.5f, y, 0f);
+        private bool TryGetPlayerInZone(out Collider2D player)
+        {
+            player = Physics2D.OverlapBox(DetectCenter(), new Vector2(_patrolWidth, _detectHeight), 0f, _playerMask);
+            return player != null;
+        }
+
+        public void Shoot()
+        {
+            if (_bulletPool == null) return;
+
+            Vector3 pos = (Vector2)transform.position + MuzzleOffset();
+
+            Bullet bullet = _bulletPool.GetBullet(pos, Quaternion.identity);
+            if (bullet != null)
+                bullet.Launch(FacingDir);
+        }
+
+        private Vector2 MuzzleOffset()
+        {
+            if (_muzzle == null)
+                return Vector2.zero;
+
+            return new Vector2(IsFacingLeft ? _muzzle.localPosition.x : -_muzzle.localPosition.x, _muzzle.localPosition.y);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Vector2 center = DetectCenter();
+
+            float y = transform.position.y;
+            Vector3 left = new Vector3(center.x - _patrolWidth * 0.5f, y, 0f);
+            Vector3 right = new Vector3(center.x + _patrolWidth * 0.5f, y, 0f);
 
             Gizmos.color = Color.green;
             Gizmos.DrawLine(left, right);
             Gizmos.DrawWireSphere(left, 0.15f);
             Gizmos.DrawWireSphere(right, 0.15f);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(center, new Vector3(_patrolWidth, _detectHeight, 0f));
         }
     }
 }

@@ -7,9 +7,9 @@ namespace PixelPlatformer
     public class Bullet : MonoBehaviour
     {
         [SerializeField] private float _speed = 6f;
-        [SerializeField] private float _lifetime = 4f;
 
         [SerializeField] private LayerMask _hitMask;
+        [SerializeField]private LayerMask _playerMask;
 
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private Collider2D _collider;
@@ -24,7 +24,6 @@ namespace PixelPlatformer
         private IObjectPool<Bullet> _pool;
 
         private Vector2 _direction;
-        private float _timer;
         private bool _isBroken;
         private int _activeChunks;
 
@@ -41,7 +40,7 @@ namespace PixelPlatformer
             foreach (BulletChunk chunk in _chunks)
             {
                 chunk.Initialize();
-                chunk.Finished += OnChunkVanished;
+                chunk.Finished += HandleChunkBlinkEnd;
             }
         }
 
@@ -50,22 +49,22 @@ namespace PixelPlatformer
             foreach (BulletChunk chunk in _chunks)
             {
                 if (chunk != null)
-                    chunk.Finished -= OnChunkVanished;
+                    chunk.Finished -= HandleChunkBlinkEnd;
             }
-        }
-
-        private void Update()
-        {
-            if (_isBroken) return;
-
-            _timer -= Time.deltaTime;
-
-            if (_timer <= 0f)
-                Release();
         }
 
         private void OnTriggerEnter2D(Collider2D col)
         {
+            if (!_isBroken && (_playerMask & (1 << col.gameObject.layer)) != 0)
+            {
+                if(col.TryGetComponent(out IHittable component))
+                {
+                    component.TakeHit(transform.position);
+                    Split();
+                    return;
+                }
+            }
+
             if (!_isBroken && (_hitMask.value & (1 << col.gameObject.layer)) != 0)
                 Split();
         }
@@ -80,7 +79,6 @@ namespace PixelPlatformer
             ResetState();
 
             _direction = direction.normalized;
-            _timer = _lifetime;
             _rb.linearVelocity = _direction * _speed;
         }
 
@@ -113,7 +111,7 @@ namespace PixelPlatformer
             }
         }
 
-        private void OnChunkVanished(BulletChunk chunk)
+        private void HandleChunkBlinkEnd(BulletChunk chunk)
         {
             if (!_isBroken) return;
 
