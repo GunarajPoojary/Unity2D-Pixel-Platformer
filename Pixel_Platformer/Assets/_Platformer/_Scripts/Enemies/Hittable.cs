@@ -23,8 +23,7 @@ namespace PixelPlatformer
         public event Action OnHit;
         public event Action OnDied;
 
-        public bool IsHittable { get { return _isHittable; } }
-
+        public bool IsHittable { get { return _isHittable && enabled; } }
 
         private void Awake()
         {

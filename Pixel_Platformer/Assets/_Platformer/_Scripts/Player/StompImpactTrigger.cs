@@ -17,6 +17,8 @@ namespace PixelPlatformer
 
         private void OnCollisionEnter2D(Collision2D col)
         {
+            if (!enabled) return;
+
             if ((_targetMask & (1 << col.gameObject.layer)) == 0) return;
 
             for (int i = 0; i < col.contactCount; i++)

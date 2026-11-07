@@ -7,8 +7,17 @@ namespace PixelPlatformer
         [SerializeField] private LayerMask _targetMask;
         [SerializeField] private float _threshold = 0.5f;
 
+        [SerializeField] private bool _hitFromTop = false;
+
         private void OnCollisionEnter2D(Collision2D col)
         {
+            TryHit(col);
+        }
+
+        private void TryHit(Collision2D col)
+        {
+            if (!enabled) return;
+
             if ((_targetMask.value & (1 << col.gameObject.layer)) == 0)
                 return;
 
@@ -16,12 +25,15 @@ namespace PixelPlatformer
                 || !hittable.IsHittable)
                 return;
 
-            // direction from us toward the target
-            Vector2 toTarget = -col.GetContact(0).normal;
+            if (!_hitFromTop)
+            {
+                // direction from us toward the target
+                Vector2 toTarget = -col.GetContact(0).normal;
 
-            // Ignore the target if it's on top
-            if (toTarget.y > _threshold)
-                return;
+                // Ignore the target if it's on top
+                if (toTarget.y > _threshold)
+                    return;
+            }
 
             hittable.TakeHit(transform.position);
         }
