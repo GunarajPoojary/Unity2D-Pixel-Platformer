@@ -73,5 +73,10 @@ namespace PixelPlatformer
 
             return toTarget.x > 0f ? Direction.Right : Direction.Left;
         }
+
+        public void SetAllDirections()
+        {
+            _activeDirections = Direction.Up | Direction.Down | Direction.Left | Direction.Right;
+        }
     }
 }

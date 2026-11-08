@@ -62,24 +62,20 @@ namespace PixelPlatformer
         {
             while (true)
             {
-                // Idle, spikes in
                 SetSpikes(false);
                 _hazard.SetIdleNoSpike();
                 Play(_idleNoSpike);
                 yield return new WaitForSeconds(_idleNoSpikeTime);
 
-                // Spikes coming out (transition: no damage)
                 SetSpikes(true);
                 bool done = false;
                 Play(_spikeOut, () => done = true);
                 yield return new WaitUntil(() => done);
 
-                // Idle, spikes out
                 _hazard.SetIdleSpike();
                 Play(_idleSpike);
                 yield return new WaitForSeconds(_idleSpikeTime);
 
-                // Spikes going in (transition: no damage)
                 _hazard.Disable();
                 done = false;
                 Play(_spikeIn, () => done = true);

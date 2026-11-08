@@ -15,7 +15,6 @@ namespace PixelPlatformer
 
         [SerializeField] private SlimePool _slimePool;
         [SerializeField] private float _particleInterval = 0.35f;
-        [SerializeField] private Vector2 _trailOffset = new Vector2(0.4f, -0.4f);
 
         [SerializeField] private SpriteRenderer _renderer;
 
@@ -108,10 +107,7 @@ namespace PixelPlatformer
 
             _particleTimer = _particleInterval;
 
-            float offsetX = IsFacingLeft ? _trailOffset.x : -_trailOffset.x;
-            Vector3 position = transform.position + new Vector3(offsetX, _trailOffset.y, 0f);
-
-            SlimeParticle particle = _slimePool.GetParticle(position, Quaternion.identity);
+            SlimeParticle particle = _slimePool.GetParticle(transform.position, Quaternion.identity);
             if (particle != null)
                 particle.PlayClip();
         }

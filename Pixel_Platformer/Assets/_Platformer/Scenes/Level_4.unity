@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime_1
       objectReference: {fileID: 0}
+    - target: {fileID: 1151150513933410210, guid: bde2c0096abee7747bd11bdb1f147ed1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5122883290223585204, guid: bde2c0096abee7747bd11bdb1f147ed1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 82.5
@@ -175,10 +179,6 @@ PrefabInstance:
       propertyPath: _slimePool
       value: 
       objectReference: {fileID: 1409739476}
-    - target: {fileID: 7667332335616082944, guid: bde2c0096abee7747bd11bdb1f147ed1, type: 3}
-      propertyPath: _patrolWidth
-      value: 16.3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -307,6 +307,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &423045458
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 796897781667365063, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381257716823778664, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
+      propertyPath: m_Name
+      value: Trampoline
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 083420972d5a8e845aed24d401f532a8, type: 3}
 --- !u!1 &545624522
 GameObject:
   m_ObjectHideFlags: 0
@@ -32741,6 +32798,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime_2
       objectReference: {fileID: 0}
+    - target: {fileID: 1151150513933410210, guid: bde2c0096abee7747bd11bdb1f147ed1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5122883290223585204, guid: bde2c0096abee7747bd11bdb1f147ed1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 57.875
@@ -32882,8 +32943,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Platformer::PixelPlatformer.SlimePool
   _particlePrefab: {fileID: 1230964951235769610, guid: b7c6a95aa327d2b4dbe8ccb4866e4dae, type: 3}
-  _defaultCapacity: 10
-  _maxSize: 30
+  _defaultCapacity: 100
+  _maxSize: 300
 --- !u!4 &1409739477
 Transform:
   m_ObjectHideFlags: 0
@@ -36305,10 +36366,6 @@ PrefabInstance:
       propertyPath: _slimePool
       value: 
       objectReference: {fileID: 1409739476}
-    - target: {fileID: 7667332335616082944, guid: bde2c0096abee7747bd11bdb1f147ed1, type: 3}
-      propertyPath: _patrolWidth
-      value: 12.18
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36334,3 +36391,4 @@ SceneRoots:
   - {fileID: 65341591}
   - {fileID: 1133111666}
   - {fileID: 1409739477}
+  - {fileID: 423045458}
