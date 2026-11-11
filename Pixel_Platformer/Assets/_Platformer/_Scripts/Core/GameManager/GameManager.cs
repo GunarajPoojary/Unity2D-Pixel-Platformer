@@ -51,42 +51,42 @@ namespace PixelPlatformer
 
         public async void StartLevel(int levelIndex)
         {
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             // await _sceneTransitionFX.PlayPopup();
 
             await UniTask.WhenAll(_sceneTransitionFX.PlayPopup(), AudioManager.Instance.FadeOutMusic(_musicFadeDuration));
 
 
-            _loadingScreen.UpdateProgress(0);
+            _loadingScreen.SetProgress(0);
             _loadingScreen.Show();
             await _sceneTransitionFX.PlayPopdown();
 
-            _loadingScreen.UpdateProgress(0.1f);
+            _loadingScreen.SetProgress(0.1f);
 
             // load gameplay
             AsyncOperation op = SceneManager.LoadSceneAsync(_gameplayScene.BuildIndex, LoadSceneMode.Additive);
             await op.ToUniTask(); // convert AsyncOperation to UniTask which can be await
 
-            _loadingScreen.UpdateProgress(0.2f);
+            _loadingScreen.SetProgress(0.2f);
 
             // unload main menu
             op = SceneManager.UnloadSceneAsync(_mainMenuScene.BuildIndex);
 
             await op.ToUniTask();
 
-            _loadingScreen.UpdateProgress(0.3f);
+            _loadingScreen.SetProgress(0.3f);
 
             GameplayManager gameplayManager = FindFirstObjectByType<GameplayManager>(); // use different approach
 
-            _loadingScreen.UpdateProgress(0.4f);
+            _loadingScreen.SetProgress(0.4f);
             await gameplayManager.Initialize();
-            _loadingScreen.UpdateProgress(0.5f);
+            _loadingScreen.SetProgress(0.5f);
 
 
             // load saved level
             var index = levelIndex - 1;
             op = SceneManager.LoadSceneAsync(_levels[index].LevelScene.BuildIndex, LoadSceneMode.Additive);
-            _loadingScreen.UpdateProgress(0.6f);
+            _loadingScreen.SetProgress(0.6f);
             await op.ToUniTask();
             _currentLevelIndex = levelIndex;
 
@@ -96,10 +96,10 @@ namespace PixelPlatformer
             LevelManager levelManager = LevelManager.Instance;
             levelManager.SetupLevel(GameProgressDataManager.Instance.GetRecord(levelIndex));
 
-            _loadingScreen.UpdateProgress(1f);
+            _loadingScreen.SetProgress(1f);
             await UniTask.DelayFrame(5);
 
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.Hide();
 
@@ -120,20 +120,20 @@ namespace PixelPlatformer
         public async void RestartLevel()
         {
             _isLostGame = false;
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             await _sceneTransitionFX.PlayPopup();
 
             UIManager.Instance.HideLoseScreen();
             UIManager.Instance.HideWinScreen();
 
-            _loadingScreen.UpdateProgress(0f);
+            _loadingScreen.SetProgress(0f);
             _loadingScreen.Show();
 
             PlayerManager.Instance.DespawnPlayer();
 
             await _sceneTransitionFX.PlayPopdown();
 
-            _loadingScreen.UpdateProgress(0.1f);
+            _loadingScreen.SetProgress(0.1f);
             Scene levelScene = SceneManager.GetActiveScene();
             int level = levelScene.buildIndex;
 
@@ -141,15 +141,15 @@ namespace PixelPlatformer
             if (levelScene.IsValid() && levelScene.isLoaded)
             {
                 await SceneManager.UnloadSceneAsync(levelScene).ToUniTask();
-                _loadingScreen.UpdateProgress(0.3f);
+                _loadingScreen.SetProgress(0.3f);
             }
 
             // load the same level again
             AsyncOperation op = SceneManager.LoadSceneAsync(level, LoadSceneMode.Additive);
-            _loadingScreen.UpdateProgress(0.6f);
+            _loadingScreen.SetProgress(0.6f);
 
             await op.ToUniTask();
-            _loadingScreen.UpdateProgress(1f);
+            _loadingScreen.SetProgress(1f);
 
             levelScene = SceneManager.GetSceneByBuildIndex(level);
             SceneManager.SetActiveScene(levelScene);
@@ -157,10 +157,10 @@ namespace PixelPlatformer
             LevelManager levelManager = LevelManager.Instance;
             levelManager.SetupLevel(GameProgressDataManager.Instance.GetRecord(_currentLevelIndex));
 
-            _loadingScreen.UpdateProgress(1f);
+            _loadingScreen.SetProgress(1f);
             await UniTask.DelayFrame(5);
 
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.Hide();
             await _sceneTransitionFX.PlayPopdown();
@@ -174,45 +174,45 @@ namespace PixelPlatformer
             _isLostGame = false;
             _isPaused = false;
 
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             // await _sceneTransitionFX.PlayPopup();
             await UniTask.WhenAll(_sceneTransitionFX.PlayPopup(), AudioManager.Instance.FadeOutMusic(_musicFadeDuration));
 
-            _loadingScreen.UpdateProgress(0);
+            _loadingScreen.SetProgress(0);
             _loadingScreen.Show();
             await _sceneTransitionFX.PlayPopdown();
 
-            _loadingScreen.UpdateProgress(0.1f);
+            _loadingScreen.SetProgress(0.1f);
 
             // load gameplay
             AsyncOperation op = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             await op.ToUniTask(); // convert AsyncOperation to UniTask which can be await
 
-            _loadingScreen.UpdateProgress(0.3f);
+            _loadingScreen.SetProgress(0.3f);
 
             // unload main menu
             op = SceneManager.LoadSceneAsync(_mainMenuScene.BuildIndex, LoadSceneMode.Additive);
 
             await op.ToUniTask();
-            _loadingScreen.UpdateProgress(0.5f);
+            _loadingScreen.SetProgress(0.5f);
 
             op = SceneManager.UnloadSceneAsync(_gameplayScene.BuildIndex);
             await op.ToUniTask();
 
-            _loadingScreen.UpdateProgress(0.8f);
+            _loadingScreen.SetProgress(0.8f);
 
             Scene menuScene = SceneManager.GetSceneByBuildIndex(_mainMenuScene.BuildIndex);
             SceneManager.SetActiveScene(menuScene);
 
-            _loadingScreen.UpdateProgress(1f);
+            _loadingScreen.SetProgress(1f);
             await UniTask.DelayFrame(5);
 
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.Hide();
             PlayMainMenuMusic();  
             await _sceneTransitionFX.PlayPopdown();
-            _sceneTransitionFX.Hide();
+            _sceneTransitionFX.SetVisibility(false);
         }
 
         public void PauseGame()
@@ -242,9 +242,9 @@ namespace PixelPlatformer
 
         public async void GoToNextLevel()
         {
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             await _sceneTransitionFX.PlayPopup();
-            _loadingScreen.UpdateProgress(0f);
+            _loadingScreen.SetProgress(0f);
             _loadingScreen.Show();
 
             PlayerManager.Instance.DespawnPlayer();
@@ -252,12 +252,12 @@ namespace PixelPlatformer
             await _sceneTransitionFX.PlayPopdown();
 
             Scene levelScene = SceneManager.GetActiveScene();
-            _loadingScreen.UpdateProgress(0.1f);
+            _loadingScreen.SetProgress(0.1f);
 
             if (levelScene.IsValid() && levelScene.isLoaded)
             {
                 await SceneManager.UnloadSceneAsync(levelScene).ToUniTask();
-                _loadingScreen.UpdateProgress(0.3f);
+                _loadingScreen.SetProgress(0.3f);
             }
 
             bool hasNextLevel = _currentLevelIndex + 1 < _levels.Length;
@@ -266,16 +266,16 @@ namespace PixelPlatformer
             {
                 // there are no more levels, send player back to the main menu
                 _loadingScreen.Hide();
-                _sceneTransitionFX.Hide();
+                _sceneTransitionFX.SetVisibility(false);
                 return;
             }
 
             _currentLevelIndex++;
             var index = _currentLevelIndex - 1;
             AsyncOperation op = SceneManager.LoadSceneAsync(_levels[index].LevelScene.BuildIndex, LoadSceneMode.Additive);
-            _loadingScreen.UpdateProgress(0.6f);
+            _loadingScreen.SetProgress(0.6f);
             await op.ToUniTask();
-            _loadingScreen.UpdateProgress(1f);
+            _loadingScreen.SetProgress(1f);
 
             Scene nextScene = SceneManager.GetSceneByBuildIndex(_levels[index].LevelScene.BuildIndex);
             SceneManager.SetActiveScene(nextScene);
@@ -285,7 +285,7 @@ namespace PixelPlatformer
 
             await UniTask.DelayFrame(5);
 
-            _sceneTransitionFX.Show();
+            _sceneTransitionFX.SetVisibility(true);
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.Hide();
             await _sceneTransitionFX.PlayPopdown();
@@ -302,7 +302,10 @@ namespace PixelPlatformer
 
         public async UniTask PreloadMainMenuMusic()
         {
-            await UniTask.WaitUntil(() => _mainMenuMusic.LoadAudioData());
+            await UniTask.WaitUntil(() =>
+            {
+                return _mainMenuMusic.LoadAudioData();
+            });
         }
 
         public void PlayMainMenuMusic()

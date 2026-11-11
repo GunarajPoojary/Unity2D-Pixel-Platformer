@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -7,23 +6,6 @@ namespace PixelPlatformer
     {
         [SerializeField] private PixelProgressBar _progressBar;
         [SerializeField] private Canvas _canvas;
-        private float _progress;
-
-        public float Progress
-        {
-            get { return _progress; }
-        }
-
-        public void UpdateProgress(float progress)
-        {
-            _progress = progress;
-            _progressBar.SetProgress01(_progress);
-        }
-
-        public void HideBar()
-        {
-            _progressBar.Hide();
-        }
 
         public void Show()
         {
@@ -33,6 +15,11 @@ namespace PixelPlatformer
         public void Hide()
         {
             _canvas.enabled = false;
+        }
+
+        public void SetProgress(float progress)
+        {
+            _progressBar.SetProgress01(progress);
         }
     }
 }

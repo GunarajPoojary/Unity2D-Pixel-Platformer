@@ -11,7 +11,6 @@ namespace PixelPlatformer
         [SerializeField] private Transform[] _points;
         [SerializeField] private bool _closed;
 
-        [Header("Chain Path")]
         [SerializeField] private Transform _pathRoot;
         [SerializeField] private GameObject _chainPrefab;
         [SerializeField] private float _chainSpacing = 0.5f;

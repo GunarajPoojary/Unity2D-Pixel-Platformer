@@ -41,32 +41,6 @@ namespace PixelPlatformer
         }
 
         #region Music
-        public void SetMusic(bool loop, AudioClip clip)
-        {
-            _musicSource.loop = loop;
-            _musicSource.clip = clip;
-        }
-
-        public void PlayMusic()
-        {
-            _musicSource.Play();
-        }
-
-        public void StopMusic()
-        {
-            _musicSource.Stop();
-        }
-
-        public void PauseMusic()
-        {
-            _musicSource.Pause();
-        }
-
-        public void ResumeMusic()
-        {
-            _musicSource.UnPause();
-        }
-
         public void SetMusicVolume(float volume)
         {
             _musicVolume = Mathf.Clamp01(volume);

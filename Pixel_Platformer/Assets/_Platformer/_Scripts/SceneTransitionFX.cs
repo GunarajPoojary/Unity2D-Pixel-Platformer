@@ -62,14 +62,7 @@ namespace PixelPlatformer
 
         private Sequence _transitionSequence;
 
-        public void Init()
-        {
-            KillTransition();
-            ResetState();
-            Hide();
-        }
-
-        private void ResetState()
+        public async UniTask ResetState()
         {
             foreach (TransitionSpritesColumn column in _columns)
             {
@@ -77,18 +70,11 @@ namespace PixelPlatformer
             }
         }
 
-        public void Show()
+        public void SetVisibility(bool isVisible)
         {
-            _canvasGroup.alpha = 1f;
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void Hide()
-        {
-            _canvasGroup.alpha = 0f;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.alpha = isVisible ? 1f : 0f;
+            _canvasGroup.interactable = isVisible;
+            _canvasGroup.blocksRaycasts = isVisible;
         }
 
         [ContextMenu("Play Popup")]
@@ -96,7 +82,7 @@ namespace PixelPlatformer
         {
             KillTransition();
 
-            Show();
+            SetVisibility(true);
 
             _transitionSequence = DOTween.Sequence();
 
@@ -133,7 +119,7 @@ namespace PixelPlatformer
 
             await _transitionSequence.AsyncWaitForCompletion();
 
-            Hide();
+            SetVisibility(false);
         }
 
         private void KillTransition()
