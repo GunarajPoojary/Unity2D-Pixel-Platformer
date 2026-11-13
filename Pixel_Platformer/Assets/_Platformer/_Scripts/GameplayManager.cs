@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace PixelPlatformer
@@ -22,7 +21,7 @@ namespace PixelPlatformer
             _tutorialPanel.OnClosed -= HandleTutorialClosed;
         }
 
-        public async UniTask Initialize()
+        public void Initialize()
         {
             _tutorialPanel.Init();
 

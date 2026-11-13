@@ -13,9 +13,7 @@ namespace PixelPlatformer
         public void ResetState()
         {
             foreach (RectTransform rect in _spriteRects)
-            {
                 rect.localScale = Vector3.zero;
-            }
         }
 
         public Sequence PopUp(float duration)
@@ -23,12 +21,7 @@ namespace PixelPlatformer
             Sequence sequence = DOTween.Sequence();
 
             foreach (RectTransform rect in _spriteRects)
-            {
-                sequence.Join(
-                    rect
-                        .DOScale(Vector3.one, duration)
-                );
-            }
+                sequence.Join(rect.DOScale(Vector3.one, duration));
 
             return sequence;
         }
@@ -38,12 +31,7 @@ namespace PixelPlatformer
             Sequence sequence = DOTween.Sequence();
 
             foreach (RectTransform rect in _spriteRects)
-            {
-                sequence.Join(
-                    rect
-                        .DOScale(Vector3.zero, duration)
-                );
-            }
+                sequence.Join(rect.DOScale(Vector3.zero, duration));
 
             return sequence;
         }
@@ -62,12 +50,10 @@ namespace PixelPlatformer
 
         private Sequence _transitionSequence;
 
-        public async UniTask ResetState()
+        public void ResetState()
         {
             foreach (TransitionSpritesColumn column in _columns)
-            {
                 column.ResetState();
-            }
         }
 
         public void SetVisibility(bool isVisible)

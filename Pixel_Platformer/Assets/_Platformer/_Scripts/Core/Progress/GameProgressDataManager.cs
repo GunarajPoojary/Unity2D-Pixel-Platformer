@@ -55,7 +55,7 @@ namespace PixelPlatformer
             SaveData();
         }
 
-        public async UniTask Init(int totalLevels)
+        public void Init(int totalLevels)
         {
             _totalLevels = totalLevels;
 

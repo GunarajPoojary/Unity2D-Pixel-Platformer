@@ -16,7 +16,6 @@ namespace PixelPlatformer
 
         [Header("Music")]
         [SerializeField] private AudioClip _mainMenuMusic;
-        [SerializeField] private float _musicFadeDuration = 1f;
 
         private int _currentLevelIndex;
         private LoadingScreen _loadingScreen;
@@ -38,12 +37,12 @@ namespace PixelPlatformer
             GameEvents.Unsubscribe<CompletLevelEvent>(HandleLevelCompleted);
         }
 
-        public async UniTask Initialize()
+        public void Initialize()
         {
             Instance = this;
         }
 
-        public async UniTask Setup(LoadingScreen loadingScreen, SceneTransitionFX sceneTransitionFX)
+        public void Setup(LoadingScreen loadingScreen, SceneTransitionFX sceneTransitionFX)
         {
             _loadingScreen = loadingScreen;
             _sceneTransitionFX = sceneTransitionFX;
@@ -54,9 +53,9 @@ namespace PixelPlatformer
             _sceneTransitionFX.SetVisibility(true);
             // await _sceneTransitionFX.PlayPopup();
 
-            await UniTask.WhenAll(_sceneTransitionFX.PlayPopup(), AudioManager.Instance.FadeOutMusic(_musicFadeDuration));
+            await UniTask.WhenAll(_sceneTransitionFX.PlayPopup());
 
-
+            AudioManager.Instance.StopMusic();
             _loadingScreen.SetProgress(0);
             _loadingScreen.Show();
             await _sceneTransitionFX.PlayPopdown();
@@ -79,7 +78,7 @@ namespace PixelPlatformer
             GameplayManager gameplayManager = FindFirstObjectByType<GameplayManager>(); // use different approach
 
             _loadingScreen.SetProgress(0.4f);
-            await gameplayManager.Initialize();
+            gameplayManager.Initialize();
             _loadingScreen.SetProgress(0.5f);
 
 
@@ -176,8 +175,8 @@ namespace PixelPlatformer
 
             _sceneTransitionFX.SetVisibility(true);
             // await _sceneTransitionFX.PlayPopup();
-            await UniTask.WhenAll(_sceneTransitionFX.PlayPopup(), AudioManager.Instance.FadeOutMusic(_musicFadeDuration));
-
+            await UniTask.WhenAll(_sceneTransitionFX.PlayPopup());
+            AudioManager.Instance.StopMusic();
             _loadingScreen.SetProgress(0);
             _loadingScreen.Show();
             await _sceneTransitionFX.PlayPopdown();
@@ -210,7 +209,7 @@ namespace PixelPlatformer
             _sceneTransitionFX.SetVisibility(true);
             await _sceneTransitionFX.PlayPopup();
             _loadingScreen.Hide();
-            PlayMainMenuMusic();  
+            PlayMainMenuMusic();
             await _sceneTransitionFX.PlayPopdown();
             _sceneTransitionFX.SetVisibility(false);
         }
@@ -310,7 +309,7 @@ namespace PixelPlatformer
 
         public void PlayMainMenuMusic()
         {
-            AudioManager.Instance.PlayMusicWithFade(_mainMenuMusic, _musicFadeDuration).Forget();
+            AudioManager.Instance.PlayMusic(_mainMenuMusic);
         }
 
         private void HandleLevelCompleted(CompletLevelEvent e)

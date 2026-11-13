@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -27,30 +26,30 @@ namespace PixelPlatformer
 
         private async void Start()
         {
-            await CreateObjects(); // Instantiate core Game Objects
-            await _sceneController.SetUp(_loadingScreen, _sceneTransitionFX);
+            CreateObjects(); // Instantiate core Game Objects
+            _sceneController.SetUp(_loadingScreen, _sceneTransitionFX);
 
             _sceneController.ShowLoadingScreen();
             _sceneController.SetLoadingProgress(0.2f);
 
             // Initialize managers
-            await SetupObjects();
+            SetupObjects();
 
-            await _sceneController.LoadScene(_mainMenuScene.BuildIndex);
+            var loadOperation = await _sceneController.LoadScene(_mainMenuScene.BuildIndex);
 
             _sceneController.SetLoadingProgress(0.4f);
 
-            await _sceneController.ShowScene();
+            await _sceneController.ShowScene(loadOperation);
 
             _sceneController.SetLoadingProgress(0.6f);
 
-            // now main menu has loaded
+            // load main Menu Music to memory
             await _gameManager.PreloadMainMenuMusic();
 
             _sceneController.SetLoadingProgress(0.8f);
 
             await _sceneController.UnloadScene(0);
-            
+
             _sceneController.SetLoadingProgress(1f);
 
             await _sceneTransitionFX.PlayPopup();
@@ -60,27 +59,31 @@ namespace PixelPlatformer
             await _sceneController.TransitionOut();
         }
 
-        private async UniTask SetupObjects()
+        private void SetupObjects()
         {
-            await _audioManager.Initialize();
-            await _gameManager.Initialize();
-            await _gameManager.Setup(_loadingScreen, _sceneTransitionFX);
-            await _gameProgressDataManager.Init(_gameManager.TotalLevels);
+            _audioManager.Initialize();
+            _gameManager.Initialize();
+            _gameManager.Setup(_loadingScreen, _sceneTransitionFX);
+            _gameProgressDataManager.Init(_gameManager.TotalLevels);
         }
 
-        private async UniTask CreateObjects()
+        private void CreateObjects()
         {
-            Transform persistentObjects = new GameObject("Persistent Objects").transform;
-            _loadingScreen = Instantiate(_loadingScreenPrefab, persistentObjects);
-            Instantiate(_eventSystemPrefab, persistentObjects);
+            Transform persistentRoot = new GameObject("Persistent Objects").transform;
+            _loadingScreen = Instantiate(_loadingScreenPrefab, persistentRoot);
 
-            _sceneTransitionFX = Instantiate(_sceneTransitionFXPrefab, persistentObjects);
-            _sceneController = Instantiate(_sceneControllerPrefab, persistentObjects);
-            _audioManager = Instantiate(_audioManagerPrefab, persistentObjects);
-            _gameManager = Instantiate(_gameManagerPrefab, persistentObjects);
-            _gameProgressDataManager = Instantiate(_gameProgressDataManagerPrefab, persistentObjects);
+            if (EventSystem.current != null)
+                Destroy(EventSystem.current.gameObject);
 
-            DontDestroyOnLoad(persistentObjects);
+            Instantiate(_eventSystemPrefab, persistentRoot);
+
+            _sceneTransitionFX = Instantiate(_sceneTransitionFXPrefab, persistentRoot);
+            _sceneController = Instantiate(_sceneControllerPrefab, persistentRoot);
+            _audioManager = Instantiate(_audioManagerPrefab, persistentRoot);
+            _gameManager = Instantiate(_gameManagerPrefab, persistentRoot);
+            _gameProgressDataManager = Instantiate(_gameProgressDataManagerPrefab, persistentRoot);
+
+            DontDestroyOnLoad(persistentRoot);
         }
     }
 }

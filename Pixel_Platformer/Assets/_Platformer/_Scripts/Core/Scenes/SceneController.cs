@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,32 +8,28 @@ namespace PixelPlatformer
     {
         private LoadingScreen _loadingScreen;
         private SceneTransitionFX _sceneTransitionFX;
-        private AsyncOperation _op;
 
         #region Public API
-        public async UniTask SetUp(LoadingScreen loadingScreen, SceneTransitionFX sceneTransitionFX)
+        public void SetUp(LoadingScreen loadingScreen, SceneTransitionFX sceneTransitionFX)
         {
             _loadingScreen = loadingScreen;
             _sceneTransitionFX = sceneTransitionFX;
 
-            await sceneTransitionFX.ResetState();
+            sceneTransitionFX.ResetState();
         }
 
-        public async UniTask LoadScene(int sceneIndex)
+        public async UniTask<AsyncOperation> LoadScene(int sceneIndex)
         {
-            _op = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
-            _op.allowSceneActivation = false;
+            AsyncOperation op = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+            op.allowSceneActivation = false;
 
-            while (_op.progress < 0.9f)
+            while (op.progress < 0.9f)
                 await UniTask.Yield(); // jumps to next frame
+
+            return op;
         }
 
-        public async UniTask Transition()
-        {
-
-        }
-
-        public async UniTask HideTransitionFX()
+        public void HideTransitionFX()
         {
             _sceneTransitionFX.SetVisibility(false);
         }
@@ -62,11 +57,11 @@ namespace PixelPlatformer
             await op.ToUniTask();
         }
 
-        public async UniTask ShowScene()
+        public async UniTask ShowScene(AsyncOperation operation)
         {
-            _op.allowSceneActivation = true;
+            operation.allowSceneActivation = true;
 
-            await _op.ToUniTask(); // convert AsyncOperation to UniTask which can be await
+            await operation.ToUniTask(); // convert AsyncOperation to UniTask which can be await
             _loadingScreen.SetProgress(1f);
         }
 
