@@ -9,6 +9,7 @@ namespace PixelPlatformer
 
         public void Show()
         {
+            SetProgress(0f);
             _canvas.enabled = true;
         }
 

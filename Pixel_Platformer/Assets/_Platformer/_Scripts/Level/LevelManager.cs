@@ -177,13 +177,6 @@ namespace PixelPlatformer
             _uIManager.ShowWinScreen(result);
         }
 
-
-
-
-
-
-
-
         private void HandleStomp(StompEventData data)
         {
             _uIManager.SetEnemiesDefeated(++_enemiesDefeated);
@@ -193,16 +186,6 @@ namespace PixelPlatformer
         {
             _uIManager.SetCollectibles(++_fruitsCollected);
         }
-
-
-
-
-
-
-
-
-
-
 
         private int GetStars(float score, float maxScore, int maxStars)
         {

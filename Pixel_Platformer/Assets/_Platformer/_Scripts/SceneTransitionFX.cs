@@ -63,8 +63,8 @@ namespace PixelPlatformer
             _canvasGroup.blocksRaycasts = isVisible;
         }
 
-        [ContextMenu("Play Popup")]
-        public async UniTask PlayPopup()
+        [ContextMenu("Play In")]
+        public async UniTask PlayIn()
         {
             KillTransition();
 
@@ -83,8 +83,8 @@ namespace PixelPlatformer
             await _transitionSequence.AsyncWaitForCompletion();
         }
 
-        [ContextMenu("Play Popdown")]
-        public async UniTask PlayPopdown(Action onComplete = null)
+        [ContextMenu("Play Out")]
+        public async UniTask PlayOut(Action onComplete = null)
         {
             KillTransition();
 

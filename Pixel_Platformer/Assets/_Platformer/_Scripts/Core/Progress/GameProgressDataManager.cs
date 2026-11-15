@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [System.Serializable]
+    [Serializable]
     public class GameProgressData
     {
         public List<LevelRecord> records;

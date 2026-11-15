@@ -13,7 +13,6 @@ namespace PixelPlatformer
         [SerializeField] private LayerMask _wallMask;
         [SerializeField] private float _height = 1f;
         [SerializeField] private float _fallbackCastDistance = 50f;
-        [SerializeField] private float _pushForce = 20f;
         [SerializeField] private float _wallStopDistance = 0.01f;
         [SerializeField] private float _lOSRadius = 0.1f;
 
