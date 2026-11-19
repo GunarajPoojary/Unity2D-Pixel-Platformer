@@ -1,18 +1,14 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace PixelPlatformer
 {
-    public class HUD : MonoBehaviour
+    public class MenuController : MonoBehaviour
     {
         [SerializeField] private Button _guideButton;
         [SerializeField] private Button _replayLevelButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private TutorialPanel _tutorialPanel;
-        [SerializeField] private TMP_Text _timerText;
-        [SerializeField] private TMP_Text _enemiesDefeatedText;
-        [SerializeField] private TMP_Text _collectibleCountText;
 
         private void OnEnable()
         {
@@ -28,23 +24,6 @@ namespace PixelPlatformer
             _settingsButton.onClick.RemoveListener(OpenSettings);
         }
 
-        public void SetCollectibles(int count)
-        {
-            _collectibleCountText.text = count.ToString();
-        }
-        
-        public void SetTime(float seconds)
-        {
-            int mins = (int)(seconds / 60f);
-            float secs = seconds - mins * 60f;
-            _timerText.text = $"{mins:00}:{secs:00.00}";
-        }
-
-        public void SetEnemiesDefeated(int count)
-        {
-            _enemiesDefeatedText.text = count.ToString();
-        }
-
         private void OpenGuide()
         {
             _tutorialPanel.Toggle();
@@ -57,7 +36,7 @@ namespace PixelPlatformer
 
         private void OpenSettings()
         {
-            GameManager.Instance.PauseGame();
+            GameplayManager.Instance.PauseGame();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace PixelPlatformer
             _coroutine = null;
         }
 
-        private IEnumerator PlayClipRoutine(Action onComplete = null)
+        private IEnumerator PlayClipRoutine(Action onCompleteAction = null)
         {
             _keyFrame = 0;
             var elapsedTime = 0f;
@@ -57,7 +57,7 @@ namespace PixelPlatformer
                 yield return null;
             }
 
-            onComplete?.Invoke();
+            onCompleteAction?.Invoke();
             OnComplete?.Invoke();
         }
     }

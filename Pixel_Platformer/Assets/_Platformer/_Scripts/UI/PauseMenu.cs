@@ -65,7 +65,7 @@ namespace PixelPlatformer
 
         private void ResumeGame()
         {
-            GameManager.Instance.ResumeGame();
+            GameplayManager.Instance.ResumeGame();
         }
 
         private void OpenSettings()
@@ -98,7 +98,7 @@ namespace PixelPlatformer
 
         private void EraseDataAndGoToMainMenu()
         {
-            GameProgressDataManager.Instance.EraseData();
+            ProgressionManager.Instance.EraseData();
             _toaster.Show("Progress data erased");
             GameManager.Instance.GoToMainMenu();
         }

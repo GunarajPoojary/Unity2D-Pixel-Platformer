@@ -5,7 +5,8 @@ namespace PixelPlatformer
     public class UIManager : Singleton<UIManager>
     {
         [SerializeField] private TutorialPanel _tutorialPanel;
-        [SerializeField] private HUD _hUD;
+        [SerializeField] private HUDController _hUDController;
+        [SerializeField] private MenuController _menuController;
         [SerializeField] private PauseMenu _pauseMenu;
 
         [SerializeField] private WinScreen _winScreen;
@@ -23,7 +24,7 @@ namespace PixelPlatformer
 
         public void SetTimer(float seconds)
         {
-            _hUD.SetTime(seconds);
+            _hUDController.SetTime(seconds);
         }
 
         public void SetupWinScreen(Sprite levelIcon, int totalEnemies, int totalFruits)
@@ -48,7 +49,7 @@ namespace PixelPlatformer
 
         public void SetCollectibles(int count)
         {
-            _hUD.SetCollectibles(count);
+            _hUDController.SetCollectibles(count);
         }
 
         public void ShowLoseScreen()
@@ -63,7 +64,7 @@ namespace PixelPlatformer
 
         public void SetEnemiesDefeated(int count)
         {
-            _hUD.SetEnemiesDefeated(count);
+            _hUDController.SetEnemiesDefeated(count);
         }
     }
 }

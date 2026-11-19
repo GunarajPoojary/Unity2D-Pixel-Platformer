@@ -125,7 +125,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.30",
+      "version": "1.8.31",
       "depth": 2,
       "source": "registry",
       "dependencies": {
@@ -135,7 +135,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
-      "version": "2.6.8",
+      "version": "2.7.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -187,11 +187,11 @@
       }
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.23",
+      "version": "2.0.26",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.test-framework": "1.1.9"
+        "com.unity.test-framework": "1.1.33"
       },
       "url": "https://packages.unity.com"
     },

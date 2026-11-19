@@ -12,13 +12,13 @@ namespace PixelPlatformer
 
         [SerializeField] private AudioManager _audioManagerPrefab;
         [SerializeField] private GameManager _gameManagerPrefab;
-        [SerializeField] private GameProgressDataManager _gameProgressDataManagerPrefab;
+        [SerializeField] private ProgressionManager _gameProgressDataManagerPrefab;
         [SerializeField] private SceneController _sceneControllerPrefab;
 
         private AudioManager _audioManager;
         private SceneController _sceneController;
         private GameManager _gameManager;
-        private GameProgressDataManager _gameProgressDataManager;
+        private ProgressionManager _gameProgressDataManager;
 
         private async void Start()
         {

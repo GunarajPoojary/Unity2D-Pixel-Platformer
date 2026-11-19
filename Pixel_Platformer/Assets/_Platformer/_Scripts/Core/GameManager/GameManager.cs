@@ -10,18 +10,13 @@ namespace PixelPlatformer
 
         [SerializeField] private LevelDefinitionSO[] _levels;
 
-        [SerializeField] private SceneReference _mainMenuScene;
-        [SerializeField] private SceneReference _gameplayScene;
-
         [Header("Music")]
         [SerializeField] private AudioClip _mainMenuMusic;
 
         private int _currentLevelIndex;
-        private bool _isPaused;
-        private bool _isLostGame;
         private SceneController _sceneController;
-        private LevelManager _levelManager;
-        private GameProgressDataManager _progressDataManager;
+
+        private ProgressionManager _progressionManager;
         private GameplayManager _gameplayManager;
         private PlayerManager _playerManager;
         private AudioManager _audioManager;
@@ -30,13 +25,11 @@ namespace PixelPlatformer
 
         private void OnEnable()
         {
-            GameEvents.Subscribe<PlayerDiedEventData>(EnterGameLoseState);
             GameEvents.Subscribe<CompletLevelEvent>(HandleLevelCompleted);
         }
 
         private void OnDisable()
         {
-            GameEvents.Unsubscribe<PlayerDiedEventData>(EnterGameLoseState);
             GameEvents.Unsubscribe<CompletLevelEvent>(HandleLevelCompleted);
         }
 
@@ -45,115 +38,8 @@ namespace PixelPlatformer
             Instance = this;
 
             _sceneController = sceneController;
-        }
-
-        public async void StartLevel(int levelIndex)
-        {
-            _progressDataManager = GameProgressDataManager.Instance;
-
-            _audioManager.StopMusic();
-
-            await _sceneController.LoadLevel(levelIndex,
-            () =>
-            {                  // get the gameplay and player manager from Gameplay Scene
-                _gameplayManager = GameplayManager.Instance;
-                _playerManager = PlayerManager.Instance;
-
-                _gameplayManager.Initialize();
-            },
-            () =>
-            {
-                _currentLevelIndex = levelIndex;
-                _levelManager = LevelManager.Instance;
-                _levelManager.SetupLevel(_progressDataManager.GetRecord(levelIndex));
-            });
-
-            _levelManager.StartLevel();
-        }
-
-        public async void RestartLevel()
-        {
-            _isLostGame = false;
-
-            await _sceneController.ReloadActiveScene(() =>
-            {
-                UIManager.Instance.HideLoseScreen();
-                UIManager.Instance.HideWinScreen();
-
-                _playerManager.DespawnPlayer();
-            },
-            () =>
-            {
-                _levelManager = LevelManager.Instance;
-                _levelManager.SetupLevel(_progressDataManager.GetRecord(_currentLevelIndex));
-            });
-
-            _levelManager.StartLevel();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public async void GoToMainMenu()
-        {
-            _isLostGame = false;
-            _isPaused = false;
-
-            await _sceneController.GoToMainMenu();
-
-            PlayMainMenuMusic();
-        }
-
-        public async void GoToNextLevel()
-        {
-            await _sceneController.GoToNextLevel(++_currentLevelIndex, () =>
-            {
-                _playerManager.DespawnPlayer();
-            },
-            () =>
-            {
-                _levelManager = LevelManager.Instance;
-                _levelManager.SetupLevel(_progressDataManager.GetRecord(_currentLevelIndex));
-            });
-
-            _levelManager.StartLevel();
-        }
-
-
-
-
-
-
-
-        public void PauseGame()
-        {
-            if (_isPaused || _isLostGame) return;
-
-            _isPaused = true;
-
-            _playerManager.ToggleInput(false);
-            UIManager.Instance.ShowPauseMenu();
-        }
-
-        public void ResumeGame()
-        {
-            if (!_isPaused) return;
-            _isPaused = false;
-
-            _playerManager.ToggleInput(true);
-            UIManager.Instance.HidePauseMenu();
+            _progressionManager = ProgressionManager.Instance;
+            _audioManager = AudioManager.Instance;
         }
 
         public void QuitGame()
@@ -165,38 +51,144 @@ namespace PixelPlatformer
 #endif
         }
 
-        private void EnterGameLoseState(PlayerDiedEventData data)
+
+
+        public async void GoToMainMenu()
         {
-            _isLostGame = true;
-            _playerManager.ToggleInput(false);
+            if (_gameplayManager != null)
+                _gameplayManager.EndSession();
+
+            await _sceneController.GoToMainMenu();
+
+            _gameplayManager = null;
+            _playerManager = null;
+
+            PlayMainMenuMusic();
         }
+
+        public async void GoToNextLevel()
+        {
+            int nextLevelIndex = _currentLevelIndex + 1;
+
+            // the current level was the final level
+            if (nextLevelIndex > TotalLevels)
+            {
+                await _sceneController.GoToMainMenu();
+                PlayMainMenuMusic();
+                return;
+            }
+
+            await _sceneController.GoToNextLevel(
+                nextLevelIndex,
+                onUnloadScene: () =>
+                {
+                    _gameplayManager.EndSession();
+                    _playerManager.DespawnPlayer();
+                },
+                onLoadScene: () =>
+                {
+                    _currentLevelIndex = nextLevelIndex;
+                    _gameplayManager.Initialize(_currentLevelIndex);
+                });
+
+            _gameplayManager.StartSession();
+        }
+
+        public async void StartLevel(int levelIndex)
+        {
+            if (levelIndex < 1 || levelIndex > TotalLevels)
+            {
+                Debug.LogError($"Invalid level index: {levelIndex}");
+                return;
+            }
+
+            _progressionManager = ProgressionManager.Instance;
+            _audioManager = AudioManager.Instance;
+
+            _audioManager.StopMusic();
+
+            await _sceneController.LoadLevel(
+                levelIndex,
+                onLoadGameplay: () =>
+                {
+                    _gameplayManager = GameplayManager.Instance;
+                    _playerManager = PlayerManager.Instance;
+                },
+                onLoadLevel: () =>
+                {
+                    _currentLevelIndex = levelIndex;
+                    _gameplayManager.Initialize(_currentLevelIndex);
+                });
+
+            _gameplayManager.StartSession();
+        }
+
+        public async void RestartLevel()
+        {
+            if (_gameplayManager == null)
+                _gameplayManager = GameplayManager.Instance;
+
+            await _sceneController.ReloadActiveScene(
+                onUnloadScene: () =>
+                {
+                    _gameplayManager.EndSession();
+
+                    UIManager.Instance.HideLoseScreen();
+                    UIManager.Instance.HideWinScreen();
+
+                    _playerManager.DespawnPlayer();
+                },
+                onLoadScene: () =>
+                {
+                    _gameplayManager.Initialize(_currentLevelIndex);
+                });
+
+            _gameplayManager.StartSession();
+        }
+
 
         public Sprite GetLevelIcon(int levelIndex)
         {
-            var index = levelIndex - 1;
+            int index = levelIndex - 1;
+
+            if (index < 0 || index >= TotalLevels)
+            {
+                Debug.LogError($"Cannot get icon. Invalid level index: {levelIndex}");
+                return null;
+            }
+
             return _levels[index].LevelIcon;
         }
 
 
         public async UniTask PreloadMainMenuMusic()
         {
+            if (_mainMenuMusic == null)
+                return;
+
             await UniTask.WaitUntil(() =>
-            {
-                return _mainMenuMusic.LoadAudioData();
-            });
+                _mainMenuMusic.LoadAudioData() == true);
         }
 
         public void PlayMainMenuMusic()
         {
             _audioManager = AudioManager.Instance;
-            _audioManager.PlayMusic(_mainMenuMusic);
+
+            if (_audioManager != null && _mainMenuMusic != null)
+                _audioManager.PlayMusic(_mainMenuMusic);
         }
 
         private void HandleLevelCompleted(CompletLevelEvent e)
         {
-            var index = _currentLevelIndex - 1;
-            var levelIndex = _levels[index].LevelIndex;
-            _progressDataManager.SetLevelRecordData(levelIndex, e.levelResult);
+            if (_progressionManager == null)
+                _progressionManager = ProgressionManager.Instance;
+
+            if (_currentLevelIndex < 1 || _currentLevelIndex > TotalLevels)
+                return;
+
+            int levelIndex = _levels[_currentLevelIndex - 1].LevelIndex;
+
+            _progressionManager.SetLevelRecordData(levelIndex, e.levelResult);
         }
     }
 }

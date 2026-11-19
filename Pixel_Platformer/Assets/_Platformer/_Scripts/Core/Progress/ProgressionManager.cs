@@ -4,40 +4,14 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
-    [Serializable]
-    public class GameProgressData
-    {
-        public List<LevelRecord> records;
-        public int latestLevel;
-
-        public GameProgressData(int totalLevels)
-        {
-            records = new List<LevelRecord>(totalLevels);
-
-
-
-            for (int i = 0; i < totalLevels; i++)
-            {
-                records.Add(new LevelRecord
-                {
-                    levelIndex = i + 1,
-                    isUnlocked = i == 0,   // level 1 unlocked by default
-                    StarsEarned = 0,
-                    bestScore = 0f
-                });
-            }
-            latestLevel = 1;
-        }
-    }
-
-    public class GameProgressDataManager : Singleton<GameProgressDataManager>
+    public class ProgressionManager : Singleton<ProgressionManager>
     {
         private const string GAME_PROGRESS_KEY = "Game_Progress";
 
-        private GameProgressData _progressData;
+        private ProgressData _progressData;
         private int _totalLevels;
 
-        public event Action DataErased;
+        public event Action OnDataErased;
 
         private void OnApplicationPause(bool paused)
         {
@@ -61,10 +35,10 @@ namespace PixelPlatformer
             string json = PlayerPrefs.GetString(GAME_PROGRESS_KEY, string.Empty);
 
             if (!string.IsNullOrEmpty(json))
-                _progressData = JsonUtility.FromJson<GameProgressData>(json);
+                _progressData = JsonUtility.FromJson<ProgressData>(json);
 
             if (_progressData == null || _progressData.records == null || _progressData.records.Count == 0)
-                _progressData = new GameProgressData(totalLevels);
+                _progressData = new ProgressData(totalLevels);
         }
 
         public List<LevelRecord> LoadData()
@@ -105,21 +79,14 @@ namespace PixelPlatformer
             record.isUnlocked = true;
             record.StarsEarned = 0;
             record.bestScore = 0;
-
-            _progressData.latestLevel = record.levelIndex;
-        }
-
-        public int GetLatestUnlockedLevel()
-        {
-            return _progressData.latestLevel;
         }
 
         public void EraseData()
         {
             PlayerPrefs.DeleteKey(GAME_PROGRESS_KEY);
-            _progressData = new GameProgressData(_totalLevels);
+            _progressData = new ProgressData(_totalLevels);
             SaveData();
-            DataErased?.Invoke();
+            OnDataErased?.Invoke();
         }
 
         public LevelRecord GetRecord(int currentLevelIndex)

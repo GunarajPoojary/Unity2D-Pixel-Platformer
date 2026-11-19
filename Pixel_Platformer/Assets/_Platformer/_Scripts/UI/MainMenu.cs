@@ -33,7 +33,7 @@ namespace PixelPlatformer
             _confirmDialog.OnCancelQuit += HandleQuitCancel;
 
             _levelSelectScreen.BackRequested += HandleLevelSelectBack;
-            GameProgressDataManager.Instance.DataErased += HandleDataErased;
+            ProgressionManager.Instance.OnDataErased += HandleDataErased;
         }
 
         private void OnDisable()
@@ -49,13 +49,13 @@ namespace PixelPlatformer
             _confirmDialog.OnCancelQuit -= HandleQuitCancel;
 
             _levelSelectScreen.BackRequested -= HandleLevelSelectBack;
-            GameProgressDataManager.Instance.DataErased -= HandleDataErased;
+            ProgressionManager.Instance.OnDataErased -= HandleDataErased;
         }
 
         private void Start()
         {
             HideOverlay();
-            _levelSelectScreen.Init(GameProgressDataManager.Instance.LoadData());
+            _levelSelectScreen.Init(ProgressionManager.Instance.LoadData());
         }
 
 
@@ -72,12 +72,12 @@ namespace PixelPlatformer
 
         private void EraseData()
         {
-            GameProgressDataManager.Instance.EraseData();
+            ProgressionManager.Instance.EraseData();
         }
 
         private void HandleDataErased()
         {
-            _levelSelectScreen.Refresh(GameProgressDataManager.Instance.LoadData());
+            _levelSelectScreen.Refresh(ProgressionManager.Instance.LoadData());
             _toaster.Show("Progress data erased");
         }
 

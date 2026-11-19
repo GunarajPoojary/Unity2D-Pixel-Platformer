@@ -15,6 +15,8 @@ namespace PixelPlatformer
 
         public event Action OnFirstMove;
 
+
+
         public void ToggleInput(bool toggle)
         {
             _controller.ToggleInput(toggle);
@@ -25,20 +27,30 @@ namespace PixelPlatformer
             _input.Init();
             _controller.SetPosition(position);
             _followCamera.Setup(_controller);
+            
+
+            ToggleInput(false);
         }
 
         public void SpawnPlayer()
         {
-            _controller.Spawn();
-            TogglePlayerMovement(true);
-
+            // avoid duplicate first-move subscriptions
+            _controller.OnFirstMove -= HandleFirstMovement;
             _controller.OnFirstMove += HandleFirstMovement;
+
+            _controller.Spawn();
+
+            TogglePlayerMovement(true);
         }
 
         public void DespawnPlayer()
         {
-            _controller.Despawn();
+            _controller.OnFirstMove -= HandleFirstMovement;
+
             ToggleInput(false);
+            TogglePlayerMovement(false);
+
+            _controller.Despawn();
         }
 
         private void HandleFirstMovement()
@@ -50,6 +62,10 @@ namespace PixelPlatformer
 
         public void DespawnPlayerAt(Vector3 position, Action onComplete)
         {
+            ToggleInput(false);
+
+            _controller.OnFirstMove -= HandleFirstMovement;
+
             _controller.DespawnAt(position, onComplete);
         }
 
