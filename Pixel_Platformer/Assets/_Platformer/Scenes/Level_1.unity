@@ -1359,11 +1359,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4287653114595161435, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
       propertyPath: _patrolWidth
-      value: 12.2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4287653114595161435, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
       propertyPath: _patrolOffsetX
-      value: 3.73
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4287653114595161435, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
       propertyPath: _enemyMask.m_Bits
@@ -40221,7 +40221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4287653114595161435, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
       propertyPath: _patrolWidth
-      value: 8.49
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 4287653114595161435, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
       propertyPath: _patrolOffsetX
@@ -44190,7 +44190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4287653114595161435, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
       propertyPath: _patrolWidth
-      value: 5.61
+      value: 4.23
       objectReference: {fileID: 0}
     - target: {fileID: 4287653114595161435, guid: cf13982cd4197194ebd509f3464ad516, type: 3}
       propertyPath: _patrolOffsetX

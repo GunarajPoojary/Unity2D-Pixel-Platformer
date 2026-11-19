@@ -181,7 +181,7 @@ namespace PixelPlatformer
 
             if (source.TryGetComponent(out IHittable hittable) && hittable.IsHittable)
             {
-                GameEvents.Publish(new StompEventData());
+                GameEvents.Publish(new StompedEnemyEventData());
                 AudioManager.Instance.PlaySFX(_playerHitSound);
                 hittable.TakeHit(transform.position);
             }

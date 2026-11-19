@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace PixelPlatformer
 {
+    /// <summary>
+    /// Component responsible for playing feedback sound when dragged and released
+    /// </summary>
     [RequireComponent(typeof(Slider))]
     public class AudioSliderPreview : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
@@ -25,16 +28,11 @@ namespace PixelPlatformer
         public void HandleVolumeChanged(float value)
         {
             // Ignore value changes caused by mouse/touch dragging.
-            if (_isDragging)
-            {
-                return;
-            }
+            if (_isDragging) return;
 
-            // Value changed through keyboard/gamepad navigation.
+            // Value changed through keyboard navigation.
             if (EventSystem.current.currentSelectedGameObject == _slider.gameObject)
-            {
                 PlayPreview();
-            }
         }
 
         private void PlayPreview()
@@ -47,6 +45,7 @@ namespace PixelPlatformer
             _isDragging = true;
         }
 
+        // play feedback sound when drag released
         public void OnEndDrag(PointerEventData eventData)
         {
             _isDragging = false;

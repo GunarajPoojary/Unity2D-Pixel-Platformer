@@ -36,7 +36,7 @@ namespace PixelPlatformer
             _endCheckpoint.OnTrigger += HandleLevelCompleted;
 
             GameEvents.Subscribe<FruitCollectedEvent>(HandleFruitCollected);
-            GameEvents.Subscribe<StompEventData>(HandleStomp);
+            GameEvents.Subscribe<StompedEnemyEventData>(HandleStomp);
         }
 
         private void OnDisable()
@@ -45,7 +45,7 @@ namespace PixelPlatformer
             _endCheckpoint.OnTrigger -= HandleLevelCompleted;
 
             GameEvents.Unsubscribe<FruitCollectedEvent>(HandleFruitCollected);
-            GameEvents.Unsubscribe<StompEventData>(HandleStomp);
+            GameEvents.Unsubscribe<StompedEnemyEventData>(HandleStomp);
         }
 
         private void OnDestroy()
@@ -74,9 +74,7 @@ namespace PixelPlatformer
             _playerManager = PlayerManager.Instance;
 
             // reset HUD
-            _uIManager.SetTimer(0f);
-            _uIManager.SetCollectibles(0);
-            _uIManager.SetEnemiesDefeated(0);
+            _uIManager.ResetHUD();
 
             // prepare the win screen for this level
             _uIManager.SetupWinScreen(GameManager.Instance.GetLevelIcon(record.levelIndex),
@@ -155,10 +153,10 @@ namespace PixelPlatformer
 
             result.bestScore = Mathf.Max(previousBest, result.score);
 
-            GameEvents.Publish(new CompletLevelEvent(result));
+            GameEvents.Publish(new LevelCompletedEvent(result));
         }
 
-        private void HandleStomp(StompEventData data)
+        private void HandleStomp(StompedEnemyEventData data)
         {
             _enemiesDefeated++;
 

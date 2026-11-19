@@ -22,11 +22,6 @@ namespace PixelPlatformer
             _winScreen.Close();
         }
 
-        public void SetTimer(float seconds)
-        {
-            _hUDController.SetTime(seconds);
-        }
-
         public void SetupWinScreen(Sprite levelIcon, int totalEnemies, int totalFruits)
         {
             _winScreen.Setup(levelIcon, totalEnemies, totalFruits);
@@ -47,9 +42,21 @@ namespace PixelPlatformer
             _pauseMenu.Close();
         }
 
+        public void ResetHUD()
+        {
+            _hUDController.SetTime(0);
+            _hUDController.SetCollectibles(0);
+            _hUDController.SetEnemiesDefeated(0);
+        }
+
         public void SetCollectibles(int count)
         {
             _hUDController.SetCollectibles(count);
+        }
+
+        public void SetEnemiesDefeated(int count)
+        {
+            _hUDController.SetEnemiesDefeated(count);
         }
 
         public void ShowLoseScreen()
@@ -60,11 +67,6 @@ namespace PixelPlatformer
         public void HideLoseScreen()
         {
             _loseScreen.Close();
-        }
-
-        public void SetEnemiesDefeated(int count)
-        {
-            _hUDController.SetEnemiesDefeated(count);
         }
     }
 }

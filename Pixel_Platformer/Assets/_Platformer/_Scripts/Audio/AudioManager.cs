@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace PixelPlatformer
 {
+    /// <summary>
+    /// Responsiblee= for handling Audio such as SFX and Music
+    /// </summary>
     public class AudioManager : Singleton<AudioManager>
     {
         private const string MUSIC_KEY = "MusicVolume";

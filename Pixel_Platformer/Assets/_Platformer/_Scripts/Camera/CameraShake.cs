@@ -37,11 +37,12 @@ namespace PixelPlatformer
         public void ShakeCamera()
         {
             _shakeTween?.Kill();
-            transform.localPosition = Vector3.zero;
+            transform.localPosition = Vector3.zero; // reset position
+
             _shakeTween = transform.DOPunchPosition(Vector2.left * _shakeStrength,
                                                     _shakeDuration,
                                                     _shakeVibrato,
-                                                    _elasticity).SetRelative();
+                                                    _elasticity);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace PixelPlatformer
             _tutorialPanel.OnClosed += HandleTutorialClosed;
 
             GameEvents.Subscribe<PlayerDiedEventData>(HandlePlayerDied);
-            GameEvents.Subscribe<CompletLevelEvent>(HandleLevelCompleted);
+            GameEvents.Subscribe<LevelCompletedEvent>(HandleLevelCompleted);
         }
 
         private void OnDisable()
@@ -43,7 +43,7 @@ namespace PixelPlatformer
             _tutorialPanel.OnClosed -= HandleTutorialClosed;
 
             GameEvents.Unsubscribe<PlayerDiedEventData>(HandlePlayerDied);
-            GameEvents.Unsubscribe<CompletLevelEvent>(HandleLevelCompleted);
+            GameEvents.Unsubscribe<LevelCompletedEvent>(HandleLevelCompleted);
         }
 
         public void Initialize(int levelIndex)
@@ -139,7 +139,7 @@ namespace PixelPlatformer
             _hUDController.StopTimer();
         }
 
-        private void HandleLevelCompleted(CompletLevelEvent data)
+        private void HandleLevelCompleted(LevelCompletedEvent data)
         {
             if (State != GameplayState.Play)
                 return;

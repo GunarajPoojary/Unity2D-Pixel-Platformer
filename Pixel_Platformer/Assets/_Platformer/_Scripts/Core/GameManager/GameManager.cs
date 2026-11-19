@@ -25,12 +25,17 @@ namespace PixelPlatformer
 
         private void OnEnable()
         {
-            GameEvents.Subscribe<CompletLevelEvent>(HandleLevelCompleted);
+            GameEvents.Subscribe<LevelCompletedEvent>(HandleLevelCompleted);
         }
 
         private void OnDisable()
         {
-            GameEvents.Unsubscribe<CompletLevelEvent>(HandleLevelCompleted);
+            GameEvents.Unsubscribe<LevelCompletedEvent>(HandleLevelCompleted);
+        }
+
+        private void OnDestroy()
+        {
+            GameEvents.Clear();
         }
 
         public void Setup(SceneController sceneController)
@@ -178,7 +183,7 @@ namespace PixelPlatformer
                 _audioManager.PlayMusic(_mainMenuMusic);
         }
 
-        private void HandleLevelCompleted(CompletLevelEvent e)
+        private void HandleLevelCompleted(LevelCompletedEvent e)
         {
             if (_progressionManager == null)
                 _progressionManager = ProgressionManager.Instance;

@@ -7,14 +7,14 @@ namespace PixelPlatformer
     public readonly struct CameraShakeEventData { }
     public readonly struct StepOnStartCheckpointEvenData { }
     public readonly struct PlayerDiedEventData { }
-    public readonly struct StompEventData { }
-    public readonly struct CompletLevelEvent
+    public readonly struct StompedEnemyEventData { }
+    public readonly struct LevelCompletedEvent
     {
         public readonly LevelResult levelResult;
 
-        public CompletLevelEvent(LevelResult result)
+        public LevelCompletedEvent(LevelResult result)
         {
-            this.levelResult = result;
+            levelResult = result;
         }
     }
 
