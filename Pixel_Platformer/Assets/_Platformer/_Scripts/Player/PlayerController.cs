@@ -21,6 +21,7 @@ namespace PixelPlatformer
         [SerializeField] private Transform _cameraFollowTarget;
         [SerializeField] private AudioClip _playerHitSound;
         [SerializeField] private LayerMask _breakableMask;
+        [SerializeField] private float _despawnMoveSpeed = 0.3f;
 
         private bool _canFollowTarget = true;
         private Collider2D _collider;
@@ -96,7 +97,6 @@ namespace PixelPlatformer
 
         private void Update()
         {
-            // if (_input.InputEnabled)
             _renderer.Move(_movement.IsRunning);
 
             if (!_movement.IsFlying) return;
@@ -112,6 +112,11 @@ namespace PixelPlatformer
         }
 
         private void FixedUpdate()
+        {
+            HandlePhysicsUpdate();
+        }
+
+        private void HandlePhysicsUpdate()
         {
             if (_movement.IsFlying) return;
 
@@ -223,7 +228,7 @@ namespace PixelPlatformer
         private IEnumerator DespawnRoutine(Vector3 position, Action onComplete)
         {
             position.y -= _bodyCenter;
-            while (!_movement.StepTowards(position))
+            while (!_movement.StepTowards(position, _despawnMoveSpeed))
                 yield return null;
 
             gameObject.SetActive(false);

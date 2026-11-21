@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aa5fc7ca1089b41b219fa2986da910, type: 3}
   m_Name: PlayerMovementStats
   m_EditorClassIdentifier: 
-  <MaxSpeed>k__BackingField: 6.5
+  <MoveSpeed>k__BackingField: 6.5
   <GravityMuliplier>k__BackingField: 2.5
   <TurnSpeed>k__BackingField: 100
   <GroundAcceleration>k__BackingField: 97.8
@@ -29,3 +29,21 @@ MonoBehaviour:
   <WallJumpHorizontalForce>k__BackingField: 5
   <WallJumpVerticalVelocity>k__BackingField: 20
   <WallJumpLockTime>k__BackingField: 0.19
+  <GroundCheckSize>k__BackingField: {x: 0.1, y: 0.06}
+  <GroundCheckDistance>k__BackingField: 0.01
+  <GroundMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <OneWayMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 256
+  <CeilingCheckSize>k__BackingField: {x: 0.8, y: 0.12}
+  <CeilingCheckDistance>k__BackingField: 0.01
+  <WallCheckSize>k__BackingField: {x: 1.32, y: 0.16}
+  <WallCheckDistance>k__BackingField: 0.01
+  <WallMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <HorizontalSpeed>k__BackingField: 4
+  <Spin>k__BackingField: 180
+  <GravityScale>k__BackingField: 8

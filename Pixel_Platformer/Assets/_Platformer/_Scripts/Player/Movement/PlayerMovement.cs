@@ -10,38 +10,16 @@ namespace PixelPlatformer
     public class PlayerMovement : MonoBehaviour
     {
         private const float MOVEMENT_THRESHOLD = 0.01f;
+        private const float VERTICAL_NORMAL_THRESHOLD = 0.5f;
+
 
         [SerializeField] private PlayerMovementDataSO _movementStats;
 
-        [Header("Ground Check")]
+        [Header("Component References")]
         [SerializeField] private Transform _groundCheckPoint;
-        [SerializeField] private Vector2 _groundCheckSize = new Vector2(0.1f, 0.06f);
-        [SerializeField] private float _groundCheckDistance = 0.01f;
-        [SerializeField] private LayerMask _groundMask;
-        [SerializeField] private LayerMask _oneWayMask;
-
-        [Header("Ceiling Check")]
         [SerializeField] private Transform _ceilingCheckPoint;
-        [SerializeField] private Vector2 _ceilingCheckSize = new Vector2(0.8f, 0.12f);
-        [SerializeField] private float _ceilingCheckDistance = 0.01f;
-
-        [Header("Wall Slide")]
         [SerializeField] private Transform _wallCheckPoint;
-        [SerializeField] private Vector2 _wallCheckSize = new Vector2(1.32f, 0.16f);
-        [SerializeField] private float _wallCheckDistance = 0.01f;
-        [SerializeField] private LayerMask _wallMask;
-
         [SerializeField] private Rigidbody2D _rb;
-
-
-        [Header("Hit impact")]
-        [SerializeField] private float _jumpHeight = 4f;
-        [SerializeField] private float _horizontalSpeed = 2f;
-        [SerializeField] private float _spin = 180f;
-        [SerializeField] private float _gravityScale = 5f;
-
-
-
 
 #if UNITY_EDITOR
         [Header("Debugging")]
@@ -54,6 +32,9 @@ namespace PixelPlatformer
         [SerializeField] private float _arrowHeight = 1f;
         [SerializeField] private Vector3 _offset = Vector2.down;
 #endif
+
+
+        // private fields
         private float _moveInput;
 
         private float _gravity;
@@ -74,6 +55,8 @@ namespace PixelPlatformer
         private float _wallJumpLockTimer;
         private bool _isFlying;
 
+
+        // Properties
         public bool IsRunning
         {
             get
@@ -85,8 +68,10 @@ namespace PixelPlatformer
         public int LookDirection { get; private set; }
         public Vector3 LinearVelocity { get { return _rb.linearVelocity; } }
 
-        public bool IsFlying { get { return _isFlying; } set { value = _isFlying; } }
+        public bool IsFlying { get { return _isFlying; } }
 
+
+        // events
         public event Action OnMove;
         public event Action<bool> OnTurn; // true means facing right
         public event Action OnFall;
@@ -94,6 +79,10 @@ namespace PixelPlatformer
         public event Action OnLand;
         public event Action OnJump;
         public event Action<bool> OnWallSlide;
+
+
+
+
 
         #region Unity API Methods
         private void Awake()
@@ -103,45 +92,77 @@ namespace PixelPlatformer
 
         private void OnEnable()
         {
-            _walkableMask = _groundMask;
+            SetWalkableMask(_movementStats.GroundMask);
         }
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            // set the walkable mask first before resetting vertical velocity
-            // to include oneway in case the player is above the One Way Platform 
+            // order matters since onw way becomes ground when player is right above the one way
+            HandleOneWayGroundMovement(col);
+            CaptureFallVelocityOnLanding(col);
+        }
 
-            //check if we hit the one way platform 
-            if ((_oneWayMask & (1 << col.gameObject.layer)) != 0)
-            {
-                // set the includeOneWay flag to true if the normalis greater than 0.5 means player is above the platform
-                for (int i = 0; i < col.contactCount; i++)
-                {
-                    ContactPoint2D point = col.GetContact(i);
+        private void OnCollisionExit2D(Collision2D col)
+        {
+            // remove the one way from walkable after the player exits one way
+            RemoveOnewayFromWalkableMask(col);
+        }
+        #endregion
 
-                    if (point.normal.y > 0.5f)
-                    {
-                        _walkableMask = _groundMask | _oneWayMask.value;
-                        return;
-                    }
-                }
-            }
 
-            // reset the vertical velocity when player makes contact with ground while falling, 
+
+
+
+
+
+        #region One Way Handling Methods
+        // while falling set the vertical velocity to rigidbody's vertical velocity, 
+        // otherwise vertical velocity reaches high and player will slam the ground
+        private void CaptureFallVelocityOnLanding(Collision2D col)
+        {
             if ((_walkableMask & (1 << col.gameObject.layer)) != 0 && IsFalling())
             {
                 _verticalVelocity = _rb.linearVelocityY;
             }
         }
 
-        private void OnCollisionExit2D(Collision2D col)
+        // include the one way when the player is exactly above the platform
+        private void HandleOneWayGroundMovement(Collision2D col)
         {
-            // reset the includeOneWay flag
-            if ((_oneWayMask & (1 << col.gameObject.layer)) != 0)
-                _walkableMask = _groundMask;
+            // check if contact has made
+            if ((_movementStats.OneWayMask & (1 << col.gameObject.layer)) != 0)
+            {
+                for (int i = 0; i < col.contactCount; i++)
+                {
+                    ContactPoint2D point = col.GetContact(i);
+
+                    if (point.normal.y > VERTICAL_NORMAL_THRESHOLD) // normal y is 1 means flat, 0.5 means 45 degree slop
+                    {
+                        SetWalkableMask(_movementStats.GroundMask | _movementStats.OneWayMask.value);
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void RemoveOnewayFromWalkableMask(Collision2D col)
+        {
+            // set the walkable mask to ground mask
+            if ((_movementStats.OneWayMask & (1 << col.gameObject.layer)) != 0)
+                SetWalkableMask(_movementStats.GroundMask);
+        }
+
+        private void SetWalkableMask(LayerMask mask)
+        {
+            _walkableMask = mask;
         }
         #endregion
 
+        #region Movement Methods
+        /// <summary>
+        /// Movements are based on player input 
+        /// </summary>
+        /// <param name="moveInput"></param>
         public void SimulateMovement(float moveInput)
         {
             _moveInput = moveInput;
@@ -152,7 +173,12 @@ namespace PixelPlatformer
             ApplyGravity();
         }
 
-        public bool StepTowards(Vector3 target)
+        /// <summary>
+        /// Straight line movement
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public bool StepTowards(Vector3 target, float speed)
         {
             if ((transform.position - target).magnitude <= 0.01f)
             {
@@ -160,45 +186,9 @@ namespace PixelPlatformer
                 return true;
             }
 
-            _rb.MovePosition(Vector3.MoveTowards(transform.position, target, _movementStats.DespawnMoveSpeed));
+            _rb.MovePosition(Vector3.MoveTowards(transform.position, target, speed));
             return false;
         }
-
-        public void ResetState()
-        {
-            ResetVerticalVelocity();
-            _horizontalVelocity = 0f;
-            _isWallSliding = false;
-            _wasJumping = false;
-            _wallJumpLockTimer = 0f;
-            _jumpBufferTimer = 0f;
-            _coyoteTimer = 0f;
-
-            // physics state
-            _rb.linearVelocity = Vector2.zero;
-            _rb.angularVelocity = 0f;
-            _rb.rotation = 0f;
-            transform.rotation = Quaternion.identity;
-        }
-
-        private void SetupJumpVariables()
-        {
-            /*position equation p(t) = p0 + v0*t + (1/2)*g*t^2
-                      We only care about height gained, so set p0 = 0
-                      then eq becomes h(t) = v0*t + (1/2)*g*t^2
-                      At the apex (t = timeTillJumpApex), vertical velocity is 0: 
-                      after differentiating we get v(t) = v0 + g*t = 0 v(t) velocity at apex is zero then v0 = -g*t
-                      Substituting v0 = -g*t into h(t) eliminates the v0*t term: h = -g*t^2 + (1/2)*g*t^2 = -(1/2)*g*t^2
-                      then g = -2h / t^2
-                    */
-            _gravity = -(2f * _movementStats.JumpHeight) / Mathf.Pow(_movementStats.TimeTillJumpApex, 2) * _movementStats.GravityMuliplier;
-
-            /* From v = g * t: the launch speed needed to reach 0 velocity (the apex)
-              after timeTillJumpApex seconds under that gravity
-            */
-            _initialJumpVelocity = Mathf.Abs(_gravity) * _movementStats.TimeTillJumpApex;
-        }
-
         private void HandleHorizontalMovement()
         {
             if (_wallJumpLockTimer > 0f)
@@ -208,7 +198,7 @@ namespace PixelPlatformer
             }
 
             // The target speed will be max speed when we press input otherwise it will be zero
-            float targetSpeed = _moveInput * _movementStats.MaxSpeed;
+            float targetSpeed = _moveInput * _movementStats.MoveSpeed;
             float speedChange;
 
             if (Mathf.Abs(targetSpeed) > MOVEMENT_THRESHOLD)
@@ -240,13 +230,59 @@ namespace PixelPlatformer
             }
         }
 
+        public void ApplyMovement()
+        {
+            _rb.linearVelocity = new Vector2(_horizontalVelocity, _verticalVelocity);
+        }
+        #endregion
+
+        #region Initialization Methods
+        public void ResetState()
+        {
+            ResetVerticalVelocity();
+            _horizontalVelocity = 0f;
+            _isWallSliding = false;
+            _wasJumping = false;
+            _wallJumpLockTimer = 0f;
+            _jumpBufferTimer = 0f;
+            _coyoteTimer = 0f;
+
+            // physics state
+            _rb.linearVelocity = Vector2.zero;
+            _rb.angularVelocity = 0f;
+            _rb.rotation = 0f;
+            transform.rotation = Quaternion.identity;
+        }
+
+        // calculate gravity using parabola eq and set the initial velocity for jump
+        private void SetupJumpVariables()
+        {
+            /*position equation p(t) = p0 + v0*t + (1/2)*g*t^2
+                      We only care about height gained, so set p0 = 0
+                      then eq becomes h(t) = v0*t + (1/2)*g*t^2
+                      At the apex (t = timeTillJumpApex), vertical velocity is 0: 
+                      after differentiating we get v(t) = v0 + g*t = 0 v(t) velocity at apex is zero then v0 = -g*t
+                      Substituting v0 = -g*t into h(t) eliminates the v0*t term: h = -g*t^2 + (1/2)*g*t^2 = -(1/2)*g*t^2
+                      then g = -2h / t^2
+                    */
+            _gravity = -(2f * _movementStats.JumpHeight) / Mathf.Pow(_movementStats.TimeTillJumpApex, 2) * _movementStats.GravityMuliplier;
+
+            /* From v = g * t: the launch speed needed to reach 0 velocity (the apex)
+              after timeTillJumpApex seconds under that gravity
+            */
+            _initialJumpVelocity = Mathf.Abs(_gravity) * _movementStats.TimeTillJumpApex;
+        }
+        #endregion
+
+
+        #region Collision Check
         private bool IsGrounded()
         {
             var hit = Physics2D.BoxCast(_groundCheckPoint.position,
-                                        _groundCheckSize,
+                                        _movementStats.GroundCheckSize,
                                         0f,
                                         Vector2.down,
-                                        _groundCheckDistance,
+                                        _movementStats.GroundCheckDistance,
                                         _walkableMask);
 
             return hit & hit.point.y <= _groundCheckPoint.position.y;
@@ -254,15 +290,16 @@ namespace PixelPlatformer
 
         private bool HitCeiling()
         {
-            int mask = _groundMask & ~(1 << _oneWayMask); // ignore One Way Platform which is not ceiling
+            int mask = _movementStats.GroundMask & ~(1 << _movementStats.OneWayMask); // ignore One Way Platform which is not ceiling
 
             return Physics2D.BoxCast(_ceilingCheckPoint.position,
-                                     _ceilingCheckSize,
+                                     _movementStats.CeilingCheckSize,
                                      0f,
                                      Vector2.up,
-                                     _ceilingCheckDistance,
+                                     _movementStats.CeilingCheckDistance,
                                      mask);
         }
+        #endregion
 
         #region Jump
         public void BufferJump()
@@ -347,11 +384,6 @@ namespace PixelPlatformer
             return !IsGrounded() && _verticalVelocity <= 0f;
         }
 
-        public void PerformJump()
-        {
-            PerformJump(_initialJumpVelocity);
-        }
-
         public void PerformJump(float jumpVelocity)
         {
             _verticalVelocity = jumpVelocity;
@@ -377,6 +409,7 @@ namespace PixelPlatformer
             OnJump?.Invoke();
         }
         #endregion
+
 
         #region Gravity Methods
         private void ApplyGravity()
@@ -415,10 +448,6 @@ namespace PixelPlatformer
         }
         #endregion
 
-        public void ApplyMovement()
-        {
-            _rb.linearVelocity = new Vector2(_horizontalVelocity, _verticalVelocity);
-        }
 
         #region Wall Slide
         private void HandleWallSlide()
@@ -438,11 +467,11 @@ namespace PixelPlatformer
         private bool IsWallSliding()
         {
             return Physics2D.BoxCast(_wallCheckPoint.position,
-                                     _wallCheckSize,
+                                     _movementStats.WallCheckSize,
                                      0f,
                                      Vector2.right * Mathf.Sign(_moveInput),
-                                     _wallCheckDistance,
-                                     _wallMask);
+                                     _movementStats.WallCheckDistance,
+                                     _movementStats.WallMask);
         }
         #endregion
 
@@ -461,22 +490,22 @@ namespace PixelPlatformer
             const float GRAVITY = -9.81f;
 
             _isFlying = true;
-            _rb.gravityScale = _gravityScale;
+            _rb.gravityScale = _movementStats.GravityScale;
             _rb.linearVelocity = Vector2.zero;
             _rb.angularVelocity = 0f;
             _rb.freezeRotation = false;
             _rb.mass = 1f;
 
             // v = sqrt(2 * g * h) gives an apex of exactly _jumpHeight
-            float gravity = Mathf.Abs(GRAVITY) * _gravityScale;
-            float launchSpeedY = Mathf.Sqrt(2f * gravity * _jumpHeight);
-            float launchSpeedX = _horizontalSpeed * hitDirection;
+            float gravity = Mathf.Abs(GRAVITY) * _movementStats.GravityScale;
+            float launchSpeedY = Mathf.Sqrt(2f * gravity * _movementStats.JumpHeight);
+            float launchSpeedX = _movementStats.HorizontalSpeed * hitDirection;
 
             Vector2 impulse = new Vector2(launchSpeedX, launchSpeedY);
             _rb.AddForce(impulse, ForceMode2D.Impulse);
 
             float spinDirection = UnityEngine.Random.value < 0.5f ? -1f : 1f;
-            _rb.angularVelocity = _spin * spinDirection;
+            _rb.angularVelocity = _movementStats.Spin * spinDirection;
         }
 
         public void ResetVerticalVelocity()
@@ -511,13 +540,13 @@ namespace PixelPlatformer
             if (_groundCheckPoint == null) return;
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(_groundCheckPoint.position, _groundCheckSize);
+            Gizmos.DrawWireCube(_groundCheckPoint.position, _movementStats.GroundCheckSize);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(_ceilingCheckPoint.position, _ceilingCheckSize);
+            Gizmos.DrawWireCube(_ceilingCheckPoint.position, _movementStats.CeilingCheckSize);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(_wallCheckPoint.position, _wallCheckSize);
+            Gizmos.DrawWireCube(_wallCheckPoint.position, _movementStats.WallCheckSize);
         }
 
         private void OnGUI()
