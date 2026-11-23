@@ -1,0 +1,3 @@
+C:\_Game Development\_Personal Projects\_Unity Projects\Unity2D-Pixel-Platformer\Pixel_Platformer\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\_Game Development\_Personal Projects\_Unity Projects\Unity2D-Pixel-Platformer\Pixel_Platformer\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
+C:\_Game Development\_Personal Projects\_Unity Projects\Unity2D-Pixel-Platformer\Pixel_Platformer\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

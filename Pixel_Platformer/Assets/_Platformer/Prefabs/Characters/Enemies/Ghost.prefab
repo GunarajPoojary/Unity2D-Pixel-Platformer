@@ -1,0 +1,248 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8862194796472090156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6040155750052310382}
+  - component: {fileID: 1242868717384481622}
+  - component: {fileID: 3944629341489161496}
+  - component: {fileID: 7146554880508641780}
+  - component: {fileID: 8894381502722844938}
+  - component: {fileID: 2338501650456539591}
+  m_Layer: 9
+  m_Name: Ghost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6040155750052310382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862194796472090156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.25, y: -7.125, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1242868717384481622
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862194796472090156}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 5
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 4740742658319907719, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2.6875, y: 1.625}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!61 &3944629341489161496
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862194796472090156}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.9375, y: 1.75}
+    newSize: {x: 2.6875, y: 1.625}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.9375, y: 1.75}
+  m_EdgeRadius: 0
+--- !u!114 &7146554880508641780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862194796472090156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e56dd8325d4101468f4cf29f2e5fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  _runSpeed: 3
+  _playerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _idleTime: 1
+  _visibleTime: 3
+  _hiddenTime: 2
+  _idleClip:
+    monoBehaviour: {fileID: 7146554880508641780}
+    _renderer: {fileID: 1242868717384481622}
+    _sprites:
+    - {fileID: 4740742658319907719, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: -1280504103846584438, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: -7778519746354220618, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: -4610024896826334718, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: -297012856949671142, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: -4935324006592396102, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: 4951597289470662527, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: -3747086668998301680, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: 2626477834240146489, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    - {fileID: -820748739254766286, guid: 6a776e4f260a6ff4baec9c34870e161e, type: 3}
+    _loop: 1
+    _frameRate: 12
+  _appearClip:
+    monoBehaviour: {fileID: 7146554880508641780}
+    _renderer: {fileID: 1242868717384481622}
+    _sprites:
+    - {fileID: 6674197358033493788, guid: d31386601760ad34391804bb25dda4fc, type: 3}
+    - {fileID: 1810668921, guid: d31386601760ad34391804bb25dda4fc, type: 3}
+    - {fileID: 2016503411, guid: d31386601760ad34391804bb25dda4fc, type: 3}
+    - {fileID: 280936924, guid: d31386601760ad34391804bb25dda4fc, type: 3}
+    _loop: 0
+    _frameRate: 12
+  _disappearClip:
+    monoBehaviour: {fileID: 7146554880508641780}
+    _renderer: {fileID: 1242868717384481622}
+    _sprites:
+    - {fileID: -5097002624622362120, guid: 27ebaa741de7dca48af4bdf3d2e22079, type: 3}
+    - {fileID: 1966135925, guid: 27ebaa741de7dca48af4bdf3d2e22079, type: 3}
+    - {fileID: -152761215, guid: 27ebaa741de7dca48af4bdf3d2e22079, type: 3}
+    - {fileID: -1582912032, guid: 27ebaa741de7dca48af4bdf3d2e22079, type: 3}
+    _loop: 0
+    _frameRate: 12
+  _hitClip:
+    monoBehaviour: {fileID: 7146554880508641780}
+    _renderer: {fileID: 1242868717384481622}
+    _sprites:
+    - {fileID: -8625846662236638254, guid: 88dcbd3a40bd65f4b8833ebb8fa48d17, type: 3}
+    - {fileID: 1570143437731978870, guid: 88dcbd3a40bd65f4b8833ebb8fa48d17, type: 3}
+    - {fileID: 293275071455328999, guid: 88dcbd3a40bd65f4b8833ebb8fa48d17, type: 3}
+    - {fileID: -3073595936789769836, guid: 88dcbd3a40bd65f4b8833ebb8fa48d17, type: 3}
+    - {fileID: 2640212775168743854, guid: 88dcbd3a40bd65f4b8833ebb8fa48d17, type: 3}
+    _loop: 0
+    _frameRate: 12
+  _patrolOffsetX: 0
+  _patrolWidth: 11.13
+  _bodyHalfWidth: 0.5
+--- !u!114 &8894381502722844938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862194796472090156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581d90542a5e2114b94701323101c0a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.Hittable
+  _turnAngle: 15
+  _jumpHeight: 0.8
+  _jumpDuration: 0.6
+  _turnSpeed: 0.2
+  _fallAcceleration: 1
+  _fallSpeed: 0.5
+  _renderer: {fileID: 1242868717384481622}
+--- !u!114 &2338501650456539591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8862194796472090156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42ee8006728456e449cfd801198a592c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.StompImpactTrigger
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _normalThreshold: 0.5
+  _impactForce: 25

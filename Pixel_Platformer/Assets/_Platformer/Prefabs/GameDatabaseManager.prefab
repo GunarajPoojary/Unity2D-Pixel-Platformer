@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1753602397666878563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1503132217734006858}
+  - component: {fileID: 2707346258828374941}
+  m_Layer: 0
+  m_Name: GameDatabaseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1503132217734006858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753602397666878563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2707346258828374941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753602397666878563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a08670b7b0bb05047924545e55341446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.GameDatabaseManager
+  _levels:
+  - {fileID: 11400000, guid: 6ee28103f09e60043bdd51c738b4a273, type: 2}
+  - {fileID: 11400000, guid: 339a346faf9c24e4e8e76506401df2c3, type: 2}
+  - {fileID: 11400000, guid: f8643a283e41a5c4aa49bc5848ad96cc, type: 2}
+  - {fileID: 11400000, guid: 54e4fa57c7afd1b48981e38b2f717145, type: 2}
+  - {fileID: 11400000, guid: 1953c94f64da13d4db0bf72f125317a9, type: 2}

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f92e54b1e1080498f8a61c56630f20, type: 3}
+  m_Name: LevelData_1
+  m_EditorClassIdentifier: Platformer::PixelPlatformer.LevelDataSO
+  <LevelIndex>k__BackingField: 1
+  <LevelIcon>k__BackingField: {fileID: 21300000, guid: 1071946ceb0a36f46b703491571d8e68, type: 3}
+  <LevelScene>k__BackingField: {fileID: 11400000, guid: fb43e27a170d4b649877fecc1ab17e06, type: 2}

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8aa5fc7ca1089b41b219fa2986da910, type: 3}
+  m_Name: PlayerMovementStats
+  m_EditorClassIdentifier: 
+  <MoveSpeed>k__BackingField: 6.5
+  <GravityMuliplier>k__BackingField: 2.5
+  <TurnSpeed>k__BackingField: 100
+  <GroundAcceleration>k__BackingField: 97.8
+  <GroundDecceleration>k__BackingField: 53.9
+  <AirAcceleration>k__BackingField: 52
+  <AirDecceleration>k__BackingField: 52
+  <JumpHeight>k__BackingField: 1.8
+  <TimeTillJumpApex>k__BackingField: 0.4
+  <JumpCutMultiplier>k__BackingField: 0.502
+  <JumpBufferTime>k__BackingField: 0.164
+  <GroundedVerticalVelocity>k__BackingField: 0.1
+  <CoyoteTime>k__BackingField: 0.18
+  <WallSlideSpeed>k__BackingField: 2
+  <WallJumpHorizontalForce>k__BackingField: 5
+  <WallJumpVerticalVelocity>k__BackingField: 20
+  <WallJumpLockTime>k__BackingField: 0.19
+  <GroundCheckSize>k__BackingField: {x: 0.1, y: 0.06}
+  <GroundCheckDistance>k__BackingField: 0.01
+  <GroundMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <OneWayMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 256
+  <CeilingCheckSize>k__BackingField: {x: 0.8, y: 0.12}
+  <CeilingCheckDistance>k__BackingField: 0.01
+  <WallCheckSize>k__BackingField: {x: 1.32, y: 0.16}
+  <WallCheckDistance>k__BackingField: 0.01
+  <WallMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <HorizontalSpeed>k__BackingField: 4
+  <Spin>k__BackingField: 180
+  <GravityScale>k__BackingField: 8

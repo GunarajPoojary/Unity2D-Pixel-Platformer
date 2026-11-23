@@ -1,0 +1,57 @@
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+namespace PixelPlatformer
+{
+    /// <summary>
+    /// Component responsible for playing feedback sound when dragged and released
+    /// </summary>
+    [RequireComponent(typeof(Slider))]
+    public class AudioSliderPreview : MonoBehaviour, IBeginDragHandler, IEndDragHandler
+    {
+        [SerializeField] private Slider _slider;
+        [SerializeField] private AudioClip _previewClip;
+
+        private bool _isDragging;
+
+        private void OnEnable()
+        {
+            _slider.onValueChanged.AddListener(HandleVolumeChanged);
+        }
+
+        private void OnDisable()
+        {
+            _slider.onValueChanged.RemoveListener(HandleVolumeChanged);
+        }
+
+        public void HandleVolumeChanged(float value)
+        {
+            // Ignore value changes caused by mouse/touch dragging.
+            if (_isDragging) return;
+
+            // Value changed through keyboard navigation.
+            if (EventSystem.current.currentSelectedGameObject == _slider.gameObject)
+                PlayPreview();
+        }
+
+        private void PlayPreview()
+        {
+            AudioManager.Instance.PlaySFX(_previewClip);
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            _isDragging = true;
+        }
+
+        // play feedback sound when drag released
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            _isDragging = false;
+
+            // Play once when the user finishes dragging.
+            PlayPreview();
+        }
+    }
+}

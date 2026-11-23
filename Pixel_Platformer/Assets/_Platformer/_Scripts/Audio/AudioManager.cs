@@ -1,0 +1,101 @@
+using UnityEngine;
+
+namespace PixelPlatformer
+{
+    /// <summary>
+    /// Responsible for handling Audio such as SFX and Music
+    /// </summary>
+    public class AudioManager : Singleton<AudioManager>
+    {
+        private const string MUSIC_KEY = "MusicVolume";
+        private const string SFX_KEY = "SFXVolume";
+
+        [SerializeField] private AudioSource _musicSource;
+        [SerializeField] private AudioSource _sfxSource;
+
+        private float _musicVolume = 1f;
+        private float _sFXVolume = 1f;
+
+        public float SFXVolume { get { return _sFXVolume; } }
+        public float MusicVolume { get { return _musicVolume; } }
+
+        private void OnDestroy()
+        {
+            SaveData();
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            if (paused) SaveData();
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveData();
+        }
+
+        public void Initialize()
+        {
+            LoadData();
+        }
+
+        #region Music
+        public void SetMusicVolume(float volume)
+        {
+            _musicVolume = Mathf.Clamp01(volume);
+
+            _musicSource.volume = volume;
+        }
+
+        public void PlayMusic(AudioClip clip, bool loop = true)
+        {
+            if (_musicSource.isPlaying && _musicSource.clip == clip) return;
+
+            _musicSource.Stop();
+            _musicSource.clip = clip;
+            _musicSource.loop = loop;
+            _musicSource.Play();
+        }
+
+        public void StopMusic()
+        {
+            if (!_musicSource.isPlaying) return;
+
+            _musicSource.Stop();
+        }
+        #endregion
+
+
+        #region SFX
+        public void PlaySFX(AudioClip clip)
+        {
+            _sfxSource.PlayOneShot(clip);
+        }
+
+        public void SetSFXVolume(float volume)
+        {
+            _sFXVolume = Mathf.Clamp01(volume);
+
+            _sfxSource.volume = volume;
+        }
+        #endregion
+
+        #region Save/Load
+        private void LoadData()
+        {
+            _musicVolume = PlayerPrefs.GetFloat(MUSIC_KEY, 1f);
+            _sFXVolume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
+
+            _musicSource.volume = _musicVolume;
+            _sfxSource.volume = _sFXVolume;
+        }
+
+        public void SaveData()
+        {
+            PlayerPrefs.SetFloat(MUSIC_KEY, _musicVolume);
+            PlayerPrefs.SetFloat(SFX_KEY, _sFXVolume);
+            PlayerPrefs.Save();
+        }
+        #endregion
+    }
+}
