@@ -7,27 +7,31 @@ namespace PixelPlatformer
     public class StartCheckpoint : MonoBehaviour
     {
         [SerializeField] private SingleClipAnimator _animator;
-        [SerializeField] private LayerMask _playerMask;
-        [SerializeField] private AudioClip _startClip;
+        [SerializeField] private LayerMask _triggerMask;
+        [SerializeField] private AudioClip _triggerClip;
+
+        private Checkpoint _checkpoint;
         private bool _hasTriggered = false;
 
-        public event Action OnPlayerLand;
+        public event Action OnTrigger;
+
+        private void Awake()
+        {
+            Init();
+        }
+
+        private void Init()
+        {
+            _checkpoint = new Checkpoint(_animator, _triggerMask, _triggerClip);
+        }
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            if (!_hasTriggered && (_playerMask & (1 << col.gameObject.layer)) != 0)
+            if (!_hasTriggered && _checkpoint.IsTrigger(col.gameObject.layer))
             {
-                PlayStartClip();
                 _hasTriggered = true;
-                OnPlayerLand?.Invoke();
+                OnTrigger?.Invoke();
             }
-        }
-
-        private void PlayStartClip()
-        {
-            _animator.PlayClip();
-            AudioManager.Instance.PlaySFX(_startClip);
-            GameEvents.Publish(new StepOnStartCheckpointEvenData());
         }
     }
 }

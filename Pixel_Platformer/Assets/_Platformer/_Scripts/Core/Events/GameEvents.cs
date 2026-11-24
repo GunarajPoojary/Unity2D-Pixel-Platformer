@@ -5,7 +5,7 @@ namespace PixelPlatformer
 {
     public readonly struct FruitCollectedEvent { }
     public readonly struct CameraShakeEventData { }
-    public readonly struct StepOnStartCheckpointEvenData { }
+    public readonly struct CheckpointTriggeredEventData { }
     public readonly struct PlayerDiedEventData { }
     public readonly struct StompedEnemyEventData { }
     public readonly struct LevelCompletedEvent

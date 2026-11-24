@@ -484,6 +484,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc3966bbb8a726d4695ed9a312ba50e3, type: 3}
+--- !u!114 &171776988 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4449135415730630827, guid: fc3966bbb8a726d4695ed9a312ba50e3, type: 3}
+  m_PrefabInstance: {fileID: 171776987}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02d17ee15aa962d448c2769c6003fb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &176480603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40350,7 +40361,7 @@ MonoBehaviour:
     totalEnemies: 7
     estimatedCompletionTime: 30
   _scoreData: {fileID: 11400000, guid: d1181649b3df77f47815558695c6afe2, type: 2}
-  _startCheckpoint: {fileID: 1364734630}
+  _startCheckpoint: {fileID: 171776988}
   _endCheckpoint: {fileID: 8322644061551742197}
   _playerSpawnFX: {fileID: 1952621947}
   _playerDespawnFX: {fileID: 5612130591037676521}
@@ -40557,17 +40568,6 @@ Transform:
   - {fileID: 887915533}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1364734630 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4449135415730630827, guid: fc3966bbb8a726d4695ed9a312ba50e3, type: 3}
-  m_PrefabInstance: {fileID: 171776987}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d17ee15aa962d448c2769c6003fb40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1462382006
 PrefabInstance:
   m_ObjectHideFlags: 0

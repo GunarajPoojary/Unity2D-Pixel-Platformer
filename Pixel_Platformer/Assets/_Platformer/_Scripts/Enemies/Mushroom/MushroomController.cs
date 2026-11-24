@@ -41,10 +41,6 @@ namespace PixelPlatformer
             _renderer = GetComponent<SpriteRenderer>();
             _hittable = GetComponent<Hittable>();
             _hitHandler = new EnemyHitter(_playerMask);
-
-            SetupClip(_idleClip, true);
-            SetupClip(_runClip, true);
-            SetupClip(_hitClip, false);
         }
 
         private void Start()
@@ -61,15 +57,6 @@ namespace PixelPlatformer
         private void OnDisable()
         {
             _hittable.OnHit -= HandleHit;
-        }
-
-        private void SetupClip(SingleClipAnimator clip, bool loop)
-        {
-            clip.monoBehaviour = this;
-            clip._loop = loop;
-
-            if (clip._renderer == null)
-                clip._renderer = _renderer;
         }
 
         // Only restarts a clip when switching to a different one,

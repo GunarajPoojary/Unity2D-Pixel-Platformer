@@ -15,16 +15,16 @@ namespace PixelPlatformer
         private void OnEnable()
         {
             GameEvents.Subscribe<CameraShakeEventData>(HandleCameraShake);
-            GameEvents.Subscribe<StepOnStartCheckpointEvenData>(HandleCameraShake);
+            GameEvents.Subscribe<CheckpointTriggeredEventData>(HandleCameraShake);
         }
 
         private void OnDisable()
         {
             GameEvents.Unsubscribe<CameraShakeEventData>(HandleCameraShake);
-            GameEvents.Unsubscribe<StepOnStartCheckpointEvenData>(HandleCameraShake);
+            GameEvents.Unsubscribe<CheckpointTriggeredEventData>(HandleCameraShake);
         }
 
-        private void HandleCameraShake(StepOnStartCheckpointEvenData data)
+        private void HandleCameraShake(CheckpointTriggeredEventData data)
         {
             ShakeCamera();
         }

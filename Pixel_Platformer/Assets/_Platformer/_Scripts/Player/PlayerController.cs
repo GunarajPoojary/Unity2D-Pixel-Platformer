@@ -99,12 +99,11 @@ namespace PixelPlatformer
         {
             _renderer.Move(_movement.IsRunning);
 
-            if (!_movement.IsFlying) return;
+            // if (!_movement.IsFlying) return;
 
             // below 0 on Y means the object has fallen off the bottom of the screen
             if (_movement.LinearVelocity.y < 0f && IsOutOfView())
             {
-                _movement.SwitchControlType(true);
                 GameEvents.Publish(new PlayerDiedEventData());
 
                 gameObject.SetActive(false);
@@ -118,7 +117,7 @@ namespace PixelPlatformer
 
         private void HandlePhysicsUpdate()
         {
-            if (_movement.IsFlying) return;
+            // if (_movement.IsFlying) return;
 
             if (MovementEnabled)
             {

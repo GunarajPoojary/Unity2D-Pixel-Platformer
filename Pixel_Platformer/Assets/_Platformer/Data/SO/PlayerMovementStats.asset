@@ -47,3 +47,5 @@ MonoBehaviour:
   <HorizontalSpeed>k__BackingField: 4
   <Spin>k__BackingField: 180
   <GravityScale>k__BackingField: 8
+  <SampleVertVel>k__BackingField: 25
+  <SampleHorVel>k__BackingField: 20

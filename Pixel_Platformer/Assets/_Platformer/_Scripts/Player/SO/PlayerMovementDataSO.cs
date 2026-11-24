@@ -50,5 +50,7 @@ namespace PixelPlatformer
         [field: SerializeField] public float HorizontalSpeed { get; private set; } = 2f;
         [field: SerializeField] public float Spin { get; private set; } = 180f;
         [field: SerializeField] public float GravityScale { get; private set; } = 5f;
+        [field: SerializeField] public float SampleVertVel { get; private set; } = 50f;
+        [field: SerializeField] public float SampleHorVel { get; private set; } = 50f;
     }
 }

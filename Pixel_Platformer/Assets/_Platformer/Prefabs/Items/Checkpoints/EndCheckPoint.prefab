@@ -5107,6 +5107,7 @@ MonoBehaviour:
     - {fileID: 1190070087064070019, guid: 19aca28766386e741b1875a131d955da, type: 3}
     _loop: 0
     _frameRate: 12
-  _playerMask:
+  _triggerMask:
     serializedVersion: 2
     m_Bits: 128
+  _triggerClip: {fileID: 8300000, guid: cbc19b95f9816eb40a0b01008ac1d4ae, type: 3}

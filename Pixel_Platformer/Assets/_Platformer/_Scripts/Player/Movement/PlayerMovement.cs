@@ -56,7 +56,7 @@ namespace PixelPlatformer
 
         private bool _isWallSliding;
         private float _wallJumpLockTimer;
-        private bool _isFlying;
+        // private bool _isFlying;
 
 
         // Properties
@@ -71,7 +71,7 @@ namespace PixelPlatformer
         public int LookDirection { get; private set; }
         public Vector3 LinearVelocity { get { return _rb.linearVelocity; } }
 
-        public bool IsFlying { get { return _isFlying; } }
+        // public bool IsFlying { get { return _isFlying; } }
 
 
         // events
@@ -484,7 +484,7 @@ namespace PixelPlatformer
         {
             if (canControl)
             {
-                _isFlying = false;
+                // _isFlying = false;
                 _rb.gravityScale = 0f;
                 _rb.linearVelocity = Vector2.zero;
                 _rb.angularVelocity = 0f;
@@ -493,7 +493,7 @@ namespace PixelPlatformer
             }
             else
             {
-                _isFlying = true;
+                // _isFlying = true;
                 _rb.gravityScale = _movementStats.GravityScale;
                 _rb.linearVelocity = Vector2.zero;
                 _rb.angularVelocity = 0f;
@@ -506,18 +506,32 @@ namespace PixelPlatformer
         {
             const float GRAVITY = -9.81f;
 
-            SwitchControlType(false);
+            // SwitchControlType(false);
+
+
+
+
+
+            // _isFlying = true;
+            // _rb.gravityScale = _movementStats.GravityScale;
+            _rb.linearVelocity = Vector2.zero;
+            _rb.angularVelocity = 0f;
+            _rb.freezeRotation = false;
+            // _rb.mass = 1f;
+            _verticalVelocity = _movementStats.SampleVertVel;
+            _horizontalVelocity = _movementStats.SampleHorVel;
+
 
             // v = sqrt(2 * g * h) gives an apex of exactly _jumpHeight
-            float gravity = Mathf.Abs(GRAVITY) * _movementStats.GravityScale;
-            float launchSpeedY = Mathf.Sqrt(2f * gravity * _movementStats.JumpHeight);
-            float launchSpeedX = _movementStats.HorizontalSpeed * hitDirection;
+            // float gravity = Mathf.Abs(GRAVITY) * _movementStats.GravityScale;
+            // float launchSpeedY = Mathf.Sqrt(2f * gravity * _movementStats.JumpHeight);
+            // float launchSpeedX = _movementStats.HorizontalSpeed * hitDirection;
 
-            Vector2 impulse = new Vector2(launchSpeedX, launchSpeedY);
-            _rb.AddForce(impulse, ForceMode2D.Impulse);
+            // Vector2 impulse = new Vector2(launchSpeedX, launchSpeedY);
+            // _rb.AddForce(impulse, ForceMode2D.Impulse);
 
-            float spinDirection = UnityEngine.Random.value < 0.5f ? -1f : 1f;
-            _rb.angularVelocity = _movementStats.Spin * spinDirection;
+            // float spinDirection = UnityEngine.Random.value < 0.5f ? -1f : 1f;
+            // _rb.angularVelocity = _movementStats.Spin * spinDirection;
         }
 
         public void ResetVerticalVelocity()

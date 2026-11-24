@@ -4975,7 +4975,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4392827059107796345, guid: fbea98d3d1e10494a882cbbfeff6dd2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10138,6 +10138,8 @@ MonoBehaviour:
   _arrowWidth: 1
   _arrowHeight: 1
   _offset: {x: 0, y: -1, z: 0}
+  _sampleVertVel: 20
+  _sampleHorVel: 20
 --- !u!114 &8315275832378156492
 MonoBehaviour:
   m_ObjectHideFlags: 0

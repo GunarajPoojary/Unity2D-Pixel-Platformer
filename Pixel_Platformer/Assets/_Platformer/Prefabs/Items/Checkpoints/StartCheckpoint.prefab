@@ -176,7 +176,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 6c3c3b87bedb893478421329536f107d, type: 3}
     _loop: 0
     _frameRate: 12
-  _playerMask:
+  _triggerMask:
     serializedVersion: 2
     m_Bits: 128
-  _startClip: {fileID: 8300000, guid: cbc19b95f9816eb40a0b01008ac1d4ae, type: 3}
+  _triggerClip: {fileID: 8300000, guid: cbc19b95f9816eb40a0b01008ac1d4ae, type: 3}

@@ -32,7 +32,7 @@ namespace PixelPlatformer
 
         private void OnEnable()
         {
-            _startCheckpoint.OnPlayerLand += HandlePlayerSpawned;
+            _startCheckpoint.OnTrigger += HandlePlayerSpawned;
             _endCheckpoint.OnTrigger += HandleLevelCompleted;
 
             GameEvents.Subscribe<FruitCollectedEvent>(HandleFruitCollected);
@@ -41,7 +41,7 @@ namespace PixelPlatformer
 
         private void OnDisable()
         {
-            _startCheckpoint.OnPlayerLand -= HandlePlayerSpawned;
+            _startCheckpoint.OnTrigger -= HandlePlayerSpawned;
             _endCheckpoint.OnTrigger -= HandleLevelCompleted;
 
             GameEvents.Unsubscribe<FruitCollectedEvent>(HandleFruitCollected);
